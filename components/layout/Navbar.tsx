@@ -1,12 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Home, MessageSquare, Dumbbell, CalendarDays, Settings } from 'lucide-react'
 import Logo from '../ui/Logo'
+import Button from '../ui/Button'
 import ThemeToggle from '@/components/theme/ThemeToggle'
 import { useTheme } from '@/components/theme/ThemeProvider'
+import { createSupabaseBrowser } from '@/lib/supabase/client'
 
 const navigation = [
   { name: 'Home', href: '/dashboard', icon: Home },
@@ -15,6 +17,28 @@ const navigation = [
   { name: 'Calendar', href: '/calendar', icon: CalendarDays },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
+
+export function AuthQuick() {
+  const supabase = createSupabaseBrowser()
+  const [email, setEmail] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const signOut = async () => {
+    await supabase.auth.signOut()
+    window.location.href = '/sign-in'
+  }
+
+  if (!email) return <a href="/sign-in" className="underline text-sm">Sign in</a>
+  return (
+    <button onClick={signOut} className="text-sm underline">
+      Sign out
+    </button>
+  )
+}
 
 /**
  * Fixed Navbar component with proper button functionality and high-contrast design
@@ -71,7 +95,8 @@ export default function Navbar() {
         </div>
         
         {/* Fixed: Consistent CTA button */}
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
+          <AuthQuick />
           <ThemeToggle />
         </div>
       </nav>
