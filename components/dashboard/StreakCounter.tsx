@@ -98,7 +98,7 @@ export function StreakCounter({ streak }: StreakCounterProps) {
           </div>
         ) : (
           <div className="text-sm text-slate-700 dark:text-slate-300">
-            🌱 Every day counts. You're building something great!
+            🌱 Every day counts. You&apos;re building something great!
           </div>
         )}
       </div>

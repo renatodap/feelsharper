@@ -72,7 +72,7 @@ export default function ReferralCodeInput({ onCodeApplied, className = '' }: Ref
         </div>
         
         <p className="text-sm text-slate-600">
-          Enter your friend&apos;s code to unlock exclusive rewards for both of you.
+          Enter your friend's code to unlock exclusive rewards for both of you.
         </p>
 
         <div className="flex space-x-2">

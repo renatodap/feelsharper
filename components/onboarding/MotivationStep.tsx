@@ -242,7 +242,7 @@ export function MotivationStep({ profile, updateProfile, onNext, onPrev }: Motiv
             </h4>
           </div>
           <p className="text-slate-700 dark:text-slate-300">
-            Based on your selections, we'll emphasize{' '}
+            Based on your selections, we&apos;ll emphasize{' '}
             <strong>
               {profile.motivationStyles?.slice(0, 2).map((style: string) => 
                 motivationStyles.find(s => s.id === style)?.title

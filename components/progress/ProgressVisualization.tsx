@@ -421,7 +421,7 @@ export default function ProgressVisualization() {
           Start Your Visual Journey
         </Typography>
         <Typography variant="body2" className="text-slate-500 mb-4">
-          Progress photos show changes that the scale can&apos;t capture
+          Progress photos show changes that the scale can't capture
         </Typography>
         <Button variant="primary">
           <Camera className="w-4 h-4 mr-2" />

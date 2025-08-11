@@ -343,7 +343,7 @@ export function ProgressPhotoComparison() {
                         {photo.measurements.chest && (
                           <div className="flex justify-between">
                             <span className="text-slate-600 dark:text-slate-400">Chest:</span>
-                            <span className="font-medium">{photo.measurements.chest}&quot;</span>
+                            <span className="font-medium">{photo.measurements.chest}"</span>
                           </div>
                         )}
                         {photo.measurements.waist && (

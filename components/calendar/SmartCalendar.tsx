@@ -381,7 +381,7 @@ export default function SmartCalendar() {
             ✈️ Travel Day Optimization
           </Typography>
           <Typography variant="body2" className="text-purple-800 mb-3">
-            Flying tomorrow? I've prepared a hotel room workout and healthy airport meal options.
+            Flying tomorrow? I&apos;ve prepared a hotel room workout and healthy airport meal options.
           </Typography>
           <Button variant="outline" size="sm">View Travel Plan</Button>
         </div>
@@ -391,7 +391,7 @@ export default function SmartCalendar() {
             😰 Stress Level Alert
           </Typography>
           <Typography variant="body2" className="text-purple-800 mb-3">
-            High stress detected. Switching tonight's HIIT to restorative yoga for better recovery.
+            High stress detected. Switching tonight&apos;s HIIT to restorative yoga for better recovery.
           </Typography>
           <Button variant="outline" size="sm">Approve Change</Button>
         </div>

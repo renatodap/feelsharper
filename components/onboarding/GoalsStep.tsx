@@ -115,10 +115,10 @@ export function GoalsStep({ profile, updateProfile, onNext, onPrev }: GoalsStepP
       <div className="text-center mb-8">
         <Target className="h-12 w-12 mx-auto mb-4 text-blue-600" />
         <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-          What's your main goal?
+          What&apos;s your main goal?
         </h2>
         <p className="text-slate-600 dark:text-slate-400">
-          We'll design your program around your primary objective
+          We&apos;ll design your program around your primary objective
         </p>
       </div>
 

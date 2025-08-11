@@ -187,7 +187,7 @@ export default function ComprehensiveDashboard() {
                 Complete your daily check-in to track wellness metrics
               </p>
             </div>
-            <Button onClick={() => router.push('/checkin')} variant="default">
+            <Button onClick={() => router.push('/checkin')} variant="default&quot;>
               Daily Check-in
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
@@ -256,7 +256,7 @@ export default function ComprehensiveDashboard() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
-              <span>Today's Workout</span>
+              <span>Today&apos;s Workout</span>
               <Dumbbell className="h-4 w-4 text-muted-foreground" />
             </CardTitle>
           </CardHeader>
@@ -283,7 +283,7 @@ export default function ComprehensiveDashboard() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
-              <span>Today's Nutrition</span>
+              <span>Today&apos;s Nutrition</span>
               <Flame className="h-4 w-4 text-muted-foreground" />
             </CardTitle>
           </CardHeader>

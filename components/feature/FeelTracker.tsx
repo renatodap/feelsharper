@@ -63,7 +63,7 @@ export default function FeelTracker() {
                 variant="ghost" 
                 size="lg"
                 onClick={() => {
-                  const chatButton = document.querySelector('[aria-label="Open Ask Feel Sharper chat"]') as HTMLButtonElement;
+                  const chatButton = document.querySelector('[aria-label="Open Ask Feel Sharper chat"]) as HTMLButtonElement;
                   if (chatButton) chatButton.click();
                 }}
               >

@@ -305,7 +305,7 @@ export function MealLogger() {
                             onChange={(e) => updateFoodQuantity(food.id, parseFloat(e.target.value) || 0)}
                             className="w-16 px-2 py-1 text-center border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-slate-600 dark:bg-slate-700"
                             step="0.1"
-                            min="0"
+                            min=&quot;0&quot;
                           />
                           <span className="ml-1">{food.unit}</span>
                         </div>
@@ -360,11 +360,11 @@ export function MealLogger() {
               )}
             </Card>
 
-            {/* Today's Meals */}
+            {/* Today&apos;s Meals */}
             {todaysMeals.length > 0 && (
               <Card className="p-6">
                 <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                  Today's Meals
+                  Today&apos;s Meals
                 </h2>
                 <div className="space-y-4">
                   {todaysMeals.map((meal) => {

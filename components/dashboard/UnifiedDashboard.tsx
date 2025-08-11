@@ -79,7 +79,7 @@ export default function UnifiedDashboard() {
       `${stats.streakDays} days strong! Your consistency is building unstoppable momentum.`,
       `${stats.weeklyProgress}% weekly progress - you're crushing your targets.`,
       "Every rep, every meal, every choice matters. You're becoming the person you want to be.",
-      "Progress isn't just numbers - it's the energy you feel, the confidence you carry."
+      "Progress isn&apos;t just numbers - it&apos;s the energy you feel, the confidence you carry."
     ];
     setMotivationalMessage(messages[Math.floor(Math.random() * messages.length)]);
   }, [stats]);
@@ -93,7 +93,7 @@ export default function UnifiedDashboard() {
   const getSleepColor = (quality: number) => {
     if (quality >= 4) return "text-green-500";
     if (quality >= 3) return "text-yellow-500";
-    return "text-red-500";
+    return "text-red-500&quot;;
   };
 
   return (
@@ -136,7 +136,7 @@ export default function UnifiedDashboard() {
         </div>
       </Card>
 
-      {/* Today's Status Grid */}
+      {/* Today&apos;s Status Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Energy Level */}
         <Card className="p-6">
@@ -148,7 +148,7 @@ export default function UnifiedDashboard() {
           </div>
           <Typography variant="h4" className="font-semibold mb-1">Energy Level</Typography>
           <Typography variant="body2" className="text-slate-600">
-            {stats.energyLevel >= 4 ? "Feeling great!" : stats.energyLevel >= 3 ? "Pretty good" : "Need rest"}
+            {stats.energyLevel >= 4 ? "Feeling great!" : stats.energyLevel >= 3 ? "Pretty good" : "Need rest&quot;}
           </Typography>
         </Card>
 
@@ -188,7 +188,7 @@ export default function UnifiedDashboard() {
           </div>
           <Typography variant="h4" className="font-semibold mb-1">Nutrition</Typography>
           <Typography variant="body2" className="text-slate-600">
-            {stats.caloriesLogged ? "Logged today" : "Not logged yet"}
+            {stats.caloriesLogged ? "Logged today" : "Not logged yet&quot;}
           </Typography>
         </Card>
       </div>

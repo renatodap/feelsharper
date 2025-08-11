@@ -331,7 +331,7 @@ export function FoodSearch({ onAddFood, onClose }: FoodSearchProps) {
               ) : searchQuery.length > 2 ? (
                 <div className="text-center py-8 text-slate-600 dark:text-slate-400">
                   <Search className="h-8 w-8 mx-auto mb-2" />
-                  <p>No foods found for "{searchQuery}"</p>
+                  <p>No foods found for "{searchQuery}&quot;</p>
                   <p className="text-sm mt-1">Try a different search term</p>
                 </div>
               ) : (

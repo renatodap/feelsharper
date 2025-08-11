@@ -138,7 +138,7 @@ export default function SignInPage() {
             
             <div className="text-center">
               <p className="text-slate-600 dark:text-slate-400">
-                Don&apos;t have an account?{' '}
+                Don't have an account?{' '}
                 <Link 
                   className="font-medium text-blue-600 hover:text-blue-500 transition-colors" 
                   href={`/sign-up?redirect=${encodeURIComponent(redirect)}`}

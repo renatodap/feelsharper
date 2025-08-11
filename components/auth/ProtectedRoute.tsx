@@ -33,7 +33,7 @@ export function ProtectedRoute({ children, redirectTo = '/sign-in' }: ProtectedR
     );
   }
 
-  // Don't render children if user is not authenticated
+  // Do not render children if user is not authenticated
   if (!user) {
     return null;
   }

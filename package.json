@@ -47,6 +47,7 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
+    "glob": "^11.0.3",
     "husky": "^9.1.7",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",

@@ -170,11 +170,11 @@ export function TodayOverview({ stats }: TodayOverviewProps) {
         </div>
       </div>
 
-      {/* Today's Plan */}
+      {/* Today&apos;s Plan */}
       <div className="mt-6 rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
         <div className="flex items-center gap-2 mb-3">
           <Calendar className="h-4 w-4 text-slate-600" />
-          <h3 className="font-medium text-slate-900 dark:text-slate-100">Today's Plan</h3>
+          <h3 className="font-medium text-slate-900 dark:text-slate-100">Today&apos;s Plan</h3>
         </div>
         <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
           <div className="flex items-center justify-between">

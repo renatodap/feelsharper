@@ -351,8 +351,8 @@ function WorkoutBuddies({ buddies }: { buddies: CommunityUser[] }) {
           🤝 Find Your Perfect Workout Partner
         </h3>
         <p className="text-sm text-blue-800 dark:text-blue-200">
-          We&apos;ve matched you with people who share similar goals, schedules, and are located nearby. 
-          Research shows you&apos;re 95% more likely to stick to your fitness goals with an accountability partner!
+          We've matched you with people who share similar goals, schedules, and are located nearby. 
+          Research shows you're 95% more likely to stick to your fitness goals with an accountability partner!
         </p>
       </div>
 

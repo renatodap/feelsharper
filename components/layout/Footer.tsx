@@ -30,7 +30,7 @@ export default function Footer() {
             </div>
             <p className="text-sm leading-6 text-brand-gray-300 max-w-md">
               Most men drift through life accepting mediocrity as inevitable. Feel Sharper rejects this. 
-              We believe peak performance isn't about hacks or shortcuts—it's about understanding your body's fundamentals.
+              We believe peak performance isn't about hacks or shortcuts—it&apos;s about understanding your body&apos;s fundamentals.
             </p>
             <div className="flex space-x-6">
               {/* Social links would go here if needed */}

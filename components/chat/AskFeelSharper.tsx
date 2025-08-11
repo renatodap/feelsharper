@@ -188,7 +188,7 @@ export default function AskFeelSharper() {
                     onClick={() => setInput(question)}
                     className="block w-full text-left p-2 text-xs bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg transition-colors"
                   >
-                    "{question}"
+                    "{question}&quot;
                   </button>
                 ))}
               </div>

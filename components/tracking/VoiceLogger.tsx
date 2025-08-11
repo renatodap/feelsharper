@@ -415,7 +415,7 @@ export default function VoiceLogger() {
         {transcript && (
           <Card className="p-4 bg-slate-50 border-dashed">
             <Typography variant="body2" className="text-slate-700">
-              &quot;{transcript}&quot;
+              "{transcript}&quot;
             </Typography>
           </Card>
         )}

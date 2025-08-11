@@ -12,7 +12,7 @@ export default function CheckinPage() {
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold mb-2">Daily Check-in</h1>
         <p className="text-muted-foreground">
-          Take 2 minutes to log how you&apos;re feeling today
+          Take 2 minutes to log how you're feeling today
         </p>
       </div>
 

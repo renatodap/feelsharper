@@ -70,7 +70,7 @@ export default function AboutPage() {
                   </p>
                   
                   <p className="text-lg leading-8 text-brand-gray-700 mb-6">
-                    <strong>Feel Sharper rejects this.</strong> We believe peak performance isn&apos;t about hacks 
+                    <strong>Feel Sharper rejects this.</strong> We believe peak performance isn't about hacks 
                     or shortcuts—it&apos;s about understanding your body&apos;s fundamentals and optimizing them systematically.
                   </p>
                   

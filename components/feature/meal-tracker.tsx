@@ -307,11 +307,11 @@ export function MealTracker() {
         </CardContent>
       </Card>
 
-      {/* Today's Meals */}
+      {/* Today&apos;s Meals */}
       {meals.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Today's Meals</CardTitle>
+            <CardTitle>Today&apos;s Meals</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">

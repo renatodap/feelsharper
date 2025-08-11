@@ -52,7 +52,7 @@ export function AIFitnessCoach() {
     const welcomeMessage: Message = {
       id: 'welcome',
       role: 'assistant',
-      content: `Hello! I'm your AI Fitness Coach. I've analyzed your recent activity and I'm here to help optimize your training, nutrition, and recovery.
+      content: `Hello! I'm your AI Fitness Coach. I've analyzed your recent activity and I&apos;m here to help optimize your training, nutrition, and recovery.
 
 I can help you with:
 🏋️ **Training Plans** - Create personalized workout programs

@@ -104,11 +104,11 @@ export default function Hero() {
             </div>
           </div>
           <Body className="text-sm text-neutral-700 mb-3">
-            "Should I take magnesium at night for better sleep?"
+            &quot;Should I take magnesium at night for better sleep?&quot;
           </Body>
           <div className="bg-neutral-50 rounded-lg p-3">
             <Body className="text-sm text-neutral-600">
-              Based on Feel Sharper's sleep optimization guide, magnesium glycinate 200-400mg taken 1-2 hours before bed can...
+              Based on Feel Sharper&apos;s sleep optimization guide, magnesium glycinate 200-400mg taken 1-2 hours before bed can...
             </Body>
           </div>
         </div>
