@@ -1,9 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Card, { CardContent, CardHeader } from '@/components/ui/Card';
+const CardTitle = ({ children, className }: any) => <h3 className={`text-lg font-semibold ${className || ''}`}>{children}</h3>;
+import Button from '@/components/ui/Button';
+// Tabs components - will use divs for now
+const Tabs = ({ children, defaultValue, className }: any) => <div className={className}>{children}</div>;
+const TabsList = ({ children, className }: any) => <div className={`inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground ${className || ''}`}>{children}</div>;
+const TabsTrigger = ({ children, value, className }: any) => <button className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm ${className || ''}`}>{children}</button>;
+const TabsContent = ({ children, value, className }: any) => <div className={className}>{children}</div>;
 import { 
   TrendingUp, 
   Target, 

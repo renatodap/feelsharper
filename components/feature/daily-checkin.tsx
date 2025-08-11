@@ -1,12 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { Textarea } from '@/components/ui/textarea';
+import Button from '@/components/ui/Button';
+import Card, { CardContent, CardHeader } from '@/components/ui/Card';
+const CardTitle = ({ children, className }: any) => <h3 className={`text-lg font-semibold ${className || ''}`}>{children}</h3>;
+import Input from '@/components/ui/Input';
+const Label = ({ children, htmlFor, className }: any) => <label htmlFor={htmlFor} className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${className || ''}`}>{children}</label>;
+// Simple Slider component
+const Slider = ({ value, onValueChange, min, max, step, className }: any) => (
+  <input
+    type="range"
+    min={min}
+    max={max}
+    step={step}
+    value={value?.[0] || 0}
+    onChange={(e) => onValueChange([Number(e.target.value)])}
+    className={`w-full ${className || ''}`}
+  />
+);
+// Simple Textarea component
+const Textarea = ({ className, ...props }: any) => <textarea className={`flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className || ''}`} {...props} />;
 import { 
   CheckCircle2, 
   Scale, 

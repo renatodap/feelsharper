@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import Card, { CardContent, CardHeader } from '@/components/ui/Card';
+const CardTitle = ({ children, className }: any) => <h3 className={`text-lg font-semibold ${className || ''}`}>{children}</h3>;
+import Button from '@/components/ui/Button';
 import { Calendar, Clock, TrendingUp, Dumbbell, ChevronDown, ChevronUp } from 'lucide-react';
 import { format } from 'date-fns';
 
