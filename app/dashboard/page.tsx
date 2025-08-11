@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import GoalFirstDashboard from '@/components/dashboard/GoalFirstDashboard';
+import ComprehensiveDashboard from '@/components/dashboard/ComprehensiveDashboard';
 
 export const metadata: Metadata = {
   title: 'Dashboard — Feel Sharper',
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
-  return <GoalFirstDashboard />;
+  return <ComprehensiveDashboard />;
 }

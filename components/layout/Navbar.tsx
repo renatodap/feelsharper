@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Home, MessageSquare, Dumbbell, CalendarDays, Settings } from 'lucide-react'
+import { Menu, X, Home, MessageSquare, Dumbbell, CalendarDays, Settings, Apple, Scale } from 'lucide-react'
 import Logo from '../ui/Logo'
 import Button from '../ui/Button'
 import ThemeToggle from '@/components/theme/ThemeToggle'
@@ -11,10 +11,10 @@ import { useTheme } from '@/components/theme/ThemeProvider'
 import { useAuth } from '@/components/auth/AuthProvider'
 
 const navigation = [
-  { name: 'Home', href: '/dashboard', icon: Home },
-  { name: 'Coach', href: '/coach', icon: MessageSquare },
-  { name: 'Log', href: '/log/workout', icon: Dumbbell },
-  { name: 'Calendar', href: '/calendar', icon: CalendarDays },
+  { name: 'Dashboard', href: '/dashboard', icon: Home },
+  { name: 'Workouts', href: '/workouts', icon: Dumbbell },
+  { name: 'Nutrition', href: '/nutrition', icon: Apple },
+  { name: 'Metrics', href: '/metrics', icon: Scale },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
 

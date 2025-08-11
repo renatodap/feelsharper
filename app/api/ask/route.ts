@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Anthropic } from '@anthropic-ai/sdk';
 import { retrieveRelevantContent, buildContextPrompt, preprocessQuery } from '@/lib/retrieval';
 import { getRateLimiter, getIdentifierFromRequest } from '@/lib/rate-limiter';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
@@ -74,6 +76,106 @@ When user context is provided (goals, current stats, recent workouts, nutrition 
 
 Remember: "Excellence is not a destination, it's a daily practice. Every rep, every meal, every night of sleep is an opportunity to get 1% better."`;
 
+async function getUserContext(userId: string) {
+  const supabase = createRouteHandlerClient({ cookies });
+  const context: string[] = [];
+  
+  try {
+    // Get user profile
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('current_goal, goal_notes, preferred_units_weight, preferred_units_distance')
+      .eq('user_id', userId)
+      .single();
+    
+    if (profile) {
+      context.push(`USER PROFILE:`);
+      if (profile.current_goal) context.push(`- Current Goal: ${profile.current_goal}`);
+      if (profile.goal_notes) context.push(`- Goal Notes: ${profile.goal_notes}`);
+      context.push(`- Units: ${profile.preferred_units_weight || 'kg'}, ${profile.preferred_units_distance || 'km'}`);
+    }
+
+    // Get recent workouts (last 7 days)
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    
+    const { data: workouts } = await supabase
+      .from('workouts')
+      .select('name, started_at, ended_at, total_volume, total_sets')
+      .eq('user_id', userId)
+      .gte('started_at', weekAgo.toISOString())
+      .order('started_at', { ascending: false })
+      .limit(5);
+    
+    if (workouts && workouts.length > 0) {
+      context.push(`\nRECENT WORKOUTS (Last 7 Days):`);
+      workouts.forEach((w: any) => {
+        const duration = w.ended_at ? 
+          Math.round((new Date(w.ended_at).getTime() - new Date(w.started_at).getTime()) / 60000) : 0;
+        context.push(`- ${w.name}: ${w.total_sets || 0} sets, ${w.total_volume || 0}kg volume${duration ? `, ${duration} min` : ''}`);
+      });
+    }
+
+    // Get today's nutrition
+    const today = new Date().toISOString().split('T')[0];
+    const { data: meals } = await supabase
+      .from('meals')
+      .select('calories, protein, carbs, fat')
+      .eq('user_id', userId)
+      .gte('consumed_at', `${today}T00:00:00`)
+      .lte('consumed_at', `${today}T23:59:59`);
+    
+    if (meals && meals.length > 0) {
+      const totals = meals.reduce((acc: any, meal: any) => ({
+        calories: acc.calories + (meal.calories || 0),
+        protein: acc.protein + (meal.protein || 0),
+        carbs: acc.carbs + (meal.carbs || 0),
+        fat: acc.fat + (meal.fat || 0),
+      }), { calories: 0, protein: 0, carbs: 0, fat: 0 });
+      
+      context.push(`\nTODAY'S NUTRITION:`);
+      context.push(`- Calories: ${totals.calories} | Protein: ${totals.protein}g | Carbs: ${totals.carbs}g | Fat: ${totals.fat}g`);
+    }
+
+    // Get latest body metrics
+    const { data: metrics } = await supabase
+      .from('body_metrics')
+      .select('weight, body_fat_percentage, measured_at')
+      .eq('user_id', userId)
+      .order('measured_at', { ascending: false })
+      .limit(2);
+    
+    if (metrics && metrics.length > 0) {
+      context.push(`\nBODY METRICS:`);
+      context.push(`- Current Weight: ${metrics[0].weight}kg${metrics[0].body_fat_percentage ? ` | Body Fat: ${metrics[0].body_fat_percentage}%` : ''}`);
+      if (metrics.length > 1) {
+        const weightChange = metrics[0].weight - metrics[1].weight;
+        context.push(`- Weight Change: ${weightChange > 0 ? '+' : ''}${weightChange.toFixed(1)}kg`);
+      }
+    }
+
+    // Get recent sleep data
+    const { data: sleep } = await supabase
+      .from('sleep_logs')
+      .select('sleep_duration, quality, date')
+      .eq('user_id', userId)
+      .order('date', { ascending: false })
+      .limit(3);
+    
+    if (sleep && sleep.length > 0) {
+      const avgSleep = sleep.reduce((sum: number, s: any) => sum + (s.sleep_duration || 0), 0) / sleep.length;
+      const avgQuality = sleep.reduce((sum: number, s: any) => sum + (s.quality || 0), 0) / sleep.length;
+      context.push(`\nRECENT SLEEP:`);
+      context.push(`- Avg Duration: ${avgSleep.toFixed(1)}h | Avg Quality: ${avgQuality.toFixed(1)}/10`);
+    }
+
+  } catch (error) {
+    console.error('Error fetching user context:', error);
+  }
+
+  return context.length > 0 ? context.join('\n') : null;
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
@@ -116,6 +218,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check for authenticated user and get their context
+    const supabase = createRouteHandlerClient({ cookies });
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    let userContext = null;
+    if (user) {
+      userContext = await getUserContext(user.id);
+    }
+
     // Preprocess query for better retrieval
     const processedQuery = preprocessQuery(message);
 
@@ -127,8 +238,17 @@ export async function POST(request: NextRequest) {
       maxContentLength: 400
     });
     
-    // Build context prompt
-    const contextPrompt = buildContextPrompt(relevantContent, message);
+    // Build context prompt with user data if available
+    let contextPrompt = buildContextPrompt(relevantContent, message);
+    
+    if (userContext) {
+      contextPrompt = `USER DATA CONTEXT:
+${userContext}
+
+${contextPrompt}
+
+IMPORTANT: Use the user's actual data above to provide personalized recommendations and insights. Reference their specific workouts, nutrition, and metrics when relevant.`;
+    }
 
     // Call Claude with token limits
     const response = await anthropic.messages.create({
