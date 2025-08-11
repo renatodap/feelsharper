@@ -70,18 +70,18 @@ export default function AboutPage() {
                   </p>
                   
                   <p className="text-lg leading-8 text-brand-gray-700 mb-6">
-                    <strong>Feel Sharper rejects this.</strong> We believe peak performance isn't about hacks 
-                    or shortcuts—it's about understanding your body's fundamentals and optimizing them systematically.
+                    <strong>Feel Sharper rejects this.</strong> We believe peak performance isn&apos;t about hacks 
+                    or shortcuts—it&apos;s about understanding your body&apos;s fundamentals and optimizing them systematically.
                   </p>
                   
                   <p className="text-lg leading-8 text-brand-gray-700 mb-6">
-                    We don't promise overnight transformations or miracle supplements. We offer something better: 
+                    We don&apos;t promise overnight transformations or miracle supplements. We offer something better: 
                     <strong>evidence-based strategies that compound over time.</strong>
                   </p>
                   
                   <p className="text-lg leading-8 text-brand-gray-700">
-                    <strong>Sleep better. Think clearer. Move with purpose.</strong> This isn't about perfection—it's 
-                    about consistent improvement and refusing to accept "good enough" when you could be sharper.
+                    <strong>Sleep better. Think clearer. Move with purpose.</strong> This isn&apos;t about perfection—it&apos;s 
+                    about consistent improvement and refusing to accept &quot;good enough&quot; when you could be sharper.
                   </p>
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default function AboutPage() {
               <div className="prose prose-lg prose-brand max-w-none">
                 <p className="text-lg leading-8 text-brand-gray-700 mb-6">
                   In a world of fitness influencers and biohacking gurus, we choose to remain anonymous. 
-                  This isn't about hiding—it's about focus.
+                  This isn&apos;t about hiding—it&apos;s about focus.
                 </p>
                 
                 <div className="grid gap-8 md:grid-cols-2 my-12">
@@ -151,7 +151,7 @@ export default function AboutPage() {
                       <li>• Personal brand building over substance</li>
                       <li>• Social proof over scientific proof</li>
                       <li>• Selling courses and coaching programs</li>
-                      <li>• Promoting unproven "biohacks"</li>
+                      <li>• Promoting unproven &quot;biohacks&quot;</li>
                     </ul>
                   </div>
                   
@@ -168,7 +168,7 @@ export default function AboutPage() {
                 
                 <p className="text-lg leading-8 text-brand-gray-700">
                   Our credibility comes from results and research, not follower counts or transformation photos. 
-                  When you read Feel Sharper, you're getting information that stands on its own merit, 
+                  When you read Feel Sharper, you&apos;re getting information that stands on its own merit, 
                   not because someone with abs told you to buy it.
                 </p>
               </div>
@@ -188,7 +188,7 @@ export default function AboutPage() {
               
               <div className="bg-white rounded-xl p-8 shadow-sm border border-brand-gray-200">
                 <p className="text-lg leading-8 text-brand-gray-700 mb-6">
-                  <strong>We're transparent about how we make money.</strong> Feel Sharper is supported through 
+                  <strong>We&apos;re transparent about how we make money.</strong> Feel Sharper is supported through 
                   carefully selected affiliate partnerships with companies whose products we genuinely use and recommend.
                 </p>
                 
@@ -204,7 +204,7 @@ export default function AboutPage() {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold text-brand-navy mb-3">What We Don't Do:</h3>
+                    <h3 className="text-lg font-semibold text-brand-navy mb-3">What We Don&apos;t Do:</h3>
                     <ul className="space-y-2 text-brand-gray-700">
                       <li>• Sell courses or coaching programs</li>
                       <li>• Accept sponsored content</li>
@@ -215,7 +215,7 @@ export default function AboutPage() {
                 </div>
                 
                 <p className="text-lg leading-8 text-brand-gray-700">
-                  If we recommend something, it's because it works. If you buy through our links, 
+                  If we recommend something, it&apos;s because it works. If you buy through our links, 
                   you help support our research and content creation at no extra cost to you.
                 </p>
               </div>

@@ -66,7 +66,7 @@ export default function NewsletterPage() {
         <section className="py-24 bg-brand-gray-50">
           <div className="mx-auto max-w-7xl px-6">
             <h2 className="text-3xl font-bold text-center text-brand-navy mb-16">
-              What You'll Get
+              What You&apos;ll Get
             </h2>
             
             <div className="grid gap-8 lg:grid-cols-3">

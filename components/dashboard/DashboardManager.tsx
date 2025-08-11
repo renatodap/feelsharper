@@ -118,14 +118,14 @@ export default function DashboardManager({
               Available Modules
             </Subheading>
             <div className="grid gap-3">
-              {AVAILABLE_MODULES.map((module) => {
-                const Icon = module.icon;
-                const isActive = activeModules.includes(module.id);
+              {AVAILABLE_MODULES.map((moduleItem) => {
+                const Icon = moduleItem.icon;
+                const isActive = activeModules.includes(moduleItem.id);
                 
                 return (
                   <button
-                    key={module.id}
-                    onClick={() => toggleModule(module.id)}
+                    key={moduleItem.id}
+                    onClick={() => toggleModule(moduleItem.id)}
                     className={`p-4 rounded-lg border-2 text-left transition-all ${
                       isActive
                         ? 'border-amber-500 bg-amber-50'
@@ -143,10 +143,10 @@ export default function DashboardManager({
                         </div>
                         <div>
                           <Subheading className="font-medium text-slate-900">
-                            {module.label}
+                            {moduleItem.label}
                           </Subheading>
                           <Body className="text-slate-600 text-sm">
-                            {module.description}
+                            {moduleItem.description}
                           </Body>
                         </div>
                       </div>
@@ -174,10 +174,10 @@ export default function DashboardManager({
                 {currentOrder
                   .filter(moduleId => activeModules.includes(moduleId))
                   .map((moduleId, index) => {
-                    const module = AVAILABLE_MODULES.find(m => m.id === moduleId);
-                    if (!module) return null;
+                    const moduleConfig = AVAILABLE_MODULES.find(m => m.id === moduleId);
+                    if (!moduleConfig) return null;
                     
-                    const Icon = module.icon;
+                    const Icon = moduleConfig.icon;
                     const isFirst = index === 0;
                     const isLast = index === currentOrder.filter(id => activeModules.includes(id)).length - 1;
                     
@@ -214,7 +214,7 @@ export default function DashboardManager({
                           </div>
                           <div>
                             <Body className="text-slate-900 font-medium text-sm">
-                              {module.label}
+                              {moduleConfig.label}
                             </Body>
                             <Body className="text-slate-500 text-xs">
                               Position {index + 1}

@@ -147,22 +147,20 @@ export function OnboardingFlow() {
             />
           )}
           
+          {/* Experience step - not yet implemented */}
           {currentStep === 'experience' && (
-            <ExperienceStep 
-              profile={profile}
-              updateProfile={updateProfile}
-              onNext={nextStep}
-              onPrev={prevStep}
-            />
+            <div className="text-center py-8">
+              <p>Experience step coming soon...</p>
+              <Button onClick={nextStep}>Next</Button>
+            </div>
           )}
           
+          {/* Constraints step - not yet implemented */}
           {currentStep === 'constraints' && (
-            <ConstraintsStep 
-              profile={profile}
-              updateProfile={updateProfile}
-              onNext={nextStep}
-              onPrev={prevStep}
-            />
+            <div className="text-center py-8">
+              <p>Constraints step coming soon...</p>
+              <Button onClick={nextStep}>Next</Button>
+            </div>
           )}
           
           {currentStep === 'motivation' && (
@@ -174,30 +172,28 @@ export function OnboardingFlow() {
             />
           )}
           
+          {/* Health step - not yet implemented */}
           {currentStep === 'health' && (
-            <HealthStep 
-              profile={profile}
-              updateProfile={updateProfile}
-              onNext={nextStep}
-              onPrev={prevStep}
-            />
+            <div className="text-center py-8">
+              <p>Health step coming soon...</p>
+              <Button onClick={nextStep}>Next</Button>
+            </div>
           )}
           
+          {/* Preferences step - not yet implemented */}
           {currentStep === 'preferences' && (
-            <PreferencesStep 
-              profile={profile}
-              updateProfile={updateProfile}
-              onNext={nextStep}
-              onPrev={prevStep}
-            />
+            <div className="text-center py-8">
+              <p>Preferences step coming soon...</p>
+              <Button onClick={nextStep}>Next</Button>
+            </div>
           )}
           
+          {/* Summary step - not yet implemented */}
           {currentStep === 'summary' && (
-            <SummaryStep 
-              profile={profile}
-              onComplete={completeOnboarding}
-              onPrev={prevStep}
-            />
+            <div className="text-center py-8">
+              <p>Summary step coming soon...</p>
+              <Button onClick={completeOnboarding}>Complete</Button>
+            </div>
           )}
         </div>
       </div>
@@ -216,7 +212,7 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
           Welcome to Feel Sharper
         </h1>
         <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
-          Your journey to peak performance starts here. We'll create a personalized plan 
+          Your journey to peak performance starts here. We&apos;ll create a personalized plan 
           that adapts to your goals, constraints, and motivation style.
         </p>
       </div>
@@ -261,14 +257,14 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
           </h4>
         </div>
         <p className="text-amber-800 dark:text-amber-200">
-          92% of people abandon their fitness goals within 3 months. We've built this platform 
+          92% of people abandon their fitness goals within 3 months. We&apos;ve built this platform 
           to address the specific barriers that cause failure: lack of personalization, 
           inconsistent motivation, and inadequate guidance.
         </p>
       </div>
 
       <Button onClick={onNext} size="lg" className="px-8 py-4">
-        Let's Get Started
+        Let&apos;s Get Started
         <ArrowRight className="h-5 w-5 ml-2" />
       </Button>
     </div>
