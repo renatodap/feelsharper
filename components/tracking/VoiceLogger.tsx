@@ -360,7 +360,7 @@ export default function VoiceLogger() {
             Voice Logger
           </Typography>
           <Typography variant="body2" className="text-slate-600">
-            Just speak naturally - &quot;I did 3 sets of 10 push-ups&quot; or &quot;Had chicken and rice for lunch&quot;
+            Just speak naturally - "I did 3 sets of 10 push-ups" or "Had chicken and rice for lunch"
           </Typography>
         </div>
 
@@ -415,7 +415,7 @@ export default function VoiceLogger() {
         {transcript && (
           <Card className="p-4 bg-slate-50 border-dashed">
             <Typography variant="body2" className="text-slate-700">
-              "{transcript}&quot;
+              "{transcript}"
             </Typography>
           </Card>
         )}
@@ -465,7 +465,7 @@ export default function VoiceLogger() {
                 </div>
                 
                 <Typography variant="body2" className="text-slate-600 mb-3 italic">
-                  &quot;{entry.transcript}&quot;
+                  "{entry.transcript}"
                 </Typography>
                 
                 {/* Parsed Data Display */}
@@ -518,9 +518,9 @@ export default function VoiceLogger() {
               🏋️ Workouts
             </Typography>
             <ul className="text-sm text-slate-600 space-y-1">
-              <li>&quot;Did 3 sets of 10 push-ups&quot;</li>
-              <li>&quot;Bench pressed 185 for 5 reps&quot;</li>
-              <li>&quot;30 minute run at moderate pace&quot;</li>
+              <li>"Did 3 sets of 10 push-ups"</li>
+              <li>"Bench pressed 185 for 5 reps"</li>
+              <li>"30 minute run at moderate pace"</li>
             </ul>
           </div>
           <div>
@@ -528,9 +528,9 @@ export default function VoiceLogger() {
               🍽️ Meals
             </Typography>
             <ul className="text-sm text-slate-600 space-y-1">
-              <li>&quot;Had chicken and rice for lunch&quot;</li>
-              <li>&quot;Ate 2 eggs and toast for breakfast&quot;</li>
-              <li>&quot;Protein shake after workout&quot;</li>
+              <li>"Had chicken and rice for lunch"</li>
+              <li>"Ate 2 eggs and toast for breakfast"</li>
+              <li>"Protein shake after workout"</li>
             </ul>
           </div>
         </div>

@@ -305,7 +305,7 @@ export function MealLogger() {
                             onChange={(e) => updateFoodQuantity(food.id, parseFloat(e.target.value) || 0)}
                             className="w-16 px-2 py-1 text-center border border-slate-200 rounded focus:outline-none focus:ring-1 focus:ring-green-500 dark:border-slate-600 dark:bg-slate-700"
                             step="0.1"
-                            min=&quot;0&quot;
+                            min="0"
                           />
                           <span className="ml-1">{food.unit}</span>
                         </div>

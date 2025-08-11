@@ -187,7 +187,7 @@ export default function ComprehensiveDashboard() {
                 Complete your daily check-in to track wellness metrics
               </p>
             </div>
-            <Button onClick={() => router.push('/checkin')} variant="default&quot;>
+            <Button onClick={() => router.push('/checkin')} variant="default">
               Daily Check-in
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>

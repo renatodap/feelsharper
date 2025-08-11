@@ -104,7 +104,7 @@ export default function Hero() {
             </div>
           </div>
           <Body className="text-sm text-neutral-700 mb-3">
-            &quot;Should I take magnesium at night for better sleep?&quot;
+            "Should I take magnesium at night for better sleep?"
           </Body>
           <div className="bg-neutral-50 rounded-lg p-3">
             <Body className="text-sm text-neutral-600">

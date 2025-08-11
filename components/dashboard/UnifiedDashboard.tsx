@@ -93,7 +93,7 @@ export default function UnifiedDashboard() {
   const getSleepColor = (quality: number) => {
     if (quality >= 4) return "text-green-500";
     if (quality >= 3) return "text-yellow-500";
-    return "text-red-500&quot;;
+    return "text-red-500";
   };
 
   return (
@@ -148,7 +148,7 @@ export default function UnifiedDashboard() {
           </div>
           <Typography variant="h4" className="font-semibold mb-1">Energy Level</Typography>
           <Typography variant="body2" className="text-slate-600">
-            {stats.energyLevel >= 4 ? "Feeling great!" : stats.energyLevel >= 3 ? "Pretty good" : "Need rest&quot;}
+            {stats.energyLevel >= 4 ? "Feeling great!" : stats.energyLevel >= 3 ? "Pretty good" : "Need rest"}
           </Typography>
         </Card>
 
@@ -188,7 +188,7 @@ export default function UnifiedDashboard() {
           </div>
           <Typography variant="h4" className="font-semibold mb-1">Nutrition</Typography>
           <Typography variant="body2" className="text-slate-600">
-            {stats.caloriesLogged ? "Logged today" : "Not logged yet&quot;}
+            {stats.caloriesLogged ? "Logged today" : "Not logged yet"}
           </Typography>
         </Card>
       </div>

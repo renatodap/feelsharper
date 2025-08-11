@@ -349,13 +349,13 @@ export function ProgressPhotoComparison() {
                         {photo.measurements.waist && (
                           <div className="flex justify-between">
                             <span className="text-slate-600 dark:text-slate-400">Waist:</span>
-                            <span className="font-medium">{photo.measurements.waist}&quot;</span>
+                            <span className="font-medium">{photo.measurements.waist}"</span>
                           </div>
                         )}
                         {photo.measurements.arms && (
                           <div className="flex justify-between">
                             <span className="text-slate-600 dark:text-slate-400">Arms:</span>
-                            <span className="font-medium">{photo.measurements.arms}&quot;</span>
+                            <span className="font-medium">{photo.measurements.arms}"</span>
                           </div>
                         )}
                       </>
@@ -423,13 +423,13 @@ export function ProgressPhotoComparison() {
                     {photo.measurements?.chest && (
                       <div>
                         <span className="text-slate-600 dark:text-slate-400">Chest: </span>
-                        <span className="font-medium">{photo.measurements.chest}&quot;</span>
+                        <span className="font-medium">{photo.measurements.chest}"</span>
                       </div>
                     )}
                     {photo.measurements?.waist && (
                       <div>
                         <span className="text-slate-600 dark:text-slate-400">Waist: </span>
-                        <span className="font-medium">{photo.measurements.waist}&quot;</span>
+                        <span className="font-medium">{photo.measurements.waist}"</span>
                       </div>
                     )}
                   </div>

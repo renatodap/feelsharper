@@ -532,7 +532,7 @@ export default function NutritionIntelligence() {
           <div className="flex items-center justify-center space-x-2">
             <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
             <Typography variant="body2" className="text-red-700 font-medium">
-              🎤 Listening... Say something like &quot;I had chicken and rice for lunch&quot;
+              🎤 Listening... Say something like "I had chicken and rice for lunch"
             </Typography>
             <Button variant="ghost" size="sm" onClick={() => setVoiceLogging(false)}>
               Stop

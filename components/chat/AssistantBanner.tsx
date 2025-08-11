@@ -203,7 +203,7 @@ export default function AssistantBanner() {
                   className="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-full transition-colors duration-200"
                   disabled={remainingQueries === 0}
                 >
-                  "{question}&quot;
+                  "{question}"
                 </button>
               ))}
               <button
@@ -234,7 +234,7 @@ export default function AssistantBanner() {
                       className="text-left text-sm bg-slate-700 hover:bg-slate-600 text-slate-200 p-3 rounded-lg transition-colors duration-200"
                       disabled={remainingQueries === 0}
                     >
-                      &quot;{question}&quot;
+                      "{question}"
                     </button>
                   ))}
                 </div>
