@@ -11,7 +11,6 @@ import {
   Gift, 
   Copy, 
   RefreshCw,
-  ExternalLink,
   Calendar,
   Award
 } from 'lucide-react';

@@ -7,16 +7,12 @@ import Button from '@/components/ui/Button';
 import { 
   Mic, 
   MicOff, 
-  Square, 
-  Play, 
-  Pause, 
   Check, 
   X, 
   Utensils, 
   Dumbbell, 
   Moon, 
   Heart,
-  Zap,
   MessageSquare
 } from 'lucide-react';
 
@@ -51,7 +47,6 @@ export default function VoiceLogger() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [recentEntries, setRecentEntries] = useState<VoiceLogEntry[]>([]);
-  const [selectedType, setSelectedType] = useState<'auto' | 'workout' | 'meal' | 'sleep' | 'mood'>('auto');
   const [audioLevel, setAudioLevel] = useState(0);
   
   const recognitionRef = useRef<any>(null);
@@ -103,6 +98,7 @@ export default function VoiceLogger() {
         cancelAnimationFrame(animationRef.current);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript]);
 
   const startListening = async () => {
@@ -364,7 +360,7 @@ export default function VoiceLogger() {
             Voice Logger
           </Typography>
           <Typography variant="body2" className="text-slate-600">
-            Just speak naturally - "I did 3 sets of 10 push-ups" or "Had chicken and rice for lunch"
+            Just speak naturally - &quot;I did 3 sets of 10 push-ups&quot; or &quot;Had chicken and rice for lunch&quot;
           </Typography>
         </div>
 

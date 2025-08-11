@@ -6,19 +6,15 @@ import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import { 
   Users, 
-  Trophy, 
-  TrendingUp,
+  Trophy,
   MessageSquare,
   Heart,
   Share2,
   Crown,
   Flame,
   Target,
-  Calendar,
   MapPin,
   Clock,
-  Zap,
-  Award,
   Star
 } from 'lucide-react';
 
@@ -355,8 +351,8 @@ function WorkoutBuddies({ buddies }: { buddies: CommunityUser[] }) {
           🤝 Find Your Perfect Workout Partner
         </h3>
         <p className="text-sm text-blue-800 dark:text-blue-200">
-          We've matched you with people who share similar goals, schedules, and are located nearby. 
-          Research shows you're 95% more likely to stick to your fitness goals with an accountability partner!
+          We&apos;ve matched you with people who share similar goals, schedules, and are located nearby. 
+          Research shows you&apos;re 95% more likely to stick to your fitness goals with an accountability partner!
         </p>
       </div>
 
@@ -514,7 +510,7 @@ function Leaderboard() {
         </div>
         
         <div className="divide-y divide-slate-200 dark:divide-slate-700">
-          {leaderboardData.map((user, index) => (
+          {leaderboardData.map((user) => (
             <div key={user.rank} className={`p-4 flex items-center gap-4 ${
               user.name === 'You' ? 'bg-blue-50 dark:bg-blue-950/20' : ''
             }`}>

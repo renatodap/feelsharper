@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseBrowser } from '@/lib/supabase/client';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
@@ -116,7 +116,7 @@ export default function IntegrationsPage() {
 
   const loadIntegrations = async () => {
     try {
-      const supabase = createClient();
+      const supabase = createSupabaseBrowser();
       const { data, error } = await supabase
         .from('integration_accounts')
         .select('*')

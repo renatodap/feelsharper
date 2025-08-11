@@ -15,7 +15,6 @@ import {
   Calendar, 
   Award,
   TrendingUp,
-  Clock,
   Fire,
   Plus,
   UserPlus,

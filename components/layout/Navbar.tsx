@@ -8,7 +8,7 @@ import Logo from '../ui/Logo'
 import Button from '../ui/Button'
 import ThemeToggle from '@/components/theme/ThemeToggle'
 import { useTheme } from '@/components/theme/ThemeProvider'
-import { useAuth } from '@/components/auth/AuthProvider'
+import UserButton from '@/components/auth/UserButton'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -18,33 +18,6 @@ const navigation = [
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
-export function AuthQuick() {
-  const { user, loading, signOut } = useAuth()
-
-  if (loading) return <div className="text-sm text-slate-500">Loading...</div>
-  
-  if (!user) {
-    return (
-      <Link href="/sign-in" className="text-sm font-medium text-slate-700 hover:text-slate-900 underline">
-        Sign in
-      </Link>
-    )
-  }
-  
-  return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-slate-600 hidden sm:inline">
-        {user.email}
-      </span>
-      <button 
-        onClick={signOut} 
-        className="text-sm font-medium text-slate-700 hover:text-slate-900 underline"
-      >
-        Sign out
-      </button>
-    </div>
-  )
-}
 
 /**
  * Fixed Navbar component with proper button functionality and high-contrast design
@@ -102,8 +75,8 @@ export default function Navbar() {
         
         {/* Fixed: Consistent CTA button */}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
-          <AuthQuick />
           <ThemeToggle />
+          <UserButton />
         </div>
       </nav>
       
@@ -156,7 +129,7 @@ export default function Navbar() {
                   })}
                 </div>
                 <div className="py-6 space-y-4">
-                  <AuthQuick />
+                  <UserButton />
                   <ThemeToggle className="w-full" />
                 </div>
               </div>
