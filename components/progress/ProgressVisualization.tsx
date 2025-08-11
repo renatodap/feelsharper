@@ -421,7 +421,7 @@ export default function ProgressVisualization() {
           Start Your Visual Journey
         </Typography>
         <Typography variant="body2" className="text-slate-500 mb-4">
-          Progress photos show changes that the scale can't capture
+          Progress photos show changes that the scale can&apos;t capture
         </Typography>
         <Button variant="primary">
           <Camera className="w-4 h-4 mr-2" />
@@ -464,7 +464,7 @@ export default function ProgressVisualization() {
             📈 Progress Prediction
           </Typography>
           <Typography variant="body2" className="text-blue-800">
-            At your current rate, you'll reach your weight goal in 8-10 weeks. Stay consistent with your current approach.
+            At your current rate, you&apos;ll reach your weight goal in 8-10 weeks. Stay consistent with your current approach.
           </Typography>
         </div>
       </div>

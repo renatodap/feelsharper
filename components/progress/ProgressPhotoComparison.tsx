@@ -343,19 +343,19 @@ export function ProgressPhotoComparison() {
                         {photo.measurements.chest && (
                           <div className="flex justify-between">
                             <span className="text-slate-600 dark:text-slate-400">Chest:</span>
-                            <span className="font-medium">{photo.measurements.chest}"</span>
+                            <span className="font-medium">{photo.measurements.chest}&quot;</span>
                           </div>
                         )}
                         {photo.measurements.waist && (
                           <div className="flex justify-between">
                             <span className="text-slate-600 dark:text-slate-400">Waist:</span>
-                            <span className="font-medium">{photo.measurements.waist}"</span>
+                            <span className="font-medium">{photo.measurements.waist}&quot;</span>
                           </div>
                         )}
                         {photo.measurements.arms && (
                           <div className="flex justify-between">
                             <span className="text-slate-600 dark:text-slate-400">Arms:</span>
-                            <span className="font-medium">{photo.measurements.arms}"</span>
+                            <span className="font-medium">{photo.measurements.arms}&quot;</span>
                           </div>
                         )}
                       </>
@@ -423,13 +423,13 @@ export function ProgressPhotoComparison() {
                     {photo.measurements?.chest && (
                       <div>
                         <span className="text-slate-600 dark:text-slate-400">Chest: </span>
-                        <span className="font-medium">{photo.measurements.chest}"</span>
+                        <span className="font-medium">{photo.measurements.chest}&quot;</span>
                       </div>
                     )}
                     {photo.measurements?.waist && (
                       <div>
                         <span className="text-slate-600 dark:text-slate-400">Waist: </span>
-                        <span className="font-medium">{photo.measurements.waist}"</span>
+                        <span className="font-medium">{photo.measurements.waist}&quot;</span>
                       </div>
                     )}
                   </div>

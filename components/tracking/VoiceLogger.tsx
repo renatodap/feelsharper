@@ -415,7 +415,7 @@ export default function VoiceLogger() {
         {transcript && (
           <Card className="p-4 bg-slate-50 border-dashed">
             <Typography variant="body2" className="text-slate-700">
-              "{transcript}"
+              &quot;{transcript}&quot;
             </Typography>
           </Card>
         )}
@@ -465,7 +465,7 @@ export default function VoiceLogger() {
                 </div>
                 
                 <Typography variant="body2" className="text-slate-600 mb-3 italic">
-                  "{entry.transcript}"
+                  &quot;{entry.transcript}&quot;
                 </Typography>
                 
                 {/* Parsed Data Display */}
@@ -518,9 +518,9 @@ export default function VoiceLogger() {
               🏋️ Workouts
             </Typography>
             <ul className="text-sm text-slate-600 space-y-1">
-              <li>"Did 3 sets of 10 push-ups"</li>
-              <li>"Bench pressed 185 for 5 reps"</li>
-              <li>"30 minute run at moderate pace"</li>
+              <li>&quot;Did 3 sets of 10 push-ups&quot;</li>
+              <li>&quot;Bench pressed 185 for 5 reps&quot;</li>
+              <li>&quot;30 minute run at moderate pace&quot;</li>
             </ul>
           </div>
           <div>
@@ -528,9 +528,9 @@ export default function VoiceLogger() {
               🍽️ Meals
             </Typography>
             <ul className="text-sm text-slate-600 space-y-1">
-              <li>"Had chicken and rice for lunch"</li>
-              <li>"Ate 2 eggs and toast for breakfast"</li>
-              <li>"Protein shake after workout"</li>
+              <li>&quot;Had chicken and rice for lunch&quot;</li>
+              <li>&quot;Ate 2 eggs and toast for breakfast&quot;</li>
+              <li>&quot;Protein shake after workout&quot;</li>
             </ul>
           </div>
         </div>
