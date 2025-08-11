@@ -6,11 +6,9 @@ import Badge from '@/components/ui/Badge';
 import { 
   Dumbbell, 
   Clock, 
-  Target, 
-  TrendingUp,
+  Target,
   Heart,
   Zap,
-  Users,
   Star,
   Plus
 } from 'lucide-react';

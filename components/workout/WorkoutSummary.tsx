@@ -17,12 +17,12 @@ import {
 } from 'lucide-react';
 
 interface WorkoutSummaryProps {
-  session: any;
+  session?: unknown;
   onStartNew: () => void;
   onViewProgress: () => void;
 }
 
-export function WorkoutSummary({ session, onStartNew, onViewProgress }: WorkoutSummaryProps) {
+export function WorkoutSummary({ onStartNew, onViewProgress }: WorkoutSummaryProps) {
   // Mock data - would be calculated from actual session
   const summaryData = {
     duration: 62, // minutes
@@ -99,7 +99,7 @@ export function WorkoutSummary({ session, onStartNew, onViewProgress }: WorkoutS
             Workout Complete! 🎉
           </h1>
           <p className="text-slate-600 dark:text-slate-400">
-            Great job! Here's how you performed today.
+            Great job! Here&apos;s how you performed today.
           </p>
         </div>
 
@@ -211,7 +211,7 @@ export function WorkoutSummary({ session, onStartNew, onViewProgress }: WorkoutS
             {/* Achievements */}
             <Card className="p-6">
               <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                Today's Achievements
+                Today&apos;s Achievements
               </h3>
               <div className="space-y-4">
                 {achievements.map((achievement, index) => {
@@ -238,7 +238,7 @@ export function WorkoutSummary({ session, onStartNew, onViewProgress }: WorkoutS
             {/* Actions */}
             <Card className="p-6">
               <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                What's Next?
+                What&apos;s Next?
               </h3>
               <div className="space-y-3">
                 <Button
@@ -284,7 +284,7 @@ export function WorkoutSummary({ session, onStartNew, onViewProgress }: WorkoutS
                 Recovery Tips
               </h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                Don't forget to prioritize recovery for optimal results!
+                Don&apos;t forget to prioritize recovery for optimal results!
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">

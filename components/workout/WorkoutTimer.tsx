@@ -6,8 +6,6 @@ import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import { 
   Timer, 
-  Play, 
-  Pause, 
   RotateCcw, 
   Clock,
   Coffee,
@@ -24,7 +22,6 @@ interface WorkoutTimerProps {
 
 export function WorkoutTimer({ elapsedTime, restTimer, onSetRestTimer, isActive }: WorkoutTimerProps) {
   const [customRestTime, setCustomRestTime] = useState(90);
-  const [showCustom, setShowCustom] = useState(false);
 
   // Common rest periods (in seconds)
   const restPresets = [
@@ -75,7 +72,6 @@ export function WorkoutTimer({ elapsedTime, restTimer, onSetRestTimer, isActive 
   };
 
   const getWorkoutPhase = () => {
-    const hours = Math.floor(elapsedTime / 3600);
     const minutes = Math.floor(elapsedTime / 60);
     
     if (minutes < 10) return 'Warm-up';
