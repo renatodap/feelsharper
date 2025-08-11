@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run generate-embeddings && next build",
+    "build:quick": "next build",
     "start": "next start",
     "lint": "next lint",
     "generate-embeddings": "npx tsx scripts/generate-embeddings.ts",

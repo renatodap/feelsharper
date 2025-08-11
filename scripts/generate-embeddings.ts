@@ -19,8 +19,9 @@ async function main() {
   try {
     // Check for required environment variables
     if (!process.env.OPENAI_API_KEY) {
-      console.error('❌ OPENAI_API_KEY environment variable is required');
-      process.exit(1);
+      console.warn('⚠️  OPENAI_API_KEY not found - skipping embedding generation');
+      console.warn('   The AI assistant features will be limited without embeddings');
+      process.exit(0); // Exit successfully to allow build to continue
     }
 
     // Load all posts
