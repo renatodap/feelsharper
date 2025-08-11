@@ -3,6 +3,7 @@ import { Inter, Crimson_Text, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "../components/layout/Layout";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -82,9 +83,11 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${crimson.variable} ${jetbrainsMono.variable} scroll-smooth`}>
       <body className="font-sans antialiased min-h-screen">
         <ThemeProvider>
-          <Layout>
-            {children}
-          </Layout>
+          <AuthProvider>
+            <Layout>
+              {children}
+            </Layout>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -9,7 +9,10 @@
     "lint": "next lint",
     "generate-embeddings": "npx tsx scripts/generate-embeddings.ts",
     "test-assistant": "npx tsx scripts/test-assistant.ts",
-    "seed": "npx tsx scripts/seed.ts"
+    "seed": "npx tsx scripts/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.57.0",
@@ -34,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.54.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.10",
     "@types/react": "^19",
@@ -41,6 +45,7 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
+    "husky": "^9.1.7",
     "tailwindcss": "^4",
     "tsx": "^4.20.3",
     "typescript": "^5"

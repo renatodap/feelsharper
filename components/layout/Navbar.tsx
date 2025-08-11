@@ -8,7 +8,7 @@ import Logo from '../ui/Logo'
 import Button from '../ui/Button'
 import ThemeToggle from '@/components/theme/ThemeToggle'
 import { useTheme } from '@/components/theme/ThemeProvider'
-import { createSupabaseBrowser } from '@/lib/supabase/client'
+import { useAuth } from '@/components/auth/AuthProvider'
 
 const navigation = [
   { name: 'Home', href: '/dashboard', icon: Home },
@@ -19,24 +19,30 @@ const navigation = [
 ]
 
 export function AuthQuick() {
-  const supabase = createSupabaseBrowser()
-  const [email, setEmail] = useState<string | null>(null)
+  const { user, loading, signOut } = useAuth()
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/sign-in'
+  if (loading) return <div className="text-sm text-slate-500">Loading...</div>
+  
+  if (!user) {
+    return (
+      <Link href="/sign-in" className="text-sm font-medium text-slate-700 hover:text-slate-900 underline">
+        Sign in
+      </Link>
+    )
   }
-
-  if (!email) return <a href="/sign-in" className="underline text-sm">Sign in</a>
+  
   return (
-    <button onClick={signOut} className="text-sm underline">
-      Sign out
-    </button>
+    <div className="flex items-center gap-3">
+      <span className="text-sm text-slate-600 hidden sm:inline">
+        {user.email}
+      </span>
+      <button 
+        onClick={signOut} 
+        className="text-sm font-medium text-slate-700 hover:text-slate-900 underline"
+      >
+        Sign out
+      </button>
+    </div>
   )
 }
 
@@ -149,7 +155,8 @@ export default function Navbar() {
                     )
                   })}
                 </div>
-                <div className="py-6">
+                <div className="py-6 space-y-4">
+                  <AuthQuick />
                   <ThemeToggle className="w-full" />
                 </div>
               </div>
