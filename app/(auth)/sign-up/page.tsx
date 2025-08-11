@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { createSupabaseBrowser } from "@/lib/supabase/client";
 import Link from "next/link";
 
@@ -9,6 +10,8 @@ export default function SignUpPage() {
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const params = useSearchParams();
+  const redirect = params.get("redirect") || "/dashboard";
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,7 +20,7 @@ export default function SignUpPage() {
     const { error } = await supabase.auth.signUp({ email, password: pass });
     setLoading(false);
     if (error) setErr(error.message);
-    else window.location.href = "/dashboard";
+    else window.location.href = redirect;
   };
 
   return (
@@ -32,7 +35,7 @@ export default function SignUpPage() {
         {err && <p className="text-red-600 text-sm">{err}</p>}
       </form>
       <p className="mt-4 text-sm">
-        Already have an account? <Link className="underline" href="/sign-in">Sign in</Link>
+        Already have an account? <Link className="underline" href={`/sign-in?redirect=${encodeURIComponent(redirect)}`}>Sign in</Link>
       </p>
     </main>
   );
