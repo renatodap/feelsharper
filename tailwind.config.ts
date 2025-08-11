@@ -1,39 +1,40 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './content/**/*.{md,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        // Feel Sharper Brand Colors
-        'brand-navy': '#0F172A',
-        'brand-amber': '#F59E0B',
-        'brand-amber-light': '#FEF3C7',
-        'brand-gray-50': '#F8FAFC',
-        'brand-gray-100': '#F1F5F9',
-        'brand-gray-200': '#E2E8F0',
-        'brand-gray-300': '#CBD5E1',
-        'brand-gray-400': '#94A3B8',
-        'brand-gray-500': '#64748B',
-        'brand-gray-600': '#475569',
-        'brand-gray-700': '#334155',
-        'brand-gray-800': '#1E293B',
-        'brand-gray-900': '#0F172A',
-        // Standard Tailwind colors for compatibility
-        'amber-50': '#FFFBEB',
-        'amber-100': '#FEF3C7',
-        'amber-200': '#FDE68A',
-        'amber-300': '#FCD34D',
-        'amber-400': '#FBBF24',
-        'amber-500': '#F59E0B',
-        'amber-600': '#D97706',
-        'amber-700': '#B45309',
-        'amber-800': '#92400E',
+        // Primary brand colors
+        'brand': {
+          navy: '#0F172A',
+          amber: '#F59E0B',
+          'amber-light': '#FEF3C7',
+        },
+        // Neutral palette
+        'neutral': {
+          0: '#FFFFFF',
+          50: '#FAFAFA',
+          100: '#F5F5F5',
+          200: '#E5E5E5',
+          300: '#D4D4D4',
+          400: '#A3A3A3',
+          500: '#737373',
+          600: '#525252',
+          700: '#404040',
+          800: '#262626',
+          900: '#171717',
+          950: '#0A0A0A',
+        },
+        // Semantic colors
+        'success': '#10B981',
+        'warning': '#F59E0B',
+        'error': '#EF4444',
+        'info': '#3B82F6',
         'amber-900': '#78350F',
       },
       fontFamily: {
@@ -44,6 +45,7 @@ const config: Config = {
   },
   plugins: [
     require('@tailwindcss/typography'),
+    require('tailwindcss-animate'),
   ],
 }
 

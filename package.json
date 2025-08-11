@@ -4,29 +4,42 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run generate-embeddings && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-embeddings": "npx tsx scripts/generate-embeddings.ts",
+    "test-assistant": "npx tsx scripts/test-assistant.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.57.0",
+    "@tailwindcss/typography": "^0.5.10",
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^2.30.0",
+    "dotenv": "^17.2.1",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.460.0",
+    "next-intl": "^3.21.0",
+    "next": "15.4.5",
+    "recharts": "^2.12.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.4.5",
-    "date-fns": "^2.30.0",
     "reading-time": "^1.5.0",
-    "lucide-react": "^0.460.0",
-    "@tailwindcss/typography": "^0.5.10"
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.19",
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
+    "autoprefixer": "^10.4.19",
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "tsx": "^4.20.3",
+    "typescript": "^5"
   }
 }

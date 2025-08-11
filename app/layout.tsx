@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Crimson_Text, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Layout from "../components/layout/Layout";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const crimson = Crimson_Text({
+  subsets: ["latin"],
+  variable: "--font-crimson",
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -54,17 +68,24 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Root layout component - ensures single header/footer rendering
+ * Provides consistent typography, theming, and layout structure
+ * Fixed: Removed duplicate AskFeelSharper to prevent layout conflicts
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`}>
-      <body className="font-sans antialiased bg-white text-brand-navy min-h-screen">
-        <Layout>
-          {children}
-        </Layout>
+    <html lang="en" className={`${inter.variable} ${crimson.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+      <body className="font-sans antialiased min-h-screen">
+        <ThemeProvider>
+          <Layout>
+            {children}
+          </Layout>
+        </ThemeProvider>
       </body>
     </html>
   );
