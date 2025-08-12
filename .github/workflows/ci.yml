@@ -71,6 +71,8 @@ jobs:
         with:
           name: build-files
           path: .next/
+          retention-days: 1
+          if-no-files-found: error
 
   # Job 3: Tests (when implemented)
   test:
@@ -102,6 +104,7 @@ jobs:
     name: Lighthouse Audit
     runs-on: ubuntu-latest
     needs: build
+    if: success()
     
     steps:
       - name: Checkout code
@@ -116,12 +119,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-files
-          path: .next/
-      
       - name: Create env file
         run: |
           cat > .env.local << EOF
@@ -131,6 +128,13 @@ jobs:
           ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
           EOF
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: .next/
+        continue-on-error: false
       
       - name: Start production server
         run: |
