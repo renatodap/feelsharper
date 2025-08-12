@@ -56,15 +56,31 @@ jobs:
       - name: Create env file
         run: |
           cat > .env.local << EOF
-          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'dummy_url' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy_key' }}
+          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'dummy_service_key' }}
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY || 'dummy_anthropic_key' }}
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY || 'dummy_openai_key' }}
           EOF
+          echo "Created .env.local with following content:"
+          cat .env.local | sed 's/=.*/=***/'
       
       - name: Build application
-        run: npm run build
+        run: |
+          npm run build
+          echo "Build completed. Checking .next directory:"
+          ls -la .next/ || echo ".next directory not found"
+      
+      - name: Check build output
+        run: |
+          if [ -d ".next" ]; then
+            echo ".next directory exists"
+            echo "Directory size:"
+            du -sh .next/
+          else
+            echo "ERROR: .next directory not found after build"
+            exit 1
+          fi
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -122,12 +138,14 @@ jobs:
       - name: Create env file
         run: |
           cat > .env.local << EOF
-          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
-          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'dummy_url' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'dummy_key' }}
+          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'dummy_service_key' }}
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY || 'dummy_anthropic_key' }}
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY || 'dummy_openai_key' }}
           EOF
+          echo "Created .env.local with following content:"
+          cat .env.local | sed 's/=.*/=***/'
       
       - name: Download build artifacts
         uses: actions/download-artifact@v4
