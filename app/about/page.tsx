@@ -81,7 +81,7 @@ export default function AboutPage() {
                   
                   <p className="text-lg leading-8 text-brand-gray-700">
                     <strong>Sleep better. Think clearer. Move with purpose.</strong> This isn&apos;t about perfection—it&apos;s 
-                    about consistent improvement and refusing to accept "good enough" when you could be sharper.
+                    about consistent improvement and refusing to accept &quot;good enough&quot; when you could be sharper.
                   </p>
                 </div>
               </div>
@@ -151,7 +151,7 @@ export default function AboutPage() {
                       <li>• Personal brand building over substance</li>
                       <li>• Social proof over scientific proof</li>
                       <li>• Selling courses and coaching programs</li>
-                      <li>• Promoting unproven "biohacks"</li>
+                      <li>• Promoting unproven &quot;biohacks&quot;</li>
                     </ul>
                   </div>
                   

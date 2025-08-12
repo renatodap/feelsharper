@@ -252,7 +252,7 @@ export default function ComprehensiveDashboard() {
 
       {/* Today's Progress */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        {/* Today's Workout */}
+        {/* Today&apos;s Workout */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">
@@ -279,7 +279,7 @@ export default function ComprehensiveDashboard() {
           </CardContent>
         </Card>
 
-        {/* Today's Nutrition */}
+        {/* Today&apos;s Nutrition */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center justify-between">

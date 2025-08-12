@@ -175,7 +175,7 @@ export default function TodayCard({
           </div>
           <div>
             <Heading className="text-xl font-bold text-slate-900">
-              Today's Focus
+              Today&apos;s Focus
             </Heading>
             <Body className="text-slate-600 text-sm">
               {today} • {currentTime}

@@ -143,7 +143,7 @@ export function MealTracker() {
       {/* Daily Summary */}
       <Card>
         <CardHeader>
-          <CardTitle>Today's Nutrition</CardTitle>
+          <CardTitle>Today&apos;s Nutrition</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4">

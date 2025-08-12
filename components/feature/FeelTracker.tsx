@@ -78,7 +78,7 @@ export default function FeelTracker() {
             <Card variant="elevated" className="relative z-10">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <Subheading className="text-xl mb-1">Today's Performance</Subheading>
+                  <Subheading className="text-xl mb-1">Today&apos;s Performance</Subheading>
                   <Body className="text-neutral-500">
                     {new Date().toLocaleDateString('en-US', { 
                       weekday: 'long', 

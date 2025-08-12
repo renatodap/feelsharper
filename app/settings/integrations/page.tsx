@@ -350,7 +350,7 @@ export default function IntegrationsPage() {
         <h3 className="font-semibold mb-2">Privacy & Security</h3>
         <p className="text-sm text-gray-600 mb-4">
           Your data is encrypted and stored securely. You can disconnect any integration at any time, 
-          and we'll permanently delete the associated data within 30 days.
+          and we&apos;ll permanently delete the associated data within 30 days.
         </p>
         <div className="flex gap-4 text-sm">
           <a href="/privacy" className="text-blue-600 hover:underline">Privacy Policy</a>

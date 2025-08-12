@@ -429,7 +429,7 @@ export default function NutritionIntelligence() {
 
   const renderMealTimeline = () => (
     <Card className="p-6">
-      <Typography variant="h4" className="font-semibold mb-4">Today's Meals</Typography>
+      <Typography variant="h4" className="font-semibold mb-4">Today&apos;s Meals</Typography>
       
       <div className="space-y-4">
         {loggedMeals.map((meal) => (
@@ -532,7 +532,7 @@ export default function NutritionIntelligence() {
           <div className="flex items-center justify-center space-x-2">
             <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
             <Typography variant="body2" className="text-red-700 font-medium">
-              🎤 Listening... Say something like "I had chicken and rice for lunch"
+              🎤 Listening... Say something like &quot;I had chicken and rice for lunch&quot;
             </Typography>
             <Button variant="ghost" size="sm" onClick={() => setVoiceLogging(false)}>
               Stop

@@ -212,7 +212,7 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
           Welcome to Feel Sharper
         </h1>
         <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
-          Your journey to peak performance starts here. We'll create a personalized plan 
+          Your journey to peak performance starts here. We&apos;ll create a personalized plan 
           that adapts to your goals, constraints, and motivation style.
         </p>
       </div>
@@ -257,7 +257,7 @@ function WelcomeStep({ onNext }: { onNext: () => void }) {
           </h4>
         </div>
         <p className="text-amber-800 dark:text-amber-200">
-          92% of people abandon their fitness goals within 3 months. We've built this platform 
+          92% of people abandon their fitness goals within 3 months. We&apos;ve built this platform 
           to address the specific barriers that cause failure: lack of personalization, 
           inconsistent motivation, and inadequate guidance.
         </p>

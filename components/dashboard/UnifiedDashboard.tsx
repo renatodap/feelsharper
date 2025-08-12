@@ -199,7 +199,7 @@ export default function UnifiedDashboard() {
         <Card className="p-6">
           <div className="flex items-center mb-4">
             <Trophy className="w-6 h-6 text-amber-500 mr-2" />
-            <Typography variant="h4" className="font-semibold">Today's Wins</Typography>
+            <Typography variant="h4" className="font-semibold">Today&apos;s Wins</Typography>
           </div>
           <div className="space-y-3">
             {stats.todaysWins.map((win, index) => (
