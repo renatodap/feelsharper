@@ -1,3 +1,7 @@
+# Feel Sharper
+
+A dark-first fitness tracker for logging food, workouts, and weight with progress graphs.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
