@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
-import { WorkoutTracker } from '@/components/feature/workout-tracker';
-import { WorkoutHistory } from '@/components/feature/workout-history';
+import EnhancedWorkoutTracker from '@/components/workout/EnhancedWorkoutTracker';
 
 export const metadata: Metadata = {
   title: 'Workouts - Feel Sharper',
-  description: 'Track your workouts and monitor your progress',
+  description: 'Track your workouts and monitor your progress with precision',
 };
 
 export default function WorkoutsPage() {
@@ -13,18 +12,11 @@ export default function WorkoutsPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Workout Tracker</h1>
         <p className="text-muted-foreground">
-          Log your exercises, track progress, and build strength consistently.
+          Log your exercises, track progress, and build strength consistently with our comprehensive exercise database.
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <div>
-          <WorkoutTracker />
-        </div>
-        <div>
-          <WorkoutHistory />
-        </div>
-      </div>
+      <EnhancedWorkoutTracker />
     </div>
   );
 }

@@ -1,45 +1,27 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { Suspense } from 'react';
+import UnifiedDashboardContainer from '@/components/dashboard/UnifiedDashboardContainer';
 
 export const metadata: Metadata = {
   title: 'Dashboard — Feel Sharper',
   description: 'Your personalized wellness dashboard. Track progress, get AI insights, and stay motivated on your journey.',
 };
 
-export default function DashboardPage() {
+function DashboardLoading() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="max-w-4xl w-full mx-4">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">
-              Dashboard
-            </h1>
-            <p className="text-slate-600">
-              Your personalized wellness dashboard
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-slate-600">
-              Dashboard functionality is being restored.
-            </p>
-            <div className="mt-4 space-x-4">
-              <Link 
-                href="/sign-in" 
-                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link 
-                href="/blog" 
-                className="inline-block bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-              >
-                Read Blog
-              </Link>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950/20">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <p className="mt-4 text-slate-600 dark:text-slate-400">Loading your dashboard...</p>
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<DashboardLoading />}>
+      <UnifiedDashboardContainer />
+    </Suspense>
   );
 }

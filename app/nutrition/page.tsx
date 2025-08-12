@@ -1,9 +1,9 @@
 import { Metadata } from 'next';
-import { MealTracker } from '@/components/feature/meal-tracker';
+import EnhancedNutritionTracker from '@/components/nutrition/EnhancedNutritionTracker';
 
 export const metadata: Metadata = {
   title: 'Nutrition - Feel Sharper',
-  description: 'Track your meals and monitor your nutrition',
+  description: 'Track your meals and monitor your nutrition with AI-powered insights',
 };
 
 export default function NutritionPage() {
@@ -12,11 +12,11 @@ export default function NutritionPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Nutrition Tracker</h1>
         <p className="text-muted-foreground">
-          Log your meals, track macros, and fuel your performance.
+          Log your meals, track macros, and fuel your performance with intelligent meal suggestions.
         </p>
       </div>
 
-      <MealTracker />
+      <EnhancedNutritionTracker />
     </div>
   );
 }
