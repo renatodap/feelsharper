@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run generate-embeddings && next build",
+    "build": "next build",
+    "build:with-embeddings": "npm run generate-embeddings && next build",
     "start": "next start",
     "lint": "next lint --max-warnings=0",
     "typecheck": "tsc --noEmit",

@@ -19,8 +19,10 @@ async function main() {
   try {
     // Check for required environment variables
     if (!process.env.OPENAI_API_KEY) {
-      console.error('❌ OPENAI_API_KEY environment variable is required');
-      process.exit(1);
+      console.log('⚠️  OPENAI_API_KEY not found - skipping embedding generation');
+      console.log('💡 Embeddings can be generated later when API key is available');
+      console.log('✅ Build can continue without embeddings for now\n');
+      process.exit(0);
     }
 
     // Load all posts
