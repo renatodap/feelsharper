@@ -6,13 +6,10 @@ import Button from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { 
-  Apple, 
   Plus, 
   Search, 
   Trash2, 
-  Calculator,
   Target,
-  Save,
   Clock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -80,7 +77,7 @@ export default function NutritionTrackerV2() {
 
   useEffect(() => {
     loadDiaryEntries();
-  }, [selectedDate]);
+  }, [selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (searchQuery.length > 2) {
@@ -88,7 +85,7 @@ export default function NutritionTrackerV2() {
     } else {
       setSearchResults([]);
     }
-  }, [searchQuery]);
+  }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadDiaryEntries = async () => {
     try {
