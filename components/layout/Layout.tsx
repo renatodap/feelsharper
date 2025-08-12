@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import AssistantBanner from '../chat/AssistantBanner'
 import BottomNav from './BottomNav'
 
 interface LayoutProps {
@@ -26,14 +25,11 @@ export default function Layout({
 }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Fixed: Single navbar instance */}
+      {/* Main navbar with dark theme */}
       <Navbar />
       
-      {/* Prominent AI Assistant Banner */}
-      <AssistantBanner />
-      
       {/* Main content with proper spacing */}
-      <main className="flex-grow pb-24 sm:pb-0">
+      <main className="flex-grow pt-16">
         {children}
       </main>
       

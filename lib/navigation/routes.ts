@@ -30,65 +30,57 @@ export interface NavigationItem {
   desktopOnly?: boolean;
 }
 
-// Main navigation items
+// Main navigation items - Fitness-focused IA
 export const mainNavigation: NavigationItem[] = [
   { 
     name: 'Home', 
     href: '/', 
     icon: Home,
-    showInMenu: true,
+    showInMenu: false,
     showInFooter: false
   },
   { 
-    name: 'Dashboard', 
-    href: '/dashboard', 
+    name: 'Today', 
+    href: '/today', 
     icon: Target,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
   },
   { 
-    name: 'Coach', 
-    href: '/coach', 
-    icon: MessageSquare,
-    requiresAuth: true,
-    showInMenu: true,
-    showInFooter: false
-  },
-  { 
-    name: 'Log Workout', 
-    href: '/log/workout', 
-    icon: Dumbbell,
-    requiresAuth: true,
-    showInMenu: true,
-    showInFooter: false
-  },
-  { 
-    name: 'Log Meal', 
-    href: '/log/meal', 
+    name: 'Food', 
+    href: '/food', 
     icon: Apple,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
   },
   { 
-    name: 'Progress', 
-    href: '/progress', 
+    name: 'Workouts', 
+    href: '/workouts', 
+    icon: Dumbbell,
+    requiresAuth: true,
+    showInMenu: true,
+    showInFooter: false
+  },
+  { 
+    name: 'Weight', 
+    href: '/weight', 
+    icon: Activity,
+    requiresAuth: true,
+    showInMenu: true,
+    showInFooter: false
+  },
+  { 
+    name: 'Insights', 
+    href: '/insights', 
     icon: TrendingUp,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
   },
   { 
-    name: 'Calendar', 
-    href: '/calendar', 
-    icon: CalendarDays,
-    requiresAuth: true,
-    showInMenu: true,
-    showInFooter: false
-  },
-  { 
-    name: 'Settings', 
+    name: 'Account', 
     href: '/settings', 
     icon: Settings,
     requiresAuth: true,
@@ -188,30 +180,24 @@ export const blogCategories = [
   { name: 'Nutrition', slug: 'nutrition' },
 ];
 
-// Quick action items for dashboard
+// Quick action items for /today page
 export const quickActions = [
   { 
-    label: 'Start Workout', 
-    href: '/log/workout', 
-    icon: Dumbbell, 
-    color: 'bg-sharp-blue' 
-  },
-  { 
-    label: 'Log Meal', 
-    href: '/log/meal', 
+    label: 'Log Food', 
+    href: '/food/add', 
     icon: Apple, 
-    color: 'bg-success-green' 
+    color: 'bg-success' 
   },
   { 
-    label: 'Track Progress', 
-    href: '/progress', 
-    icon: TrendingUp, 
-    color: 'bg-steel-gray' 
+    label: 'Log Workout', 
+    href: '/workouts/add', 
+    icon: Dumbbell, 
+    color: 'bg-navy' 
   },
   { 
-    label: 'AI Coach', 
-    href: '/coach', 
-    icon: MessageSquare, 
-    color: 'bg-energy-orange' 
+    label: 'Add Weight', 
+    href: '/weight/add', 
+    icon: Activity, 
+    color: 'bg-info' 
   },
 ];

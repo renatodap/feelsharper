@@ -1,4 +1,4 @@
-# **Feel Sharper – Full Brand Guide**
+# **Feel Sharper – Dark-First Fitness Brand Guide**
 
 ---
 
@@ -6,24 +6,24 @@
 
 ### **Purpose**
 
-To empower individuals to achieve peak physical, mental, and emotional performance through personalized, data-driven, and motivating daily experiences.
+To provide free, frictionless fitness tracking that helps people log food, workouts, and weight with clean progress insights.
 
 ### **Vision Statement**
 
-A world where every person wakes up knowing exactly what to do today to become their sharpest self — physically, mentally, and emotionally.
+Fitness tracking that just works – no complexity, no subscriptions, no ads. Just results.
 
 ### **Mission Statement**
 
-To deliver a unified platform that adapts to each user’s goals, provides actionable guidance, and keeps them disciplined through a clean, motivating, and social experience.
+To deliver the simplest, fastest fitness tracker that respects users with a clean dark interface, instant logging, and clear progress graphs.
 
 ### **Core Values**
 
-1. **Evidence First** – All recommendations are rooted in proven science, not trends.
-2. **Clarity** – Information is simple, actionable, and free from clutter.
-3. **Empowerment** – Users own their journey, with tools that adapt to them.
-4. **Consistency** – Success is built on daily habits, not quick fixes.
-5. **Community** – Shared motivation fuels better results.
-6. **Privacy & Trust** – User data is respected and protected.
+1. **Free Forever** – No subscriptions, trials, or hidden costs. Fitness tracking should be accessible.
+2. **Frictionless** – Every action should be fast and obvious. No unnecessary steps.
+3. **Dark-First** – Dark mode is default. Clean, focused interface that reduces eye strain.
+4. **Privacy** – User data stays private. No tracking, no ads, no data selling.
+5. **Progress-Focused** – Clear graphs and trends that motivate through visible improvement.
+6. **Multi-Tenant Safe** – Your data is yours alone. No cross-user data leakage.
 
 ### **Target Audience**
 
@@ -61,19 +61,36 @@ Unlike fragmented fitness apps, Feel Sharper delivers a **unified, adaptive, and
     - Minimum clear space: equal to the height of the “F” around the logo.
     - Minimum width: 100px for digital, 20mm for print.
 
-### **Color Palette**
+### **Dark-First Color System**
 
-- **Primary**:
-    - Sharp Blue: #1479FF (R20, G121, B255) – Trust, focus, performance.
-- **Secondary**:
-    - Energy Orange: #FF6B35 (R255, G107, B53) – Motivation, action.
-    - Steel Gray: #1F2A30 (R31, G42, B48) – Strength, stability.
-- **Tertiary/Accents**:
-    - Clean White: #FFFFFF – Clarity, space.
-    - Success Green: #1FCC79 (R31, G204, B121) – Positive progress, goal completion.
-    - Alert Red: #FF3B30 (R255, G59, B48) – Warnings, critical data.
+**Background Colors (Dark Primary)**
+- `bg: #0A0A0A` – Pure black background
+- `surface: #111418` – Near-black surface
+- `surface-2: #161A1F` – Elevated surface
+- `surface-3: #1D2127` – Higher elevation
 
-**Usage Ratio**: 60% Sharp Blue, 20% Steel Gray, 10% Energy Orange, 10% other accents.
+**Text Colors (White Primary)**
+- `text-primary: #FFFFFF` – Primary text (white)
+- `text-secondary: #C7CBD1` – Secondary text (light gray)
+- `text-muted: #8B9096` – Muted text (mid gray)
+- `text-disabled: #6B6F76` – Disabled text
+
+**Brand Colors (Navy Focus)**
+- `navy: #0B2A4A` – Primary brand navy
+- `navy-600: #123B69` – Darker navy for hover states
+- `navy-400: #1F5798` – Lighter navy for accents
+
+**Semantic Colors**
+- `success: #10B981` – Success green for positive actions
+- `warning: #F59E0B` – Warning amber for alerts
+- `error: #EF4444` – Error red for validation
+- `info: #3B82F6` – Info blue for tips
+
+**Functional Colors**
+- `border: #23272E` – Border color between elements
+- `focus: #E5E7EB` – Focus rings for accessibility
+
+**Usage Ratio**: 70% backgrounds/text, 20% navy brand colors, 10% semantic accents.
 
 ### **Typography**
 
@@ -171,9 +188,37 @@ Unlike fragmented fitness apps, Feel Sharper delivers a **unified, adaptive, and
 
 ### **UI Components**
 
-- Buttons: Rounded 8px, filled for primary actions, outlined for secondary.
-- Cards: 8px radius, drop shadow level 1, padding 16px.
-- Navigation: Bottom tab bar on mobile, left sidebar on desktop.
+**Buttons**
+- Primary: `bg-navy text-text-primary rounded-xl px-8 py-4` with hover `bg-navy-600`
+- Secondary: `bg-surface border border-border text-text-primary rounded-xl px-8 py-4` with hover `bg-surface-2`
+- Danger: `bg-error text-text-primary rounded-xl px-4 py-2`
+
+**Cards**
+- Base: `bg-surface border border-border rounded-xl p-6`
+- Elevated: `bg-surface-2 border border-border rounded-xl p-6`
+- Interactive: Add `hover:bg-surface-3 transition-all duration-300`
+
+**Navigation** 
+- Desktop: Top navbar with dark background
+- Mobile: Hamburger menu with drawer/sheet pattern
+- Active states: `text-navy` for current page
+- Focus: `focus:ring-2 focus:ring-focus` for keyboard navigation
+
+**Forms**
+- Inputs: `bg-surface-2 border border-border rounded-lg px-3 py-2 text-text-primary`
+- Labels: `text-text-secondary text-sm font-medium`
+- Validation: `border-error text-error` for errors, `border-success` for valid
+
+**Empty States**
+- Container: `bg-surface-2 border-2 border-dashed border-border rounded-xl p-12`
+- Icon: Large icon in `text-text-muted`
+- Text: "Add your first [item]" in `text-text-secondary`
+- Action: Primary button to start
+
+**Loading States**
+- Skeleton: `bg-surface-2 animate-pulse rounded`
+- Spinners: Navy color with smooth rotation
+- Progress bars: `bg-surface-2` track with `bg-navy` fill
 
 ### **Social Templates**
 

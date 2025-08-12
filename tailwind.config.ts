@@ -9,42 +9,42 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Feel Sharper Brand Colors
-        'sharp-blue': '#1479FF', // Primary - Trust, focus, performance
-        'energy-orange': '#FF6B35', // Secondary - Motivation, action
-        'steel-gray': '#1F2A30', // Secondary - Strength, stability
-        'success-green': '#1FCC79', // Tertiary - Positive progress
-        'alert-red': '#FF3B30', // Tertiary - Warnings, critical data
-        'clean-white': '#FFFFFF', // Clarity, space
+        // Dark-first Feel Sharper Theme
+        // Background colors (dark primary)
+        bg: '#0A0A0A',              // Pure black background
+        surface: '#111418',         // Near-black surface
+        'surface-2': '#161A1F',     // Elevated surface
+        'surface-3': '#1D2127',     // Higher elevation
         
-        // Legacy mappings (for compatibility)
-        'brand': {
-          navy: '#1F2A30', // Map to steel-gray
-          amber: '#FF6B35', // Map to energy-orange
-          'amber-light': '#FFF4F0', // Light variant of energy-orange
-          primary: '#1479FF', // Sharp Blue
-        },
-        // Neutral palette
-        'neutral': {
-          0: '#FFFFFF',
-          50: '#FAFAFA',
-          100: '#F5F5F5',
-          200: '#E5E5E5',
-          300: '#D4D4D4',
-          400: '#A3A3A3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#262626',
-          900: '#171717',
-          950: '#0A0A0A',
-        },
+        // Text colors (white primary)
+        'text-primary': '#FFFFFF',   // Primary text (white)
+        'text-secondary': '#C7CBD1', // Secondary text (light gray)  
+        'text-muted': '#8B9096',     // Muted text (mid gray)
+        'text-disabled': '#6B6F76',  // Disabled text
+        
+        // Brand colors (navy focus)
+        navy: '#0B2A4A',            // Primary brand navy
+        'navy-600': '#123B69',      // Darker navy
+        'navy-400': '#1F5798',      // Lighter navy  
+        'navy-50': '#EBF2F9',       // Very light navy (for light mode)
+        
         // Semantic colors
-        'success': '#1FCC79', // Feel Sharper Success Green
-        'warning': '#FF6B35', // Energy Orange for warnings
-        'error': '#FF3B30', // Feel Sharper Alert Red
-        'info': '#1479FF', // Sharp Blue for info
-        'amber-900': '#78350F',
+        'success': '#10B981',       // Success green
+        'warning': '#F59E0B',       // Warning amber
+        'error': '#EF4444',         // Error red
+        'info': '#3B82F6',          // Info blue
+        
+        // Functional colors
+        border: '#23272E',          // Border color
+        focus: '#E5E7EB',           // Focus rings
+        
+        // Legacy compatibility (mapped to new tokens)
+        'sharp-blue': '#1F5798',    // Maps to navy-400
+        'energy-orange': '#F59E0B', // Maps to warning
+        'steel-gray': '#111418',    // Maps to surface
+        'success-green': '#10B981', // Maps to success
+        'alert-red': '#EF4444',     // Maps to error
+        'clean-white': '#FFFFFF',   // Maps to text-primary
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

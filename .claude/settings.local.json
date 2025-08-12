@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Bash(npm run build:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(npm run dev:*)",
+      "Bash(del appfavicon.ico)",
+      "Bash(rm:*)",
+      "Bash(npx tsc:*)",
+      "Bash(mv:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
