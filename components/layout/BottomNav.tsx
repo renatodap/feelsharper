@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Calendar, Home, MessageSquare, Settings, Dumbbell } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/components/theme/ThemeProvider";
+// import { useTheme } from "@/components/theme/ThemeProvider";
 
 const items = [
   { name: "Home", href: "/dashboard", icon: Home, match: (p: string) => p === "/" || p.startsWith("/dashboard") },
@@ -16,7 +16,6 @@ const items = [
 
 export default function BottomNav() {
   const pathname = usePathname();
-  const { theme } = useTheme();
 
   return (
     <nav
@@ -27,13 +26,11 @@ export default function BottomNav() {
       )}
     >
       <div
-        data-theme={theme}
         className={cn(
           "[&]:pointer-events-auto",
           "mx-auto flex items-center justify-between gap-1 rounded-2xl border",
           "border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60",
-          "px-2 py-1 shadow-lg",
-          "data-[theme=dark]:border-slate-700 data-[theme=dark]:bg-slate-900/80"
+          "px-2 py-1 shadow-lg"
         )}
       >
         {items.map(({ name, href, icon: Icon, match }) => {

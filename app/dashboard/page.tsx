@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Dashboard — Feel Sharper',
@@ -23,18 +24,18 @@ export default function DashboardPage() {
               Dashboard functionality is being restored.
             </p>
             <div className="mt-4 space-x-4">
-              <a 
+              <Link 
                 href="/sign-in" 
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
               >
                 Sign In
-              </a>
-              <a 
+              </Link>
+              <Link 
                 href="/blog" 
                 className="inline-block bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
               >
                 Read Blog
-              </a>
+              </Link>
             </div>
           </div>
         </div>

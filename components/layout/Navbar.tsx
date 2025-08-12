@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation'
 import { Menu, X, Home, MessageSquare, Dumbbell, CalendarDays, Settings, Apple, Scale } from 'lucide-react'
 import Logo from '../ui/Logo'
 import Button from '../ui/Button'
-import ThemeToggle from '@/components/theme/ThemeToggle'
-import { useTheme } from '@/components/theme/ThemeProvider'
+// import ThemeToggle from '@/components/theme/ThemeToggle'
+// import { useTheme } from '@/components/theme/ThemeProvider'
 import UserButton from '@/components/auth/UserButton'
 
 const navigation = [
@@ -27,10 +27,9 @@ const navigation = [
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const pathname = usePathname()
-  const { theme } = useTheme()
 
   return (
-    <header data-theme={theme} className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-sm data-[theme=dark]:bg-slate-900/80 data-[theme=dark]:border-slate-800">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-sm">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Logo />
@@ -75,7 +74,7 @@ export default function Navbar() {
         
         {/* Fixed: Consistent CTA button */}
         <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           <UserButton />
         </div>
       </nav>
@@ -130,7 +129,7 @@ export default function Navbar() {
                 </div>
                 <div className="py-6 space-y-4">
                   <UserButton />
-                  <ThemeToggle className="w-full" />
+                  {/* <ThemeToggle className="w-full" /> */}
                 </div>
               </div>
             </div>
