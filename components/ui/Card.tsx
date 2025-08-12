@@ -19,9 +19,9 @@ export default function Card({
   ...props 
 }: CardProps) {
   const variants = {
-    default: 'bg-neutral-0 border border-neutral-200 shadow-soft',
-    elevated: 'bg-neutral-0 shadow-medium border-0',
-    bordered: 'bg-neutral-0 border-2 border-neutral-300 shadow-none'
+    default: 'bg-clean-white border border-neutral-200 shadow-sm',
+    elevated: 'bg-clean-white shadow-lg border-0',
+    bordered: 'bg-clean-white border border-sharp-blue shadow-sm'
   };
 
   const paddings = {
@@ -34,7 +34,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        'rounded-2xl transition-all duration-200',
+        'rounded-lg transition-all duration-200 hover:shadow-md',
         variants[variant],
         paddings[padding],
         className
