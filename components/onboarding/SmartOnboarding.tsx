@@ -114,7 +114,7 @@ export default function SmartOnboarding() {
             "Track every workout",
             "Prioritize compound movements",
             "Eat protein within 2 hours post-workout",
-            &quot;Get 7-9 hours of quality sleep&quot;
+            "Get 7-9 hours of quality sleep"
           ]
         }
       };
@@ -342,7 +342,7 @@ export default function SmartOnboarding() {
                 What's your biggest motivation?
               </Typography>
               <Typography variant="body1" className="text-slate-600">
-                This is your &quot;why&quot; - we'll remind you when things get tough
+                This is your "why" - we'll remind you when things get tough
               </Typography>
             </div>
             
