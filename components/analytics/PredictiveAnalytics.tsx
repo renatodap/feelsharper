@@ -290,7 +290,7 @@ export function PredictiveAnalytics() {
             {['7d', '30d', '90d'].map(timeframe => (
               <Button
                 key={timeframe}
-                variant={selectedTimeframe === timeframe ? 'default' : 'outline'}
+                variant={selectedTimeframe === timeframe ? 'primary' : 'outline'}
                 size="sm"
                 onClick={() => setSelectedTimeframe(timeframe as any)}
               >
@@ -347,7 +347,7 @@ export function PredictiveAnalytics() {
       {/* Filter Controls */}
       <div className="flex flex-wrap gap-2">
         <Button
-          variant={filterCategory === 'all' ? 'default' : 'outline'}
+          variant={filterCategory === 'all' ? 'primary' : 'outline'}
           size="sm"
           onClick={() => setFilterCategory('all')}
         >
@@ -356,7 +356,7 @@ export function PredictiveAnalytics() {
         {['performance', 'recovery', 'nutrition', 'goal_progress'].map(category => (
           <Button
             key={category}
-            variant={filterCategory === category ? 'default' : 'outline'}
+            variant={filterCategory === category ? 'primary' : 'outline'}
             size="sm"
             onClick={() => setFilterCategory(category)}
           >

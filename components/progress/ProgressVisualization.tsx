@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/Card';
-import { Typography } from '@/components/ui/Typography';
+import Card from '@/components/ui/Card';
+import Typography from '@/components/ui/TypographyWrapper';
 import Button from '@/components/ui/Button';
 import { 
   TrendingUp, 

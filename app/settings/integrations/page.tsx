@@ -270,7 +270,7 @@ export default function IntegrationsPage() {
                     <div className="text-xs font-medium text-gray-500 mb-2">Data Types</div>
                     <div className="flex flex-wrap gap-1">
                       {config.dataTypes.map(type => (
-                        <Badge key={type} variant="outline" className="text-xs">
+                        <Badge key={type} variant="secondary" className="text-xs">
                           {type}
                         </Badge>
                       ))}

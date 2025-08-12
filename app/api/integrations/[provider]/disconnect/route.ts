@@ -6,7 +6,7 @@ import { IntegrationAccountManager } from '@/lib/integrations/core/oauth';
 // Revokes integration and cleans up tokens
 export async function POST(
   request: NextRequest,
-  { params }: { params: { provider: string } }
+  { params }: { params: Promise<{ provider: string }> }
 ) {
   try {
     const supabase = await createSupabaseServer();
@@ -16,7 +16,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const provider = params.provider;
+    const { provider } = await params;
 
     // Find the integration account
     const account = await IntegrationAccountManager.findByUserAndProvider(user.id, provider);

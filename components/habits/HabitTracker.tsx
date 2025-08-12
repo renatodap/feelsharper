@@ -252,14 +252,14 @@ export function HabitTracker() {
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           <Button
-            variant={selectedPeriod === 'week' ? 'default' : 'outline'}
+            variant={selectedPeriod === 'week' ? 'primary' : 'outline'}
             size="sm"
             onClick={() => setSelectedPeriod('week')}
           >
             Last 7 Days
           </Button>
           <Button
-            variant={selectedPeriod === 'month' ? 'default' : 'outline'}
+            variant={selectedPeriod === 'month' ? 'primary' : 'outline'}
             size="sm"
             onClick={() => setSelectedPeriod('month')}
           >

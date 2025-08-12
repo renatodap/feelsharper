@@ -6,7 +6,7 @@ import { OAuthState, OAUTH_CONFIGS, IntegrationAccountManager, TokenCrypto } fro
 // Handles OAuth callback and exchanges code for tokens
 export async function GET(
   request: NextRequest,
-  { params }: { params: { provider: string } }
+  { params }: { params: Promise<{ provider: string }> }
 ) {
   try {
     const supabase = await createSupabaseServer();
@@ -16,7 +16,7 @@ export async function GET(
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/auth/login?error=unauthorized`);
     }
 
-    const provider = params.provider;
+    const { provider } = await params;
     const config = OAUTH_CONFIGS[provider];
     
     if (!config) {

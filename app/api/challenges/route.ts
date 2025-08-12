@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
     const enrichedChallenges = challenges?.map(challenge => ({
       ...challenge,
       participantCount: participantCountMap[challenge.id] || 0,
-      userParticipation: challenge.challenge_participants?.find(p => p.user_id === user.id) || null
+      userParticipation: challenge.challenge_participants?.find((p: any) => p.user_id === user.id) || null
     }));
 
     return NextResponse.json({ challenges: enrichedChallenges || [] });

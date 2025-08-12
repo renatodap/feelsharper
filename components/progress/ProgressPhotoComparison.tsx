@@ -186,21 +186,21 @@ export function ProgressPhotoComparison() {
         <div className="flex flex-wrap gap-4 items-center justify-between">
           <div className="flex gap-2">
             <Button
-              variant={filterPeriod === 'all' ? 'default' : 'outline'}
+              variant={filterPeriod === 'all' ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setFilterPeriod('all')}
             >
               All Time
             </Button>
             <Button
-              variant={filterPeriod === '90days' ? 'default' : 'outline'}
+              variant={filterPeriod === '90days' ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setFilterPeriod('90days')}
             >
               90 Days
             </Button>
             <Button
-              variant={filterPeriod === '30days' ? 'default' : 'outline'}
+              variant={filterPeriod === '30days' ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setFilterPeriod('30days')}
             >
@@ -210,14 +210,14 @@ export function ProgressPhotoComparison() {
           
           <div className="flex gap-2">
             <Button
-              variant={viewMode === 'side-by-side' ? 'default' : 'outline'}
+              variant={viewMode === 'side-by-side' ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setViewMode('side-by-side')}
             >
               Side by Side
             </Button>
             <Button
-              variant={viewMode === 'timeline' ? 'default' : 'outline'}
+              variant={viewMode === 'timeline' ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setViewMode('timeline')}
             >

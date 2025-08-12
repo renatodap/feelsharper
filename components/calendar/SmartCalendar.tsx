@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/Card';
-import { Typography } from '@/components/ui/Typography';
+import Card from '@/components/ui/Card';
+import Typography from '@/components/ui/TypographyWrapper';
 import Button from '@/components/ui/Button';
 import { 
   Calendar as CalendarIcon, 
@@ -225,8 +225,8 @@ export default function SmartCalendar() {
     const event = events.find(e => e.id === eventId);
     if (event?.backup) {
       setEvents(prev => prev.map(e => 
-        e.id === eventId ? { ...e, status: 'rescheduled' } : e
-      ).concat([{ ...event.backup, status: 'scheduled' }]));
+        e.id === eventId ? { ...e, status: 'rescheduled' as const } : e
+      ).concat([{ ...event.backup, status: 'scheduled' as const } as CalendarEvent]));
     }
   };
 

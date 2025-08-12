@@ -6,7 +6,7 @@ import { PKCEGenerator, OAuthState, OAUTH_CONFIGS } from '@/lib/integrations/cor
 // Initiates OAuth flow with PKCE for secure authorization
 export async function GET(
   request: NextRequest,
-  { params }: { params: { provider: string } }
+  { params }: { params: Promise<{ provider: string }> }
 ) {
   try {
     const supabase = await createSupabaseServer();
@@ -16,7 +16,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const provider = params.provider;
+    const { provider } = await params;
     const config = OAUTH_CONFIGS[provider];
     
     if (!config) {

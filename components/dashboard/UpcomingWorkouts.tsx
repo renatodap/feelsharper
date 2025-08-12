@@ -189,7 +189,7 @@ export function UpcomingWorkouts() {
               </div>
               <Button
                 size="sm"
-                variant={index === 0 ? 'default' : 'secondary'}
+                variant={index === 0 ? 'primary' : 'secondary'}
                 onClick={() => handleStartWorkout(workout.id)}
                 className={index === 0 ? 'bg-blue-600 hover:bg-blue-700' : ''}
               >

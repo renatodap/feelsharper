@@ -309,14 +309,14 @@ export function WorkoutTracker() {
           {/* Quick Options */}
           <div className="flex gap-2">
             <Button
-              variant={currentSet.is_warmup ? 'default' : 'outline'}
+              variant={currentSet.is_warmup ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setCurrentSet({ ...currentSet, is_warmup: !currentSet.is_warmup })}
             >
               Warmup
             </Button>
             <Button
-              variant={currentSet.is_failure ? 'default' : 'outline'}
+              variant={currentSet.is_failure ? 'primary' : 'outline'}
               size="sm"
               onClick={() => setCurrentSet({ ...currentSet, is_failure: !currentSet.is_failure })}
             >
@@ -358,7 +358,7 @@ export function WorkoutTracker() {
         </Card>
       )}
 
-      <Button onClick={finishWorkout} disabled={isLoading} variant="default" className="w-full">
+      <Button onClick={finishWorkout} disabled={isLoading} variant="primary" className="w-full">
         <Check className="mr-2 h-4 w-4" />
         Finish Workout
       </Button>

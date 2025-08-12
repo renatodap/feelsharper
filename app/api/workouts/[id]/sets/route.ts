@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = createRouteHandlerClient({ cookies });
   
@@ -14,13 +14,14 @@ export async function GET(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const { id } = await params;
   const { data: sets, error } = await supabase
     .from('workout_sets')
     .select(`
       *,
       exercises(*)
     `)
-    .eq('workout_id', params.id)
+    .eq('workout_id', id)
     .order('set_order', { ascending: true });
 
   if (error) {
@@ -32,8 +33,9 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: workoutId } = await params;
   const supabase = createRouteHandlerClient({ cookies });
   
   const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -96,7 +98,7 @@ export async function POST(
   const { data: maxOrderSet } = await supabase
     .from('workout_sets')
     .select('set_order')
-    .eq('workout_id', params.id)
+    .eq('workout_id', workoutId)
     .order('set_order', { ascending: false })
     .limit(1)
     .single();
@@ -107,7 +109,7 @@ export async function POST(
   const { data: set, error } = await supabase
     .from('workout_sets')
     .insert({
-      workout_id: params.id,
+      workout_id: workoutId,
       exercise_id: exerciseId,
       set_order: nextOrder,
       reps,
@@ -134,7 +136,7 @@ export async function POST(
   const { data: allSets } = await supabase
     .from('workout_sets')
     .select('weight, reps')
-    .eq('workout_id', params.id)
+    .eq('workout_id', workoutId)
     .eq('is_warmup', false);
 
   if (allSets) {
@@ -147,7 +149,7 @@ export async function POST(
         total_volume: totalVolume,
         total_sets: totalSets 
       })
-      .eq('id', params.id);
+      .eq('id', workoutId);
   }
 
   return NextResponse.json({ set }, { status: 201 });
