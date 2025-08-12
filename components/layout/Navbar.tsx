@@ -3,20 +3,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Home, MessageSquare, Dumbbell, CalendarDays, Settings } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import Logo from '../ui/Logo'
 import Button from '../ui/Button'
 import ThemeToggle from '@/components/theme/ThemeToggle'
 import { useTheme } from '@/components/theme/ThemeProvider'
 import { createSupabaseBrowser } from '@/lib/supabase/client'
-
-const navigation = [
-  { name: 'Home', href: '/dashboard', icon: Home },
-  { name: 'Coach', href: '/coach', icon: MessageSquare },
-  { name: 'Log', href: '/log/workout', icon: Dumbbell },
-  { name: 'Calendar', href: '/calendar', icon: CalendarDays },
-  { name: 'Settings', href: '/settings', icon: Settings },
-]
+import { getMenuItems } from '@/lib/navigation/routes'
 
 export function AuthQuick() {
   const supabase = createSupabaseBrowser()
@@ -47,8 +40,32 @@ export function AuthQuick() {
  */
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [navigation, setNavigation] = useState<any[]>([])
   const pathname = usePathname()
   const { theme } = useTheme()
+  const supabase = createSupabaseBrowser()
+
+  useEffect(() => {
+    // Check auth status and update navigation
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      const authenticated = !!user
+      setIsAuthenticated(authenticated)
+      setNavigation(getMenuItems(authenticated, false))
+    }
+    
+    checkAuth()
+    
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const authenticated = !!session?.user
+      setIsAuthenticated(authenticated)
+      setNavigation(getMenuItems(authenticated, false))
+    })
+    
+    return () => subscription.unsubscribe()
+  }, [])
 
   return (
     <header data-theme={theme} className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-sm data-[theme=dark]:bg-slate-900/80 data-[theme=dark]:border-slate-800">
@@ -138,8 +155,8 @@ export default function Navbar() {
                         className={
                           `-mx-3 flex items-center gap-3 rounded-lg px-3 py-3 text-base font-semibold transition-colors ` +
                           (active
-                            ? 'bg-slate-100 text-slate-900'
-                            : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50')
+                            ? 'bg-sharp-blue text-clean-white'
+                            : 'text-steel-gray hover:text-sharp-blue hover:bg-neutral-50')
                         }
                         onClick={() => setMobileMenuOpen(false)}
                       >

@@ -17,7 +17,8 @@ export const metadata: Metadata = {
  * Features clean typography, strategic CTAs, and cohesive brand messaging
  */
 export default async function HomePage() {
-  redirect('/dashboard');
+  // Comment out redirect for now - will implement proper homepage
+  // redirect('/dashboard');
   const posts = await getAllPosts();
   const featuredPosts = posts.slice(0, 3);
 

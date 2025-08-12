@@ -15,8 +15,13 @@ export async function middleware(req: NextRequest) {
 
   const isProtected = PROTECTED.some((p) => path === p || path.startsWith(p + "/"));
 
-  // Supabase sets 'sb' cookie family. Quick check for session presence.
-  const hasSession = Boolean(req.cookies.get("sb-access-token")?.value);
+  // Check for Supabase auth cookies - they start with project ref
+  // Look for any cookie that contains -auth-token pattern
+  const cookies = req.cookies.getAll();
+  const hasSession = cookies.some(cookie => 
+    cookie.name.includes('-auth-token') || 
+    cookie.name.includes('sb-') && cookie.name.includes('-auth-token')
+  );
 
   if (isProtected && !hasSession) {
     const signIn = new URL("/sign-in", req.url);

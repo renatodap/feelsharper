@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createSupabaseBrowser } from "@/lib/supabase/client";
 import Link from "next/link";
 
-export default function SignUpPage() {
+function SignUpForm() {
   const supabase = createSupabaseBrowser();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -38,5 +38,13 @@ export default function SignUpPage() {
         Already have an account? <Link className="underline" href={`/sign-in?redirect=${encodeURIComponent(redirect)}`}>Sign in</Link>
       </p>
     </main>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-sm p-6">Loading...</div>}>
+      <SignUpForm />
+    </Suspense>
   );
 }

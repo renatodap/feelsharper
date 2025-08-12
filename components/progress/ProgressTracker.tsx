@@ -263,7 +263,12 @@ export default function ProgressTracker() {
         .order('eaten_at', { ascending: true });
 
       // Process and calculate metrics
-      const calculatedMetrics = calculateMetrics(bodyMetrics, workouts, sleepLogs, meals);
+      const calculatedMetrics = calculateMetrics(
+        bodyMetrics || [], 
+        workouts || [], 
+        sleepLogs || [], 
+        meals || []
+      );
       setMetrics(calculatedMetrics);
 
     } catch (error) {
