@@ -23,13 +23,30 @@ export function Typography({ variant = 'body1', className, children, ...props }:
     label: 'text-sm font-medium'
   };
 
-  const Component = variant.startsWith('h') ? variant as keyof JSX.IntrinsicElements : 'p';
+  const combinedClassName = cn(variantClasses[variant], className);
 
-  return (
-    <Component className={cn(variantClasses[variant], className)} {...props}>
-      {children}
-    </Component>
-  );
+  switch (variant) {
+    case 'h1':
+      return <h1 className={combinedClassName} {...props}>{children}</h1>;
+    case 'h2':
+      return <h2 className={combinedClassName} {...props}>{children}</h2>;
+    case 'h3':
+      return <h3 className={combinedClassName} {...props}>{children}</h3>;
+    case 'h4':
+      return <h4 className={combinedClassName} {...props}>{children}</h4>;
+    case 'h5':
+      return <h5 className={combinedClassName} {...props}>{children}</h5>;
+    case 'h6':
+      return <h6 className={combinedClassName} {...props}>{children}</h6>;
+    case 'caption':
+      return <span className={combinedClassName} {...props}>{children}</span>;
+    case 'label':
+      return <label className={combinedClassName} {...props}>{children}</label>;
+    case 'body1':
+    case 'body2':
+    default:
+      return <p className={combinedClassName} {...props}>{children}</p>;
+  }
 }
 
 export default Typography;

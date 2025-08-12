@@ -179,15 +179,15 @@ export function TodayOverview({ stats }: TodayOverviewProps) {
         <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
           <div className="flex items-center justify-between">
             <span>• Upper body strength training</span>
-            <Badge variant="outline" size="sm">Scheduled</Badge>
+            <Badge variant="secondary" size="sm">Scheduled</Badge>
           </div>
           <div className="flex items-center justify-between">
             <span>• Track macros for lunch & dinner</span>
-            <Badge variant="outline" size="sm">Pending</Badge>
+            <Badge variant="secondary" size="sm">Pending</Badge>
           </div>
           <div className="flex items-center justify-between">
             <span>• 10-minute evening stretching</span>
-            <Badge variant="outline" size="sm">Pending</Badge>
+            <Badge variant="secondary" size="sm">Pending</Badge>
           </div>
         </div>
       </div>

@@ -153,7 +153,7 @@ export function DailyCheckin() {
               <span className="text-sm w-12">{checkinData.sleepHours}h</span>
               <Slider
                 value={[checkinData.sleepHours]}
-                onValueChange={([value]) => setCheckinData({ ...checkinData, sleepHours: value })}
+                onValueChange={([value]: number[]) => setCheckinData({ ...checkinData, sleepHours: value })}
                 min={3}
                 max={12}
                 step={0.5}
@@ -168,7 +168,7 @@ export function DailyCheckin() {
               <span className="text-sm w-12">{checkinData.sleepQuality}/10</span>
               <Slider
                 value={[checkinData.sleepQuality]}
-                onValueChange={([value]) => setCheckinData({ ...checkinData, sleepQuality: value })}
+                onValueChange={([value]: number[]) => setCheckinData({ ...checkinData, sleepQuality: value })}
                 min={1}
                 max={10}
                 step={1}
@@ -194,7 +194,7 @@ export function DailyCheckin() {
               <Battery className="h-4 w-4 text-muted-foreground" />
               <Slider
                 value={[checkinData.energyLevel]}
-                onValueChange={([value]) => setCheckinData({ ...checkinData, energyLevel: value })}
+                onValueChange={([value]: number[]) => setCheckinData({ ...checkinData, energyLevel: value })}
                 min={1}
                 max={10}
                 step={1}
@@ -210,7 +210,7 @@ export function DailyCheckin() {
               <Brain className="h-4 w-4 text-muted-foreground" />
               <Slider
                 value={[checkinData.stressLevel]}
-                onValueChange={([value]) => setCheckinData({ ...checkinData, stressLevel: value })}
+                onValueChange={([value]: number[]) => setCheckinData({ ...checkinData, stressLevel: value })}
                 min={1}
                 max={10}
                 step={1}
@@ -229,7 +229,7 @@ export function DailyCheckin() {
               <Heart className="h-4 w-4 text-muted-foreground" />
               <Slider
                 value={[checkinData.moodRating]}
-                onValueChange={([value]) => setCheckinData({ ...checkinData, moodRating: value })}
+                onValueChange={([value]: number[]) => setCheckinData({ ...checkinData, moodRating: value })}
                 min={1}
                 max={10}
                 step={1}
@@ -253,7 +253,7 @@ export function DailyCheckin() {
           <Textarea
             placeholder="Optional: Add any notes about today..."
             value={checkinData.notes}
-            onChange={(e) => setCheckinData({ ...checkinData, notes: e.target.value })}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCheckinData({ ...checkinData, notes: e.target.value })}
             rows={5}
           />
         </div>

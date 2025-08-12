@@ -218,7 +218,7 @@ export function MealTracker() {
                 <Label>Meal Type</Label>
                 <Select 
                   value={quickEntry.meal_type} 
-                  onValueChange={(value) => setQuickEntry({ ...quickEntry, meal_type: value })}
+                  onValueChange={(value: string) => setQuickEntry({ ...quickEntry, meal_type: value })}
                 >
                   <SelectTrigger>
                     <SelectValue />

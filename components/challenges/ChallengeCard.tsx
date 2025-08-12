@@ -78,8 +78,8 @@ export default function ChallengeCard({
   const isStarted = new Date(challenge.starts_at) <= new Date();
   const isEnded = new Date(challenge.ends_at) <= new Date();
   const isJoined = !!challenge.userParticipation;
-  const isAtCapacity = challenge.max_participants && 
-    challenge.participantCount >= challenge.max_participants;
+  const isAtCapacity = !!(challenge.max_participants && 
+    challenge.participantCount >= challenge.max_participants);
 
   const daysUntilStart = Math.ceil(
     (new Date(challenge.starts_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)

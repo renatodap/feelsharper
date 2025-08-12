@@ -15,7 +15,7 @@ import {
   Calendar, 
   Award,
   TrendingUp,
-  Fire,
+  Flame,
   Plus,
   UserPlus,
   Crown,
@@ -215,7 +215,7 @@ export default function SocialCommunity() {
                   {item.user.name}
                 </Typography>
                 <div className="flex items-center text-amber-500">
-                  <Fire className="w-4 h-4 mr-1" />
+                  <Flame className="w-4 h-4 mr-1" />
                   <Typography variant="body2" className="text-xs font-medium">
                     {item.user.streak}
                   </Typography>
@@ -344,7 +344,7 @@ export default function SocialCommunity() {
                 </Typography>
                 <div className="flex items-center space-x-3">
                   <div className="flex items-center text-amber-500">
-                    <Fire className="w-4 h-4 mr-1" />
+                    <Flame className="w-4 h-4 mr-1" />
                     <Typography variant="body2" className="text-sm font-medium">
                       {partner.streak} day streak
                     </Typography>
@@ -431,7 +431,7 @@ export default function SocialCommunity() {
               </Typography>
               <div className="flex items-center space-x-3">
                 <div className="flex items-center text-amber-500">
-                  <Fire className="w-4 h-4 mr-1" />
+                  <Flame className="w-4 h-4 mr-1" />
                   <Typography variant="body2" className="text-sm">
                     {member.streak}
                   </Typography>

@@ -79,9 +79,9 @@ export default function SquadCard({
                 {typeBadge.label}
               </Badge>
               {squad.is_public ? (
-                <Globe className="w-4 h-4 text-green-500" title="Public squad" />
+                <Globe className="w-4 h-4 text-green-500" />
               ) : (
-                <Lock className="w-4 h-4 text-gray-500" title="Private squad" />
+                <Lock className="w-4 h-4 text-gray-500" />
               )}
             </div>
           </div>

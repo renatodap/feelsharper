@@ -286,7 +286,7 @@ export function MealLogger() {
                           </Badge>
                         )}
                         <Badge 
-                          variant="outline" 
+                          variant="secondary" 
                           className={`text-xs ${
                             food.source === 'database' ? 'bg-green-50 text-green-700' : 
                             food.source === 'barcode' ? 'bg-blue-50 text-blue-700' : 
