@@ -30,21 +30,21 @@ export default function Button({
   type = 'button',
   ...props 
 }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none';
+  const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none rounded-lg';
   
-  // Fixed: High-contrast colors for WCAG AA+ compliance
+  // Feel Sharper Brand Colors - WCAG AA+ compliance
   const variants = {
-    primary: 'bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-slate-900 focus:ring-amber-500 shadow-sm hover:shadow-md',
-    secondary: 'bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-white focus:ring-slate-700 shadow-sm hover:shadow-md',
-    ghost: 'bg-transparent hover:bg-slate-100 active:bg-slate-200 text-slate-700 hover:text-slate-900 focus:ring-slate-300 border border-transparent hover:border-slate-200',
-    outline: 'border-2 border-slate-300 hover:border-slate-400 active:border-slate-500 bg-transparent hover:bg-slate-50 active:bg-slate-100 text-slate-700 hover:text-slate-900 focus:ring-slate-300'
+    primary: 'bg-sharp-blue hover:bg-blue-700 active:bg-blue-800 text-clean-white focus:ring-sharp-blue shadow-sm hover:shadow-md',
+    secondary: 'bg-energy-orange hover:bg-orange-700 active:bg-orange-800 text-clean-white focus:ring-energy-orange shadow-sm hover:shadow-md',
+    ghost: 'bg-transparent hover:bg-neutral-100 active:bg-neutral-200 text-steel-gray hover:text-sharp-blue focus:ring-sharp-blue border border-transparent',
+    outline: 'border-2 border-sharp-blue hover:border-blue-700 bg-transparent hover:bg-sharp-blue hover:text-clean-white text-sharp-blue focus:ring-sharp-blue'
   };
   
   const sizes = {
-    sm: 'px-3 py-2 text-sm rounded-lg min-h-[32px]',
-    md: 'px-4 py-2.5 text-base rounded-lg min-h-[40px]',
-    lg: 'px-6 py-3 text-lg rounded-lg min-h-[48px]',
-    xl: 'px-8 py-4 text-xl rounded-lg min-h-[56px]'
+    sm: 'px-3 py-2 text-sm min-h-[32px]',
+    md: 'px-4 py-2.5 text-base min-h-[44px]',
+    lg: 'px-6 py-3 text-lg min-h-[48px]',
+    xl: 'px-8 py-4 text-xl min-h-[56px]'
   };
 
   const buttonClasses = cn(

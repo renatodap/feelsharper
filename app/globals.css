@@ -1,18 +1,20 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-/* ===== FEEL SHARPER MINIMALIST SYSTEM ===== */
+/* ===== FEEL SHARPER BRAND SYSTEM ===== */
 :root {
   /* Light theme defaults */
   --background: #FFFFFF;
-  --foreground: #0F172A;
+  --foreground: #1F2A30;
   
-  /* Minimalist Performance Colors */
-  --brand-primary: #0EA5E9;         /* Clean blue primary */
-  --brand-primary-dark: #0284C7;    /* Darker blue */
-  --brand-accent: #0F172A;          /* Dark text accent */
-  --brand-muted: #64748B;           /* Muted gray */
+  /* Feel Sharper Brand Colors */
+  --brand-primary: #1479FF;         /* Sharp Blue - Trust, focus, performance */
+  --brand-secondary: #FF6B35;       /* Energy Orange - Motivation, action */
+  --brand-steel: #1F2A30;           /* Steel Gray - Strength, stability */
+  --brand-success: #1FCC79;         /* Success Green - Positive progress */
+  --brand-alert: #FF3B30;           /* Alert Red - Warnings, critical data */
+  --brand-muted: #737373;           /* Neutral gray for secondary text */
   
   /* Clean Gray Scale */
   --gray-50: #F8FAFC;
@@ -38,10 +40,12 @@
   --gradient-subtle: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
 
   /* Additional variables used elsewhere */
-  --brand-electric: #00D9FF;
-  --gradient-electric: linear-gradient(135deg, #00D9FF 0%, #0EA5E9 100%);
-  --gradient-performance: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
-  --shadow-electric: 0 0 0 4px rgba(0, 217, 255, 0.15);
+  --brand-electric: #1479FF;
+  --gradient-primary: linear-gradient(135deg, #1479FF 0%, #0F5EC7 100%);
+  --gradient-energy: linear-gradient(135deg, #FF6B35 0%, #E54D1E 100%);
+  --gradient-performance: linear-gradient(135deg, #1479FF 0%, #FF6B35 100%);
+  --shadow-primary: 0 0 0 4px rgba(20, 121, 255, 0.15);
+  --shadow-energy: 0 0 0 4px rgba(255, 107, 53, 0.15);
 }
 
 /* Dark theme overrides */
@@ -55,8 +59,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
@@ -83,7 +87,7 @@ body {
   position: relative;
 }
 
-/* Performance Grid Background */
+/* Feel Sharper Performance Grid Background */
 body::before {
   content: '';
   position: fixed;
@@ -92,8 +96,8 @@ body::before {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(20, 121, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 121, 255, 0.02) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: -1;
@@ -252,14 +256,16 @@ a:hover {
 }
 
 .btn-primary {
-  background: var(--gradient-primary);
+  background: var(--brand-primary);
   color: white;
   box-shadow: var(--shadow-md);
+  border-radius: 8px;
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-lg);
+  background: #0F5EC7;
 }
 
 .btn-secondary {
@@ -273,28 +279,41 @@ a:hover {
   transform: translateY(-1px);
 }
 
-.btn-ghost {
+.btn-secondary {
+  background: var(--brand-secondary);
+  color: white;
+  border-radius: 8px;
+}
+
+.btn-secondary:hover {
+  background: #E54D1E;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
   background: transparent;
   color: var(--brand-primary);
   border: 1px solid var(--brand-primary);
+  border-radius: 8px;
 }
 
-.btn-ghost:hover {
+.btn-outline:hover {
   background: var(--brand-primary);
   color: white;
 }
 
-/* ===== MINIMAL CARD SYSTEM ===== */
+/* ===== FEEL SHARPER CARD SYSTEM ===== */
 .card {
-  background: var(--gradient-subtle);
-  border-radius: 0.75rem;
-  border: 1px solid var(--gray-700);
-  box-shadow: var(--shadow-sm);
+  background: var(--background);
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
   transition: all 0.2s ease;
+  padding: 16px;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   transform: translateY(-2px);
   border-color: var(--brand-primary);
 }
@@ -359,26 +378,26 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gradient-electric);
+  background: var(--brand-primary);
   border-radius: 3px;
   transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gradient-performance);
-  box-shadow: var(--shadow-electric);
+  background: var(--brand-secondary);
+  box-shadow: var(--shadow-primary);
 }
 
 /* ===== PERFORMANCE SELECTION ===== */
 ::selection {
-  background: var(--brand-electric);
-  color: var(--background);
+  background: var(--brand-primary);
+  color: var(--clean-white);
   text-shadow: none;
 }
 
 ::-moz-selection {
-  background: var(--brand-electric);
-  color: var(--background);
+  background: var(--brand-primary);
+  color: var(--clean-white);
   text-shadow: none;
 }
 
@@ -390,9 +409,9 @@ a:hover {
 }
 
 *:focus-visible {
-  outline: 2px solid var(--brand-electric);
+  outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.2);
+  box-shadow: 0 0 0 4px rgba(20, 121, 255, 0.2);
 }
 
 /* ===== RESPONSIVE UTILITIES ===== */
@@ -429,7 +448,7 @@ a:hover {
   
   /* Improve focus visibility on mobile */
   *:focus {
-    outline: 2px solid var(--brand-amber);
+    outline: 2px solid var(--brand-secondary);
     outline-offset: 2px;
   }
 }

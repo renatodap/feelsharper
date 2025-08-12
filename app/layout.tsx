@@ -24,9 +24,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Feel Sharper - Peak Performance for Modern Men",
-  description: "Evidence-based strategies to optimize your sleep, energy, libido, focus, and long-term vitality. No hype, no shortcuts—just systematic improvement.",
-  keywords: ["men's health", "sleep optimization", "energy", "focus", "testosterone", "performance", "evidence-based"],
+  title: "Feel Sharper | Your Sharpest Self, Every Day",
+  description: "Your all-in-one performance platform — tracking your workouts, nutrition, and recovery while keeping you motivated through AI-driven coaching and community support.",
+  keywords: ["fitness tracking", "workout log", "nutrition", "AI coaching", "performance", "health metrics", "recovery", "evidence-based"],
   authors: [{ name: "Feel Sharper" }],
   creator: "Feel Sharper",
   publisher: "Feel Sharper",
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "Feel Sharper - Peak Performance for Modern Men",
-    description: "Evidence-based strategies to optimize your sleep, energy, libido, focus, and long-term vitality. No hype, no shortcuts—just systematic improvement.",
+    title: "Feel Sharper | Your Sharpest Self, Every Day",
+    description: "Your all-in-one performance platform — tracking your workouts, nutrition, and recovery while keeping you motivated through AI-driven coaching and community support.",
     url: 'https://feelsharper.com',
     siteName: 'Feel Sharper',
     type: 'website',
@@ -45,14 +45,14 @@ export const metadata: Metadata = {
         url: '/images/og-default.jpg',
         width: 1200,
         height: 630,
-        alt: 'Feel Sharper - Peak Performance for Modern Men',
+        alt: 'Feel Sharper - Your Sharpest Self, Every Day',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Feel Sharper - Peak Performance for Modern Men",
-    description: "Evidence-based strategies to optimize your sleep, energy, libido, focus, and long-term vitality.",
+    title: "Feel Sharper | Your Sharpest Self, Every Day",
+    description: "Your all-in-one performance platform — tracking your workouts, nutrition, and recovery with AI-driven coaching.",
     images: ['/images/og-default.jpg'],
   },
   robots: {

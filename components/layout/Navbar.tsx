@@ -126,7 +126,7 @@ export default function Navbar() {
             </div>
             
             <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-slate-200">
+              <div className="-my-6 divide-y divide-neutral-200">
                 <div className="space-y-2 py-6">
                   {navigation.map((item) => {
                     const Icon = item.icon

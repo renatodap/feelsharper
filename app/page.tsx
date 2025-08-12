@@ -8,8 +8,8 @@ import SEOHead from '../components/SEOHead';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Feel Sharper - Peak Performance for Modern Men',
-  description: 'Evidence-based strategies to optimize your sleep, energy, libido, focus, and long-term vitality. Get instant AI guidance from Ask Feel Sharper.',
+  title: 'Feel Sharper | Your Sharpest Self, Every Day',
+  description: 'Your all-in-one performance platform — tracking your workouts, nutrition, and recovery while keeping you motivated through AI-driven coaching and community support.',
 };
 
 /**
@@ -24,8 +24,8 @@ export default async function HomePage() {
   return (
     <>
       <SEOHead 
-        title="Feel Sharper - Peak Performance for Modern Men"
-        description="Evidence-based strategies to optimize your sleep, energy, libido, focus, and long-term vitality. Get instant AI guidance from Ask Feel Sharper."
+        title="Feel Sharper | Your Sharpest Self, Every Day"
+        description="Your all-in-one performance platform — tracking your workouts, nutrition, and recovery while keeping you motivated through AI-driven coaching and community support."
       />
       
       {/* Modern Hero Section with AI emphasis */}

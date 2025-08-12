@@ -293,7 +293,7 @@ function TodayOverviewWidget({ data }: { data: DashboardData }) {
                 stroke="currentColor"
                 strokeWidth="4"
                 fill="transparent"
-                className="text-slate-200 dark:text-slate-700"
+                className="text-neutral-200 dark:text-neutral-700"
               />
               <circle
                 cx="32"
@@ -304,11 +304,11 @@ function TodayOverviewWidget({ data }: { data: DashboardData }) {
                 fill="transparent"
                 strokeDasharray={`${2 * Math.PI * 28}`}
                 strokeDashoffset={`${2 * Math.PI * 28 * (1 - Math.min(caloriesProgress / 100, 1))}`}
-                className="text-amber-600"
+                className="text-energy-orange"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
+              <span className="text-xs font-semibold text-steel-gray dark:text-clean-white">
                 {Math.round(caloriesProgress)}%
               </span>
             </div>
@@ -330,7 +330,7 @@ function TodayOverviewWidget({ data }: { data: DashboardData }) {
                 stroke="currentColor"
                 strokeWidth="4"
                 fill="transparent"
-                className="text-slate-200 dark:text-slate-700"
+                className="text-neutral-200 dark:text-neutral-700"
               />
               <circle
                 cx="32"
@@ -345,7 +345,7 @@ function TodayOverviewWidget({ data }: { data: DashboardData }) {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
+              <span className="text-xs font-semibold text-steel-gray dark:text-clean-white">
                 {Math.round(proteinProgress)}%
               </span>
             </div>
