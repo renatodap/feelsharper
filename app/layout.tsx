@@ -80,7 +80,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${crimson.variable} ${jetbrainsMono.variable} scroll-smooth`}>
-      <body className="font-sans antialiased min-h-screen">
+      <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
         <ThemeProvider>
           <Layout>
             {children}

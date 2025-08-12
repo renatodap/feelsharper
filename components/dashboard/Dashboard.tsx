@@ -362,10 +362,10 @@ function TodayOverviewWidget({ data }: { data: DashboardData }) {
 
 function QuickActionsWidget({ data }: { data: DashboardData }) {
   const actions = [
-    { label: 'Log Workout', href: '/log/workout', icon: Dumbbell, color: 'bg-blue-500' },
-    { label: 'Log Meal', href: '/log/meal', icon: Apple, color: 'bg-green-500' },
-    { label: 'Add Weight', href: '/metrics', icon: TrendingUp, color: 'bg-purple-500' },
-    { label: 'AI Coach', href: '/coach', icon: Zap, color: 'bg-amber-500' },
+    { label: 'Log Workout', href: '/log/workout', icon: Dumbbell, color: 'bg-navy' },
+    { label: 'Log Meal', href: '/log/meal', icon: Apple, color: 'bg-success' },
+    { label: 'Add Weight', href: '/metrics', icon: TrendingUp, color: 'bg-info' },
+    { label: 'AI Coach', href: '/coach', icon: Zap, color: 'bg-warning' },
   ];
 
   return (

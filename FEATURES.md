@@ -1,33 +1,26 @@
-1) Onboarding & Identity
-Account creation & auth
+## 1) Onboarding & Identity
 
-Email/Apple/Google sign-in, 2FA (optional).
+### Account creation & auth
+- [ ] [ ] Email/Apple/Google sign-in, 2FA (optional)
 
-Profile basics: name/alias, DOB, height, sex, country, preferred language, units.
+### Profile basics  
+- [ ] [ ] Name/alias, DOB, height, sex, country, preferred language, units
 
-Goal setup (multi-goal + date-bound)
+### Goal setup (multi-goal + date-bound)
+- [ ] [ ] Templates: weight loss, muscle gain, endurance race (5K–ultra), team sport season, rehab/return-to-play, general health
+- [ ] [ ] Target metrics: body mass/comp, event date/time, health markers (BP/A1c), habit goals (sleep/steps)
+- [ ] [ ] Constraints: time available/week, equipment access, injury flags, budget, diet rules (veg, kosher, etc.)
 
-Templates: weight loss, muscle gain, endurance race (5K–ultra), team sport season, rehab/return-to-play, general health.
+### Motivation & identity
+- [ ] [ ] "Why" capture (short narrative + value tags) with periodic resurfacing
+- [ ] [ ] Reward style selection (badges, streaks, progress cards) & privacy defaults
 
-Target metrics: body mass/comp, event date/time, health markers (BP/A1c), habit goals (sleep/steps).
+### Baseline measures
+- [ ] [ ] Fitness testing presets (e.g., 1-mile, 3RM, jump, plank), resting HR/HRV intake
+- [ ] [ ] Optional medical inputs (conditions, meds, allergies) with contraindication rules
 
-Constraints: time available/week, equipment access, injury flags, budget, diet rules (veg, kosher, etc.).
-
-Motivation & identity
-
-“Why” capture (short narrative + value tags) with periodic resurfacing.
-
-Reward style selection (badges, streaks, progress cards) & privacy defaults.
-
-Baseline measures
-
-Fitness testing presets (e.g., 1-mile, 3RM, jump, plank), resting HR/HRV intake.
-
-Optional medical inputs (conditions, meds, allergies) with contraindication rules.
-
-Personalization switches
-
-Coaching tone (strict/friendly/neutral), push frequency, social visibility (public/squads/private).
+### Personalization switches
+- [ ] [ ] Coaching tone (strict/friendly/neutral), push frequency, social visibility (public/squads/private)
 
 2) Data Ingestion & Integrations
 Wearables & platforms (connect/disconnect + scoped permissions)

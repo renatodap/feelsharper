@@ -13,8 +13,8 @@ interface SEOHeadProps {
 }
 
 export default function SEOHead({
-  title = "Feel Sharper - Peak Performance for Modern Men",
-  description = "Evidence-based strategies to optimize your sleep, energy, focus, and vitality. No hype, just practical guidance for peak performance.",
+  title = "Feel Sharper - Free Fitness Tracker",
+  description = "Track food, workouts, and weight with clean graphs. Completely free, no ads, no subscriptions.",
   image = "/images/og-default.jpg",
   url = "https://feelsharper.com",
   type = "website",

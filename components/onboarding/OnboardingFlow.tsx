@@ -70,7 +70,7 @@ const goals = [
     icon: Dumbbell, 
     description: 'Get stronger and bigger',
     emoji: '💪',
-    gradient: 'from-blue-500 to-indigo-600'
+    gradient: 'from-navy-400 to-navy'
   },
   { 
     id: 'endurance', 
@@ -86,7 +86,7 @@ const goals = [
     icon: Sparkles, 
     description: 'Total body transformation',
     emoji: '✨',
-    gradient: 'from-purple-500 to-indigo-600'
+    gradient: 'from-navy-400 to-navy-600'
   },
   { 
     id: 'sport_specific', 
@@ -126,7 +126,7 @@ const experienceLevels = [
     label: 'Elite Athlete', 
     description: 'Experienced and pushing limits',
     emoji: '🚀',
-    gradient: 'from-purple-500 to-purple-700'
+    gradient: 'from-navy to-navy-600'
   },
 ] as const;
 
@@ -275,12 +275,12 @@ export default function OnboardingFlow() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 relative overflow-hidden">
+    <div className="min-h-screen bg-bg relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-gradient-to-br from-indigo-200 to-purple-200 opacity-30 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-gradient-to-tr from-purple-200 to-pink-200 opacity-30 animate-pulse" style={{animationDelay: '1s'}}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 opacity-20 animate-spin-slow"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-gradient-to-br from-navy-400/10 to-navy/20 opacity-30 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-gradient-to-tr from-navy/10 to-navy-400/20 opacity-30 animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-navy/5 to-navy-400/10 opacity-20 animate-spin-slow"></div>
       </div>
 
       <div className="relative mx-auto max-w-3xl px-4 py-8">
@@ -288,11 +288,11 @@ export default function OnboardingFlow() {
         <div className="mb-8">
           <div className="flex items-center justify-between text-sm font-medium mb-3">
             <span className="text-gray-700">Step {currentStep + 1} of {steps.length}</span>
-            <span className="text-indigo-600 font-bold">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
+            <span className="text-navy font-bold">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
           </div>
           <div className="relative w-full h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
             <div 
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full transition-all duration-500 ease-out shadow-lg"
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-navy-400 to-navy-600 rounded-full transition-all duration-500 ease-out shadow-lg"
               style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
             >
               <div className="absolute inset-0 bg-white opacity-30 animate-shimmer"></div>
@@ -304,7 +304,7 @@ export default function OnboardingFlow() {
         <div className="relative backdrop-blur-lg bg-white/80 rounded-3xl shadow-2xl border border-white/50 p-8 md:p-12">
           {/* Animated Header */}
           <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3 animate-fade-in">
+            <h1 className="text-3xl md:text-4xl font-black text-text-primary mb-3 animate-fade-in">
               {steps[currentStep].title}
             </h1>
             <p className="text-gray-600 text-lg animate-fade-in-delay">
@@ -317,10 +317,10 @@ export default function OnboardingFlow() {
             {currentStep === 0 && (
               <div className="text-center space-y-6">
                 <div className="relative">
-                  <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto shadow-2xl animate-bounce-slow">
+                  <div className="w-24 h-24 bg-gradient-to-br from-navy-400 to-navy-600 rounded-full flex items-center justify-center mx-auto shadow-2xl animate-bounce-slow">
                     <Rocket className="w-12 h-12 text-white" />
                   </div>
-                  <div className="absolute -inset-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full opacity-30 blur-xl animate-pulse"></div>
+                  <div className="absolute -inset-4 bg-gradient-to-r from-navy-400 to-navy-600 rounded-full opacity-30 blur-xl animate-pulse"></div>
                 </div>
                 <div className="space-y-4">
                   <p className="text-xl font-semibold text-gray-800 max-w-md mx-auto">
@@ -331,11 +331,11 @@ export default function OnboardingFlow() {
                   </p>
                   <div className="flex justify-center gap-8 pt-4">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-indigo-600">10M+</div>
+                      <div className="text-3xl font-bold text-navy">10M+</div>
                       <div className="text-sm text-gray-600">Workouts Logged</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-purple-600">98%</div>
+                      <div className="text-3xl font-bold text-navy">98%</div>
                       <div className="text-sm text-gray-600">Success Rate</div>
                     </div>
                     <div className="text-center">
@@ -583,7 +583,7 @@ export default function OnboardingFlow() {
                   <p className="text-gray-600 max-w-lg mx-auto leading-relaxed">
                     We've customized everything based on your goals. Your AI coach is ready, your dashboard is configured, and your transformation starts NOW.
                   </p>
-                  <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6 mt-6 max-w-md mx-auto">
+                  <div className="bg-surface rounded-2xl p-6 mt-6 max-w-md mx-auto">
                     <h3 className="font-bold text-gray-900 mb-3">What happens next:</h3>
                     <ul className="space-y-2 text-left">
                       <li className="flex items-center gap-2">
@@ -640,7 +640,7 @@ export default function OnboardingFlow() {
                 className={cn(
                   "group relative flex items-center gap-2 px-8 py-4 text-white font-bold rounded-xl transform transition-all duration-200",
                   canProceed()
-                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-2xl hover:scale-105"
+                    ? "bg-gradient-to-r from-navy-400 to-navy-600 hover:shadow-2xl hover:scale-105"
                     : "bg-gray-300 cursor-not-allowed"
                 )}
               >

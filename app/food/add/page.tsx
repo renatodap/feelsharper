@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, ArrowLeft, Plus, Apple, Calculator } from 'lucide-react';
 
@@ -24,7 +24,7 @@ const mockFoods: Food[] = [
   { id: 5, name: "Greek yogurt (plain)", brand: null, unit: "g", kcal: 1, protein_g: 0.1, carbs_g: 0.036, fat_g: 0.05 },
 ];
 
-export default function AddFoodPage() {
+function AddFoodContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const preselectedMeal = searchParams?.get('meal') || 'breakfast';
@@ -256,5 +256,20 @@ export default function AddFoodPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AddFoodPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-bg text-text-primary flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-2 border-navy border-t-transparent mx-auto mb-4"></div>
+          <p className="text-text-secondary">Loading...</p>
+        </div>
+      </div>
+    }>
+      <AddFoodContent />
+    </Suspense>
   );
 }

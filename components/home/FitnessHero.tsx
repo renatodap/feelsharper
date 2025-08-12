@@ -51,7 +51,7 @@ export default function FitnessHero() {
         {/* Main Heading */}
         <h1 className={`text-5xl md:text-7xl font-bold mb-6 transition-all duration-1000 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <span className="block text-text-primary">Feel</span>
-          <span className="block bg-gradient-to-r from-navy-400 via-navy to-navy-600 bg-clip-text text-transparent">
+          <span className="block text-navy">
             Sharper
           </span>
         </h1>

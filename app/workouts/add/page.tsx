@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Plus, Trash2, Dumbbell, Bot, Edit3, Save } from 'lucide-react';
 
@@ -76,7 +76,7 @@ function parseWorkoutText(text: string): Exercise[] {
   return exercises;
 }
 
-export default function AddWorkoutPage() {
+function AddWorkoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const aiMode = searchParams?.get('mode') === 'ai';
@@ -414,5 +414,20 @@ export default function AddWorkoutPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AddWorkoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-bg text-text-primary flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-2 border-navy border-t-transparent mx-auto mb-4"></div>
+          <p className="text-text-secondary">Loading...</p>
+        </div>
+      </div>
+    }>
+      <AddWorkoutContent />
+    </Suspense>
   );
 }

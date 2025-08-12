@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import NutritionTracker from '@/components/nutrition/NutritionTracker';
+import NutritionTrackerV2 from '@/components/nutrition/NutritionTrackerV2';
 
 export const metadata: Metadata = {
   title: 'Log Meal — Feel Sharper',
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function LogMealPage() {
-  return <NutritionTracker />;
+  return <NutritionTrackerV2 />;
 }
