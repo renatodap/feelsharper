@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ComprehensiveDashboard from '@/components/dashboard/ComprehensiveDashboard';
+import AuthGuard from '@/components/auth/AuthGuard';
 
 export const metadata: Metadata = {
   title: 'Dashboard — Feel Sharper',
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
-  return <ComprehensiveDashboard />;
+  return (
+    <AuthGuard>
+      <ComprehensiveDashboard />
+    </AuthGuard>
+  );
 }
