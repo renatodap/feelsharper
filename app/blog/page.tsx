@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import SimpleHeader from '@/components/navigation/SimpleHeader'
 
 export const metadata: Metadata = {
   title: 'Blog | Feel Sharper',
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <div className="min-h-screen bg-bg text-text-primary">
+      <SimpleHeader />
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="text-center py-20">
           <h1 className="text-4xl font-bold mb-4">Blog</h1>

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import FitnessHero from '@/components/home/FitnessHero';
+import SimpleHeader from '@/components/navigation/SimpleHeader';
 
 export const metadata: Metadata = {
   title: 'Feel Sharper | Free Fitness Tracker',
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   return (
     <main className="min-h-screen bg-bg">
+      <SimpleHeader />
       {/* Hero Section */}
       <FitnessHero />
       

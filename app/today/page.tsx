@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Apple, Dumbbell, Activity, TrendingUp } from 'lucide-react';
 import { quickActions } from '@/lib/navigation/routes';
+import SimpleHeader from '@/components/navigation/SimpleHeader';
 
 export const metadata: Metadata = {
   title: 'Today | Feel Sharper',
@@ -17,6 +18,7 @@ export default function TodayPage() {
 
   return (
     <div className="min-h-screen bg-bg text-text-primary">
+      <SimpleHeader />
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
