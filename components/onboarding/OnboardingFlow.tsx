@@ -216,39 +216,31 @@ export default function OnboardingFlow() {
         return;
       }
 
-      // Update profile
-      await supabase
-        .from('profiles')
-        .upsert({
-          id: user.id,
-          goal_type: data.goalType,
-          experience: data.experience,
-          units_weight: data.unitsWeight,
-          units_distance: data.unitsDistance,
-          constraints_json: data.constraints,
-        });
+      // Update profile with all onboarding data
+      const profileUpdate = {
+        id: user.id,
+        goal_type: data.goalType,
+        experience_level: data.experience,
+        units_weight: data.unitsWeight,
+        units_distance: data.unitsDistance,
+        target_weight_kg: data.targetWeight,
+        target_date: data.targetDate || null,
+        updated_at: new Date().toISOString(),
+      };
 
-      // Create goal if target weight is set
-      if (data.targetWeight && data.goalType) {
-        await supabase
-          .from('goals')
-          .insert({
-            user_id: user.id,
-            type: data.goalType,
-            target_value: data.targetWeight,
-            target_date: data.targetDate || null,
-            metrics: { dashboard_preferences: data.dashboardPreferences },
-          });
+      const { error } = await supabase
+        .from('profiles')
+        .upsert(profileUpdate);
+
+      if (error) {
+        console.error('Profile update error:', error);
+        throw error;
       }
 
-      // Create settings
-      await supabase
-        .from('settings')
-        .upsert({
-          user_id: user.id,
-          theme: 'system',
-          notifications: { email: true, push: false },
-        });
+      // Store dashboard preferences in localStorage for now
+      // (we can move this to a settings table later)
+      localStorage.setItem('dashboardPreferences', JSON.stringify(data.dashboardPreferences));
+      localStorage.setItem('userConstraints', JSON.stringify(data.constraints));
 
       router.push('/dashboard');
     } catch (error) {
