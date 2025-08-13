@@ -605,6 +605,171 @@ export interface Database {
           updated_at?: string
         }
       }
+      body_measurements: {
+        Row: {
+          id: string
+          user_id: string
+          measurement_date: string
+          weight_kg: number | null
+          body_fat_percentage: number | null
+          muscle_mass_kg: number | null
+          visceral_fat_level: number | null
+          water_percentage: number | null
+          bone_mass_kg: number | null
+          metabolic_age: number | null
+          waist_cm: number | null
+          chest_cm: number | null
+          arm_cm: number | null
+          thigh_cm: number | null
+          hip_cm: number | null
+          neck_cm: number | null
+          progress_photo_front: string | null
+          progress_photo_side: string | null
+          progress_photo_back: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          measurement_date: string
+          weight_kg?: number | null
+          body_fat_percentage?: number | null
+          muscle_mass_kg?: number | null
+          visceral_fat_level?: number | null
+          water_percentage?: number | null
+          bone_mass_kg?: number | null
+          metabolic_age?: number | null
+          waist_cm?: number | null
+          chest_cm?: number | null
+          arm_cm?: number | null
+          thigh_cm?: number | null
+          hip_cm?: number | null
+          neck_cm?: number | null
+          progress_photo_front?: string | null
+          progress_photo_side?: string | null
+          progress_photo_back?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          measurement_date?: string
+          weight_kg?: number | null
+          body_fat_percentage?: number | null
+          muscle_mass_kg?: number | null
+          visceral_fat_level?: number | null
+          water_percentage?: number | null
+          bone_mass_kg?: number | null
+          metabolic_age?: number | null
+          waist_cm?: number | null
+          chest_cm?: number | null
+          arm_cm?: number | null
+          thigh_cm?: number | null
+          hip_cm?: number | null
+          neck_cm?: number | null
+          progress_photo_front?: string | null
+          progress_photo_side?: string | null
+          progress_photo_back?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      body_goals: {
+        Row: {
+          id: string
+          user_id: string
+          goal_type: string
+          target_weight_kg: number | null
+          target_body_fat_percentage: number | null
+          target_muscle_mass_kg: number | null
+          target_date: string | null
+          weekly_rate_kg: number | null
+          starting_weight_kg: number | null
+          starting_body_fat_percentage: number | null
+          starting_muscle_mass_kg: number | null
+          is_active: boolean | null
+          completed_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          goal_type: string
+          target_weight_kg?: number | null
+          target_body_fat_percentage?: number | null
+          target_muscle_mass_kg?: number | null
+          target_date?: string | null
+          weekly_rate_kg?: number | null
+          starting_weight_kg?: number | null
+          starting_body_fat_percentage?: number | null
+          starting_muscle_mass_kg?: number | null
+          is_active?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          goal_type?: string
+          target_weight_kg?: number | null
+          target_body_fat_percentage?: number | null
+          target_muscle_mass_kg?: number | null
+          target_date?: string | null
+          weekly_rate_kg?: number | null
+          starting_weight_kg?: number | null
+          starting_body_fat_percentage?: number | null
+          starting_muscle_mass_kg?: number | null
+          is_active?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      body_trends: {
+        Row: {
+          id: string
+          user_id: string
+          calculation_date: string
+          weight_7day_ema: number | null
+          weight_trend_direction: string | null
+          weight_weekly_change_kg: number | null
+          body_fat_7day_ema: number | null
+          muscle_mass_7day_ema: number | null
+          data_points_count: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          calculation_date: string
+          weight_7day_ema?: number | null
+          weight_trend_direction?: string | null
+          weight_weekly_change_kg?: number | null
+          body_fat_7day_ema?: number | null
+          muscle_mass_7day_ema?: number | null
+          data_points_count?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          calculation_date?: string
+          weight_7day_ema?: number | null
+          weight_trend_direction?: string | null
+          weight_weekly_change_kg?: number | null
+          body_fat_7day_ema?: number | null
+          muscle_mass_7day_ema?: number | null
+          data_points_count?: number | null
+          created_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -700,6 +865,18 @@ export interface WorkoutProgramWithTemplates extends WorkoutProgram {
 export interface UserProgramWithDetails extends UserProgram {
   workout_programs?: WorkoutProgramWithTemplates
 }
+
+export type BodyMeasurement = Database['public']['Tables']['body_measurements']['Row']
+export type BodyMeasurementInsert = Database['public']['Tables']['body_measurements']['Insert']
+export type BodyMeasurementUpdate = Database['public']['Tables']['body_measurements']['Update']
+
+export type BodyGoal = Database['public']['Tables']['body_goals']['Row']
+export type BodyGoalInsert = Database['public']['Tables']['body_goals']['Insert']
+export type BodyGoalUpdate = Database['public']['Tables']['body_goals']['Update']
+
+export type BodyTrend = Database['public']['Tables']['body_trends']['Row']
+export type BodyTrendInsert = Database['public']['Tables']['body_trends']['Insert']
+export type BodyTrendUpdate = Database['public']['Tables']['body_trends']['Update']
 
 // Exercise structure for workouts
 export interface Exercise {
