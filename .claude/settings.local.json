@@ -20,7 +20,8 @@
       "Bash(grep:*)",
       "Bash(git rev-parse:*)",
       "Bash(chmod:*)",
-      "Bash(npm run docs:expand:*)"
+      "Bash(npm run docs:expand:*)",
+      "Bash(npx supabase:*)"
     ],
     "deny": [],
     "ask": []
