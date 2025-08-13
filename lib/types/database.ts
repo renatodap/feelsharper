@@ -444,6 +444,167 @@ export interface Database {
           unit?: string
         }
       }
+      workout_programs: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          goal_type: string | null
+          experience_level: string | null
+          duration_weeks: number | null
+          sessions_per_week: number | null
+          equipment_required: string[] | null
+          created_by: string | null
+          is_public: boolean | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          goal_type?: string | null
+          experience_level?: string | null
+          duration_weeks?: number | null
+          sessions_per_week?: number | null
+          equipment_required?: string[] | null
+          created_by?: string | null
+          is_public?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          goal_type?: string | null
+          experience_level?: string | null
+          duration_weeks?: number | null
+          sessions_per_week?: number | null
+          equipment_required?: string[] | null
+          created_by?: string | null
+          is_public?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      workout_templates: {
+        Row: {
+          id: string
+          program_id: string
+          name: string
+          description: string | null
+          week_number: number
+          day_number: number
+          estimated_duration_minutes: number | null
+          exercises: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          program_id: string
+          name: string
+          description?: string | null
+          week_number: number
+          day_number: number
+          estimated_duration_minutes?: number | null
+          exercises?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          program_id?: string
+          name?: string
+          description?: string | null
+          week_number?: number
+          day_number?: number
+          estimated_duration_minutes?: number | null
+          exercises?: Json
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      user_programs: {
+        Row: {
+          id: string
+          user_id: string
+          program_id: string
+          started_at: string
+          current_week: number | null
+          current_day: number | null
+          is_active: boolean | null
+          completed_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          program_id: string
+          started_at?: string
+          current_week?: number | null
+          current_day?: number | null
+          is_active?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          program_id?: string
+          started_at?: string
+          current_week?: number | null
+          current_day?: number | null
+          is_active?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      personal_records: {
+        Row: {
+          id: string
+          user_id: string
+          exercise_name: string
+          record_type: string
+          value: number
+          unit: string
+          workout_id: string | null
+          achieved_at: string
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          exercise_name: string
+          record_type: string
+          value: number
+          unit: string
+          workout_id?: string | null
+          achieved_at?: string
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          exercise_name?: string
+          record_type?: string
+          value?: number
+          unit?: string
+          workout_id?: string | null
+          achieved_at?: string
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -513,6 +674,31 @@ export interface MealTemplateWithItems extends MealTemplate {
     custom_foods?: CustomFood
     recipes?: Recipe
   })[]
+}
+
+export type WorkoutProgram = Database['public']['Tables']['workout_programs']['Row']
+export type WorkoutProgramInsert = Database['public']['Tables']['workout_programs']['Insert']
+export type WorkoutProgramUpdate = Database['public']['Tables']['workout_programs']['Update']
+
+export type WorkoutTemplate = Database['public']['Tables']['workout_templates']['Row']
+export type WorkoutTemplateInsert = Database['public']['Tables']['workout_templates']['Insert']
+export type WorkoutTemplateUpdate = Database['public']['Tables']['workout_templates']['Update']
+
+export type UserProgram = Database['public']['Tables']['user_programs']['Row']
+export type UserProgramInsert = Database['public']['Tables']['user_programs']['Insert']
+export type UserProgramUpdate = Database['public']['Tables']['user_programs']['Update']
+
+export type PersonalRecord = Database['public']['Tables']['personal_records']['Row']
+export type PersonalRecordInsert = Database['public']['Tables']['personal_records']['Insert']
+export type PersonalRecordUpdate = Database['public']['Tables']['personal_records']['Update']
+
+// Extended types with relations
+export interface WorkoutProgramWithTemplates extends WorkoutProgram {
+  workout_templates?: WorkoutTemplate[]
+}
+
+export interface UserProgramWithDetails extends UserProgram {
+  workout_programs?: WorkoutProgramWithTemplates
 }
 
 // Exercise structure for workouts

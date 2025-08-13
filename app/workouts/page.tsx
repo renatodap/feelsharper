@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Dumbbell, Plus, Calendar, TrendingUp, Clock } from 'lucide-react';
+import { Dumbbell, Plus, Calendar, TrendingUp, Clock, Trophy, Target } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Workouts | Feel Sharper',
@@ -111,43 +111,102 @@ export default function WorkoutsPage() {
           </div>
         </section>
 
-        {/* Exercise Templates */}
+        {/* Quick Actions */}
         <section>
           <h2 className="text-2xl font-semibold mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            {/* Popular Exercises */}
+            {/* Workout Programs */}
             <div className="bg-surface border border-border rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <TrendingUp className="w-6 h-6 text-navy" />
-                <h3 className="text-lg font-semibold">Popular Exercises</h3>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Target className="w-6 h-6 text-navy" />
+                  <h3 className="text-lg font-semibold">Programs</h3>
+                </div>
+                <a
+                  href="/workouts/programs"
+                  className="text-navy hover:underline text-sm"
+                >
+                  Browse all
+                </a>
               </div>
               <div className="space-y-3">
                 <div className="py-8 text-center">
-                  <p className="text-text-secondary">No popular exercises yet</p>
+                  <p className="text-text-secondary">Structured workout plans</p>
                   <p className="text-text-muted text-sm mt-1">
-                    Start logging to see your most-used exercises
+                    Follow proven programs to reach your goals
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Workout Templates */}
+            {/* Personal Records */}
             <div className="bg-surface border border-border rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Clock className="w-6 h-6 text-info" />
-                  <h3 className="text-lg font-semibold">Workout Templates</h3>
+                  <Trophy className="w-6 h-6 text-yellow-400" />
+                  <h3 className="text-lg font-semibold">Records</h3>
                 </div>
-                <button className="text-navy hover:underline text-sm">
-                  Create template
-                </button>
+                <a
+                  href="/workouts/records"
+                  className="text-navy hover:underline text-sm"
+                >
+                  View all
+                </a>
               </div>
               <div className="space-y-3">
                 <div className="py-8 text-center">
-                  <p className="text-text-secondary">No templates saved</p>
+                  <p className="text-text-secondary">Track your best lifts</p>
                   <p className="text-text-muted text-sm mt-1">
-                    Save frequently used workouts as templates
+                    Monitor progress and celebrate PRs
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Dashboard */}
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <TrendingUp className="w-6 h-6 text-success" />
+                  <h3 className="text-lg font-semibold">Dashboard</h3>
+                </div>
+                <a
+                  href="/workouts/dashboard"
+                  className="text-navy hover:underline text-sm"
+                >
+                  Open
+                </a>
+              </div>
+              <div className="space-y-3">
+                <div className="py-8 text-center">
+                  <p className="text-text-secondary">Current program progress</p>
+                  <p className="text-text-muted text-sm mt-1">
+                    See today's workout and track progress
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Clock className="w-6 h-6 text-text-secondary" />
+                  <h3 className="text-lg font-semibold">Recent</h3>
+                </div>
+                <a
+                  href="/workouts/history"
+                  className="text-navy hover:underline text-sm"
+                >
+                  View history
+                </a>
+              </div>
+              <div className="space-y-3">
+                <div className="py-8 text-center">
+                  <p className="text-text-secondary">Recent workouts</p>
+                  <p className="text-text-muted text-sm mt-1">
+                    Review past sessions and patterns
                   </p>
                 </div>
               </div>
