@@ -160,6 +160,8 @@ export default function OnboardingFlow() {
       showProgress: true,
     },
   });
+  
+  const [enable2FA, setEnable2FA] = useState(false);
 
   const steps = [
     { title: 'Welcome to Feel Sharper', subtitle: 'Let\'s personalize your experience' },
@@ -168,6 +170,7 @@ export default function OnboardingFlow() {
     { title: 'Units & preferences', subtitle: 'Set your measurement preferences' },
     { title: 'Any constraints?', subtitle: 'Let us know about limitations' },
     { title: 'Customize your dashboard', subtitle: 'Choose what you want to track' },
+    { title: 'Security preferences', subtitle: 'Keep your data safe' },
     { title: 'You\'re all set!', subtitle: 'Ready to start your journey' },
   ];
 
@@ -241,6 +244,7 @@ export default function OnboardingFlow() {
       // (we can move this to a settings table later)
       localStorage.setItem('dashboardPreferences', JSON.stringify(data.dashboardPreferences));
       localStorage.setItem('userConstraints', JSON.stringify(data.constraints));
+      localStorage.setItem('enable2FA', JSON.stringify(enable2FA));
 
       router.push('/dashboard');
     } catch (error) {
@@ -558,6 +562,38 @@ export default function OnboardingFlow() {
             )}
 
             {currentStep === 6 && (
+              <div className="space-y-6">
+                <div className="text-center space-y-4">
+                  <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                    <Shield className="w-10 h-10 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Keep Your Data Secure</h3>
+                  <p className="text-gray-600 max-w-md mx-auto">
+                    Two-factor authentication adds an extra layer of security to your account.
+                  </p>
+                </div>
+                
+                <div className="max-w-sm mx-auto">
+                  <div className="flex items-center justify-between p-4 bg-surface rounded-xl border">
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Enable 2FA</h4>
+                      <p className="text-sm text-gray-600">Recommended for security</p>
+                    </div>
+                    <Checkbox
+                      checked={enable2FA}
+                      onCheckedChange={(checked) => setEnable2FA(!!checked)}
+                      className="scale-125"
+                    />
+                  </div>
+                  
+                  <p className="text-xs text-gray-500 mt-3 text-center">
+                    You can change this setting later in your profile
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 7 && (
               <div className="text-center space-y-6">
                 <div className="relative">
                   <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-2xl animate-bounce-slow">

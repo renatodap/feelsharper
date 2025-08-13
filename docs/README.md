@@ -14,3 +14,5 @@
 - **features/**
   - [status](./features\status.md)
 - **plans/**
+  - [001 critical path analysis](./plans\001_critical_path_analysis.md)
+  - [002 2fa toggle](./plans\002_2fa_toggle.md)

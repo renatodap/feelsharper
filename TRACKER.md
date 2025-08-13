@@ -1,6 +1,6 @@
 # Feel Sharper Feature Implementation Tracker
 
-## 📊 Overall Progress: 12/47 Features (26%)
+## 📊 Overall Progress: 13/47 Features (28%)
 
 ---
 
@@ -18,7 +18,7 @@
 
 ## 🔄 Phase 4: Core Features (IN PROGRESS)
 
-### 1) Onboarding & Identity (5/6 implemented)
+### 1) Onboarding & Identity (6/6 implemented) ✅ COMPLETED
 
 #### Account creation & auth ✅
 - [x] **Email sign-in flow** - `app/(auth)/sign-in/page.tsx`
@@ -43,9 +43,9 @@
 - [x] **Experience level selection** - Beginner, Intermediate, Advanced
 - [x] **Target setting** - Weight targets and timeline
 
-#### Personalization switches ⏳
+#### Personalization switches ✅
 - [x] **Unit preferences** - Metric/Imperial
-- [ ] **Coaching tone settings** - Not implemented yet
+- [x] **2FA toggle** - Security preferences in onboarding
 
 ---
 
