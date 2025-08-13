@@ -16,7 +16,8 @@ import {
   UserPlus,
   Apple,
   Activity,
-  TrendingUp
+  TrendingUp,
+  Scale
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -67,6 +68,14 @@ export const mainNavigation: NavigationItem[] = [
     name: 'Weight', 
     href: '/weight', 
     icon: Activity,
+    requiresAuth: true,
+    showInMenu: true,
+    showInFooter: false
+  },
+  { 
+    name: 'Body', 
+    href: '/body', 
+    icon: Scale,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
