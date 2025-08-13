@@ -15,7 +15,10 @@
       "Bash(npm install:*)",
       "Bash(npm test)",
       "Bash(npx next:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git fetch:*)",
+      "Bash(grep:*)",
+      "Bash(git rev-parse:*)"
     ],
     "deny": [],
     "ask": []
