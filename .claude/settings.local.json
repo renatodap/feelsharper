@@ -22,7 +22,9 @@
       "Bash(chmod:*)",
       "Bash(npm run docs:expand:*)",
       "Bash(npx supabase:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npm test:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

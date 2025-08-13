@@ -19,3 +19,4 @@
   - [001 critical path analysis](./plans\001_critical_path_analysis.md)
   - [002 2fa toggle](./plans\002_2fa_toggle.md)
   - [003 custom foods](./plans\003_custom_foods.md)
+  - [004 workout parser](./plans\004_workout_parser.md)

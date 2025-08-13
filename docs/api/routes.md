@@ -80,3 +80,9 @@
 
 ---
 
+## POST /api/workouts\parse
+
+**File:** `app\api\workouts\parse\route.ts`
+
+---
+

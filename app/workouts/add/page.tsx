@@ -3,6 +3,8 @@
 import { useState, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Plus, Trash2, Dumbbell, Bot, Edit3, Save } from 'lucide-react';
+import NaturalLanguageInput from '@/components/workouts/NaturalLanguageInput';
+import type { Exercise as DatabaseExercise, WorkoutTypeEnum } from '@/lib/types/database';
 
 interface Exercise {
   id: string;
@@ -21,59 +23,20 @@ interface Set {
 
 const generateId = () => Math.random().toString(36).substr(2, 9);
 
-// Simple deterministic workout parser (no LLM required)
-function parseWorkoutText(text: string): Exercise[] {
-  const exercises: Exercise[] = [];
-  const lines = text.split('\n').filter(line => line.trim());
-  
-  for (const line of lines) {
-    // Match patterns like: "Bench Press 3x5 @ 60kg" or "Squat 5x3 135lb"
-    const exerciseMatch = line.match(/^([^0-9]+?)[\s]*(\d+)x(\d+)[\s]*[@]?[\s]*(\d+(?:\.\d+)?)\s*(kg|lb|lbs)?/i);
-    
-    if (exerciseMatch) {
-      const [, exerciseName, sets, reps, weight, unit] = exerciseMatch;
-      const weightInKg = unit?.toLowerCase().includes('lb') ? parseFloat(weight) * 0.453592 : parseFloat(weight);
-      
-      const exercise: Exercise = {
-        id: generateId(),
-        name: exerciseName.trim(),
-        sets: []
-      };
-      
-      // Create the specified number of sets
-      for (let i = 0; i < parseInt(sets); i++) {
-        exercise.sets.push({
-          id: generateId(),
-          reps: parseInt(reps),
-          weight: weightInKg
-        });
-      }
-      
-      exercises.push(exercise);
-    }
-    // Match cardio patterns like: "5k run 27:30" or "10km bike 45:00"
-    else {
-      const cardioMatch = line.match(/^(\d+(?:\.\d+)?)\s*(k|km|mi|mile)?\s*([^0-9]+?)[\s]*(\d+):(\d+)/i);
-      
-      if (cardioMatch) {
-        const [, distance, unit, exerciseName, minutes, seconds] = cardioMatch;
-        const distanceInKm = unit?.toLowerCase().includes('mi') ? parseFloat(distance) * 1.60934 : parseFloat(distance);
-        const totalSeconds = parseInt(minutes) * 60 + parseInt(seconds);
-        
-        exercises.push({
-          id: generateId(),
-          name: exerciseName.trim(),
-          sets: [{
-            id: generateId(),
-            distance: distanceInKm,
-            duration_sec: totalSeconds
-          }]
-        });
-      }
-    }
-  }
-  
-  return exercises;
+// Convert database exercise format to local format
+function convertDatabaseExercisesToLocal(dbExercises: DatabaseExercise[]): Exercise[] {
+  return dbExercises.map(exercise => ({
+    id: generateId(),
+    name: exercise.name,
+    sets: exercise.sets?.map(set => ({
+      id: generateId(),
+      reps: set.reps,
+      weight: set.weight_kg,
+      distance: undefined, // Distance is tracked per exercise, not per set in the new format
+      duration_sec: set.duration_seconds,
+      rpe: undefined // RPE is not in the new format yet
+    })) || []
+  }));
 }
 
 function AddWorkoutContent() {
@@ -83,21 +46,20 @@ function AddWorkoutContent() {
   
   const [workoutTitle, setWorkoutTitle] = useState('');
   const [workoutNotes, setWorkoutNotes] = useState('');
+  const [workoutType, setWorkoutType] = useState<WorkoutTypeEnum>('strength');
   const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [aiText, setAiText] = useState('');
   const [isAiMode, setIsAiMode] = useState(aiMode);
 
-  const handleAiParse = () => {
-    if (!aiText.trim()) return;
-    
-    const parsed = parseWorkoutText(aiText);
-    setExercises(parsed);
+  const handleWorkoutParsed = (parsed: { workout_type: WorkoutTypeEnum; exercises: DatabaseExercise[] }) => {
+    const localExercises = convertDatabaseExercisesToLocal(parsed.exercises);
+    setExercises(localExercises);
+    setWorkoutType(parsed.workout_type);
     setIsAiMode(false);
     
     // Generate a title if not set
-    if (!workoutTitle && parsed.length > 0) {
-      const exerciseNames = parsed.map(e => e.name).slice(0, 2);
-      setWorkoutTitle(exerciseNames.join(', ') + (parsed.length > 2 ? ', ...' : ''));
+    if (!workoutTitle && localExercises.length > 0) {
+      const exerciseNames = localExercises.map(e => e.name).slice(0, 2);
+      setWorkoutTitle(exerciseNames.join(', ') + (localExercises.length > 2 ? ', ...' : ''));
     }
   };
 
@@ -181,52 +143,25 @@ function AddWorkoutContent() {
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold">AI Workout Parser</h1>
-              <p className="text-text-secondary">Paste or type your workout and we'll parse it</p>
+              <h1 className="text-3xl font-bold">Natural Language Workout Parser</h1>
+              <p className="text-text-secondary">Describe your workout in plain English</p>
             </div>
           </div>
 
           <div className="max-w-2xl mx-auto">
-            {/* AI Text Input */}
-            <div className="bg-surface border border-border rounded-xl p-6 mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Bot className="w-6 h-6 text-navy" />
-                <h3 className="text-lg font-semibold">Workout Text</h3>
-              </div>
-              <textarea
-                value={aiText}
-                onChange={(e) => setAiText(e.target.value)}
-                placeholder="Paste your workout here...&#10;&#10;Examples:&#10;Bench Press 3x5 @ 60kg&#10;Squat 5x3 135lb&#10;Deadlift 1x5 140kg&#10;5k run 27:30"
-                className="w-full h-64 px-4 py-3 bg-surface-2 border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-focus resize-none"
-                autoFocus
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <NaturalLanguageInput
+                onWorkoutParsed={handleWorkoutParsed}
+                className="mb-6"
               />
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-4 justify-center">
-              <button
-                onClick={handleAiParse}
-                disabled={!aiText.trim()}
-                className="px-6 py-3 bg-navy text-white rounded-xl hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-              >
-                Parse Workout
-              </button>
-              <button
-                onClick={() => setIsAiMode(false)}
-                className="px-6 py-3 bg-surface border border-border text-text-primary rounded-xl hover:bg-surface-2 transition-colors"
-              >
-                Manual Entry
-              </button>
-            </div>
-
-            {/* Examples */}
-            <div className="mt-8 p-6 bg-surface-2 border border-border rounded-xl">
-              <h4 className="font-semibold mb-3">Supported Formats:</h4>
-              <div className="space-y-2 text-sm text-text-secondary">
-                <p><code className="bg-surface px-2 py-1 rounded">Exercise 3x5 @ 60kg</code> - Strength training</p>
-                <p><code className="bg-surface px-2 py-1 rounded">Bench Press 5x3 135lb</code> - With pounds</p>
-                <p><code className="bg-surface px-2 py-1 rounded">5k run 27:30</code> - Cardio with time</p>
-                <p><code className="bg-surface px-2 py-1 rounded">10km bike 45:00</code> - Distance cardio</p>
+              
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setIsAiMode(false)}
+                  className="px-6 py-3 bg-surface-2 border border-border text-text-primary rounded-xl hover:bg-surface-3 transition-colors"
+                >
+                  Switch to Manual Entry
+                </button>
               </div>
             </div>
           </div>
@@ -256,13 +191,13 @@ function AddWorkoutContent() {
             className="inline-flex items-center px-4 py-2 bg-surface border border-border text-text-primary rounded-lg hover:bg-surface-2 transition-colors"
           >
             <Bot className="w-4 h-4 mr-2" />
-            AI Parser
+            Natural Language
           </button>
         </div>
 
         {/* Workout Details */}
         <div className="bg-surface border border-border rounded-xl p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-text-secondary text-sm font-medium mb-2">
                 Workout Title
@@ -274,6 +209,21 @@ function AddWorkoutContent() {
                 placeholder="e.g., Push Day, Leg Day, Cardio"
                 className="w-full px-3 py-2 bg-surface-2 border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-focus"
               />
+            </div>
+            <div>
+              <label className="block text-text-secondary text-sm font-medium mb-2">
+                Workout Type
+              </label>
+              <select
+                value={workoutType}
+                onChange={(e) => setWorkoutType(e.target.value as WorkoutTypeEnum)}
+                className="w-full px-3 py-2 bg-surface-2 border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-focus"
+              >
+                <option value="strength">Strength</option>
+                <option value="cardio">Cardio</option>
+                <option value="flexibility">Flexibility</option>
+                <option value="sport">Sport</option>
+              </select>
             </div>
             <div>
               <label className="block text-text-secondary text-sm font-medium mb-2">

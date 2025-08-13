@@ -8,7 +8,7 @@ describe('Today Page', () => {
   it('renders the Today page', () => {
     render(<TodayPage />)
     
-    expect(screen.getByText('Today')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Today' })).toBeInTheDocument()
     expect(screen.getByText('Quick Actions')).toBeInTheDocument()
     expect(screen.getAllByText('Log Food')).toHaveLength(2)
     expect(screen.getAllByText('Log Workout')).toHaveLength(2)
