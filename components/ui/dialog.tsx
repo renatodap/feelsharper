@@ -25,6 +25,11 @@ interface DialogTitleProps {
   children: React.ReactNode;
 }
 
+interface DialogTriggerProps {
+  asChild?: boolean;
+  children: React.ReactNode;
+}
+
 const Dialog = ({ open = false, onOpenChange, children }: DialogProps) => {
   React.useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -90,4 +95,11 @@ const DialogTitle = ({ className, children }: DialogTitleProps) => {
   );
 };
 
-export { Dialog, DialogContent, DialogHeader, DialogTitle };
+const DialogTrigger = ({ asChild = false, children }: DialogTriggerProps) => {
+  if (asChild) {
+    return <>{children}</>;
+  }
+  return <button>{children}</button>;
+};
+
+export { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger };

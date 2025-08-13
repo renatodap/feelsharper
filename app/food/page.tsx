@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Apple, Plus, Calendar, TrendingUp } from 'lucide-react';
+import { Apple, Plus, Calendar, TrendingUp, ChefHat, BookTemplate } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Food | Feel Sharper',
@@ -105,10 +105,10 @@ export default function FoodPage() {
           </div>
         </section>
 
-        {/* Recent Foods */}
+        {/* Quick Actions */}
         <section>
           <h2 className="text-2xl font-semibold mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
             {/* Recent Foods Card */}
             <div className="bg-surface border border-border rounded-xl p-6">
@@ -126,25 +126,73 @@ export default function FoodPage() {
               </div>
             </div>
 
-            {/* Saved Meals Card */}
+            {/* Recipes Card */}
             <div className="bg-surface border border-border rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <Apple className="w-6 h-6 text-success" />
-                  <h3 className="text-lg font-semibold">Saved Meals</h3>
+                  <ChefHat className="w-6 h-6 text-navy" />
+                  <h3 className="text-lg font-semibold">Recipes</h3>
                 </div>
                 <a
-                  href="/food/meals/create"
+                  href="/food/recipes"
                   className="text-navy hover:underline text-sm"
                 >
-                  Create meal
+                  View all
                 </a>
               </div>
               <div className="space-y-3">
                 <div className="py-8 text-center">
-                  <p className="text-text-secondary">No saved meals yet</p>
+                  <p className="text-text-secondary">No recipes yet</p>
                   <p className="text-text-muted text-sm mt-1">
-                    Save combinations of foods to log them quickly
+                    Create custom recipes for accurate nutrition tracking
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Meal Templates Card */}
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <BookTemplate className="w-6 h-6 text-success" />
+                  <h3 className="text-lg font-semibold">Templates</h3>
+                </div>
+                <a
+                  href="/food/templates"
+                  className="text-navy hover:underline text-sm"
+                >
+                  View all
+                </a>
+              </div>
+              <div className="space-y-3">
+                <div className="py-8 text-center">
+                  <p className="text-text-secondary">No templates yet</p>
+                  <p className="text-text-muted text-sm mt-1">
+                    Save meal combinations for quick logging
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Analytics Card */}
+            <div className="bg-surface border border-border rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <TrendingUp className="w-6 h-6 text-success" />
+                  <h3 className="text-lg font-semibold">Analytics</h3>
+                </div>
+                <a
+                  href="/insights"
+                  className="text-navy hover:underline text-sm"
+                >
+                  View all
+                </a>
+              </div>
+              <div className="space-y-3">
+                <div className="py-8 text-center">
+                  <p className="text-text-secondary">Start logging to see insights</p>
+                  <p className="text-text-muted text-sm mt-1">
+                    Track trends and nutrition patterns
                   </p>
                 </div>
               </div>

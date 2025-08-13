@@ -24,7 +24,10 @@
       "Bash(npx supabase:*)",
       "Bash(ls:*)",
       "Bash(npm test:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(npm run lint)"
     ],
     "deny": [],
     "ask": []

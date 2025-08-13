@@ -313,6 +313,137 @@ export interface Database {
           notes?: string | null
         }
       }
+      recipes: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          description: string | null
+          servings: number | null
+          prep_time_minutes: number | null
+          cook_time_minutes: number | null
+          instructions: string[] | null
+          tags: string[] | null
+          is_public: boolean | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          description?: string | null
+          servings?: number | null
+          prep_time_minutes?: number | null
+          cook_time_minutes?: number | null
+          instructions?: string[] | null
+          tags?: string[] | null
+          is_public?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          description?: string | null
+          servings?: number | null
+          prep_time_minutes?: number | null
+          cook_time_minutes?: number | null
+          instructions?: string[] | null
+          tags?: string[] | null
+          is_public?: boolean | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      recipe_ingredients: {
+        Row: {
+          id: string
+          recipe_id: string
+          food_id: number | null
+          custom_food_id: string | null
+          quantity: number
+          unit: string
+          notes: string | null
+          order_index: number | null
+        }
+        Insert: {
+          id?: string
+          recipe_id: string
+          food_id?: number | null
+          custom_food_id?: string | null
+          quantity: number
+          unit: string
+          notes?: string | null
+          order_index?: number | null
+        }
+        Update: {
+          id?: string
+          recipe_id?: string
+          food_id?: number | null
+          custom_food_id?: string | null
+          quantity?: number
+          unit?: string
+          notes?: string | null
+          order_index?: number | null
+        }
+      }
+      meal_templates: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          meal_type: string | null
+          is_favorite: boolean | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          meal_type?: string | null
+          is_favorite?: boolean | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          meal_type?: string | null
+          is_favorite?: boolean | null
+          created_at?: string
+        }
+      }
+      meal_template_items: {
+        Row: {
+          id: string
+          template_id: string
+          food_id: number | null
+          custom_food_id: string | null
+          recipe_id: string | null
+          quantity: number
+          unit: string
+        }
+        Insert: {
+          id?: string
+          template_id: string
+          food_id?: number | null
+          custom_food_id?: string | null
+          recipe_id?: string | null
+          quantity: number
+          unit: string
+        }
+        Update: {
+          id?: string
+          template_id?: string
+          food_id?: number | null
+          custom_food_id?: string | null
+          recipe_id?: string | null
+          quantity?: number
+          unit?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -358,6 +489,31 @@ export type NutritionLogUpdate = Database['public']['Tables']['nutrition_logs'][
 export type CustomFood = Database['public']['Tables']['custom_foods']['Row']
 export type CustomFoodInsert = Database['public']['Tables']['custom_foods']['Insert']
 export type CustomFoodUpdate = Database['public']['Tables']['custom_foods']['Update']
+
+export type Recipe = Database['public']['Tables']['recipes']['Row']
+export type RecipeInsert = Database['public']['Tables']['recipes']['Insert']
+export type RecipeUpdate = Database['public']['Tables']['recipes']['Update']
+
+export type RecipeIngredient = Database['public']['Tables']['recipe_ingredients']['Row']
+export type RecipeIngredientInsert = Database['public']['Tables']['recipe_ingredients']['Insert']
+export type RecipeIngredientUpdate = Database['public']['Tables']['recipe_ingredients']['Update']
+
+export type MealTemplate = Database['public']['Tables']['meal_templates']['Row']
+export type MealTemplateInsert = Database['public']['Tables']['meal_templates']['Insert']
+export type MealTemplateUpdate = Database['public']['Tables']['meal_templates']['Update']
+
+export type MealTemplateItem = Database['public']['Tables']['meal_template_items']['Row']
+export type MealTemplateItemInsert = Database['public']['Tables']['meal_template_items']['Insert']
+export type MealTemplateItemUpdate = Database['public']['Tables']['meal_template_items']['Update']
+
+// Extended types with relations
+export interface MealTemplateWithItems extends MealTemplate {
+  meal_template_items?: (MealTemplateItem & {
+    foods?: Food
+    custom_foods?: CustomFood
+    recipes?: Recipe
+  })[]
+}
 
 // Exercise structure for workouts
 export interface Exercise {
