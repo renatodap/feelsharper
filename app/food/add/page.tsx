@@ -2,10 +2,12 @@
 
 import { useState, useCallback, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Search, ArrowLeft, Plus, Apple, Calculator } from 'lucide-react';
+import { Search, ArrowLeft, Plus, Apple, Calculator, Utensils } from 'lucide-react';
+import CustomFoodModal from '@/components/food/CustomFoodModal';
+import type { CustomFood } from '@/lib/types/database';
 
 interface Food {
-  id: number;
+  id: string | number;
   name: string;
   brand: string | null;
   unit: string;
@@ -13,6 +15,8 @@ interface Food {
   protein_g: number;
   carbs_g: number;
   fat_g: number;
+  isCustom?: boolean;
+  customFood?: CustomFood;
 }
 
 // Mock food data (in real app, this would come from Supabase)
@@ -34,19 +38,70 @@ function AddFoodContent() {
   const [quantity, setQuantity] = useState('1');
   const [mealType, setMealType] = useState(preselectedMeal);
   const [filteredFoods, setFilteredFoods] = useState(mockFoods);
+  const [customFoods, setCustomFoods] = useState<CustomFood[]>([]);
+  const [isCustomFoodModalOpen, setIsCustomFoodModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Load custom foods on mount
+  useEffect(() => {
+    loadCustomFoods();
+  }, []);
 
   // Filter foods as user types
   useEffect(() => {
+    let filtered = mockFoods;
+    let filteredCustom = customFoods;
+
     if (searchTerm) {
-      const filtered = mockFoods.filter(food =>
+      filtered = mockFoods.filter(food =>
         food.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (food.brand !== null && food.brand.toLowerCase().includes(searchTerm.toLowerCase()))
       );
-      setFilteredFoods(filtered);
-    } else {
-      setFilteredFoods(mockFoods);
+      filteredCustom = customFoods.filter(food =>
+        food.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (food.brand !== null && food.brand.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
     }
-  }, [searchTerm]);
+
+    // Combine USDA and custom foods, with custom foods first
+    const allFoods = [
+      ...filteredCustom.map(food => ({
+        id: `custom-${food.id}`,
+        name: food.name,
+        brand: food.brand,
+        unit: food.serving_unit || 'g',
+        kcal: food.calories_per_serving || 0,
+        protein_g: food.protein_g || 0,
+        carbs_g: food.carbs_g || 0,
+        fat_g: food.fat_g || 0,
+        isCustom: true,
+        customFood: food
+      })),
+      ...filtered.map(food => ({
+        ...food,
+        id: `usda-${food.id}`,
+        isCustom: false
+      }))
+    ];
+
+    setFilteredFoods(allFoods);
+  }, [searchTerm, customFoods]);
+
+  const loadCustomFoods = async () => {
+    try {
+      const response = await fetch('/api/foods/custom');
+      if (response.ok) {
+        const data = await response.json();
+        setCustomFoods(data.foods || []);
+      }
+    } catch (error) {
+      console.error('Failed to load custom foods:', error);
+    }
+  };
+
+  const handleCustomFoodSave = (newFood: CustomFood) => {
+    setCustomFoods(prev => [...prev, newFood]);
+  };
 
   // Calculate nutrition based on quantity
   const calculatedNutrition = selectedFood ? {
@@ -132,8 +187,16 @@ function AddFoodContent() {
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-medium text-text-primary">{food.name}</h3>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-medium text-text-primary">{food.name}</h3>
+                          {food.isCustom && (
+                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-navy/20 text-navy">
+                              <Utensils className="w-3 h-3" />
+                              Custom
+                            </span>
+                          )}
+                        </div>
                         {food.brand && (
                           <p className="text-sm text-text-muted">{food.brand}</p>
                         )}
@@ -153,7 +216,10 @@ function AddFoodContent() {
             </div>
 
             {/* Create Custom Food */}
-            <button className="w-full p-4 border-2 border-dashed border-border rounded-xl text-text-secondary hover:bg-surface-2 hover:border-navy transition-all">
+            <button 
+              onClick={() => setIsCustomFoodModalOpen(true)}
+              className="w-full p-4 border-2 border-dashed border-border rounded-xl text-text-secondary hover:bg-surface-2 hover:border-navy transition-all"
+            >
               <Plus className="w-6 h-6 mx-auto mb-2" />
               <span>Create custom food</span>
             </button>
@@ -255,6 +321,13 @@ function AddFoodContent() {
           
         </div>
       </div>
+
+      {/* Custom Food Modal */}
+      <CustomFoodModal
+        isOpen={isCustomFoodModalOpen}
+        onClose={() => setIsCustomFoodModalOpen(false)}
+        onSave={handleCustomFoodSave}
+      />
     </div>
   );
 }

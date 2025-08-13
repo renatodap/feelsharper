@@ -210,6 +210,65 @@ export interface Database {
           notes?: string | null
         }
       }
+      custom_foods: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          brand: string | null
+          serving_size: number | null
+          serving_unit: string | null
+          calories_per_serving: number | null
+          protein_g: number | null
+          carbs_g: number | null
+          fat_g: number | null
+          fiber_g: number | null
+          sugar_g: number | null
+          sodium_mg: number | null
+          is_recipe: boolean
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          brand?: string | null
+          serving_size?: number | null
+          serving_unit?: string | null
+          calories_per_serving?: number | null
+          protein_g?: number | null
+          carbs_g?: number | null
+          fat_g?: number | null
+          fiber_g?: number | null
+          sugar_g?: number | null
+          sodium_mg?: number | null
+          is_recipe?: boolean
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          brand?: string | null
+          serving_size?: number | null
+          serving_unit?: string | null
+          calories_per_serving?: number | null
+          protein_g?: number | null
+          carbs_g?: number | null
+          fat_g?: number | null
+          fiber_g?: number | null
+          sugar_g?: number | null
+          sodium_mg?: number | null
+          is_recipe?: boolean
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       nutrition_logs: {
         Row: {
           id: string
@@ -295,6 +354,10 @@ export type BodyWeightUpdate = Database['public']['Tables']['body_weight']['Upda
 export type NutritionLog = Database['public']['Tables']['nutrition_logs']['Row']
 export type NutritionLogInsert = Database['public']['Tables']['nutrition_logs']['Insert']
 export type NutritionLogUpdate = Database['public']['Tables']['nutrition_logs']['Update']
+
+export type CustomFood = Database['public']['Tables']['custom_foods']['Row']
+export type CustomFoodInsert = Database['public']['Tables']['custom_foods']['Insert']
+export type CustomFoodUpdate = Database['public']['Tables']['custom_foods']['Update']
 
 // Exercise structure for workouts
 export interface Exercise {

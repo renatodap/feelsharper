@@ -14,6 +14,30 @@
 
 ---
 
+## GET /api/foods\custom
+
+**File:** `app\api\foods\custom\route.ts`
+
+---
+
+## POST /api/foods\custom
+
+**File:** `app\api\foods\custom\route.ts`
+
+---
+
+## PUT /api/foods\custom\[id]
+
+**File:** `app\api\foods\custom\[id]\route.ts`
+
+---
+
+## DELETE /api/foods\custom\[id]
+
+**File:** `app\api\foods\custom\[id]\route.ts`
+
+---
+
 ## GET /api/health
 
 **File:** `app\api\health\route.ts`
