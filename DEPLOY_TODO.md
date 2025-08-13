@@ -1,7 +1,8 @@
 # Deployment Owner Checklist
 
 > **Auto-updated by autonomous build system**  
-> Last updated: 2025-01-13 23:46 UTC
+> Last updated: 2025-01-14 03:30 UTC
+> **CRITICAL UPDATE:** AI Coaching, Squads, and Viral Features now live!
 
 ## 🎯 Manual Owner Actions Required
 
@@ -23,7 +24,10 @@
 
 ### 2) Supabase Configuration  
 - [x] **Project created** - ✅ DONE (database accessible)
-- [x] **Database migrations** - ✅ DONE (latest schema deployed)
+- [ ] **Database migrations** - ⚠️ NEW MIGRATIONS PENDING
+  - Run: `npx supabase db push` to apply:
+    - 0007_ai_coaching_system.sql (AI coach, insights, recommendations)
+    - 0008_viral_features.sql (squads, challenges, badges, streaks)
 - [x] **RLS policies** - ✅ DONE (all tables secured)
 - [ ] **Auth providers setup** - ⚠️ PENDING
   - Email auth: ✅ Working
@@ -61,9 +65,17 @@
 ---
 
 ## 🚨 Critical Next Steps
-1. **Verify** `SUPABASE_SERVICE_ROLE_KEY` in Vercel env vars
-2. **Consider** custom domain setup for production readiness
-3. **Setup** Google OAuth when user feedback indicates need
+1. **URGENT:** Add `ANTHROPIC_API_KEY` to Vercel env vars for AI coaching
+2. **URGENT:** Run database migrations for new features:
+   ```bash
+   npx supabase db push
+   ```
+3. **Verify** `SUPABASE_SERVICE_ROLE_KEY` in Vercel env vars
+4. **Enable** pgvector extension in Supabase for AI embeddings:
+   - Go to Supabase Dashboard → Database → Extensions
+   - Enable "vector" extension
+5. **Consider** custom domain setup for production readiness
+6. **Setup** Google OAuth when user feedback indicates need
 
 ---
 
