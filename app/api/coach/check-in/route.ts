@@ -234,9 +234,9 @@ async function analyzeCheckInPatterns(userId: string, supabase: any) {
   if (!recentCheckIns || recentCheckIns.length < 3) return;
 
   // Calculate trends
-  const avgStress = recentCheckIns.reduce((acc, c) => acc + (c.stress_level || 5), 0) / recentCheckIns.length;
-  const avgRecovery = recentCheckIns.reduce((acc, c) => acc + (c.recovery_status || 5), 0) / recentCheckIns.length;
-  const avgEnergy = recentCheckIns.reduce((acc, c) => acc + (c.energy_level || 5), 0) / recentCheckIns.length;
+  const avgStress = recentCheckIns.reduce((acc: number, c: any) => acc + (c.stress_level || 5), 0) / recentCheckIns.length;
+  const avgRecovery = recentCheckIns.reduce((acc: number, c: any) => acc + (c.recovery_status || 5), 0) / recentCheckIns.length;
+  const avgEnergy = recentCheckIns.reduce((acc: number, c: any) => acc + (c.energy_level || 5), 0) / recentCheckIns.length;
 
   // Create insights based on patterns
   if (avgStress > 7) {

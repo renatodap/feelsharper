@@ -895,3 +895,32 @@ export interface ExerciseSet {
   rest_seconds?: number
   completed: boolean
 }
+
+// AI Coaching Types
+export interface AIConversation {
+  id: string
+  user_id: string
+  title?: string | null
+  context?: string | null
+  started_at: string
+  last_message_at: string
+  message_count: number
+  is_archived: boolean
+  metadata: Json
+  created_at: string
+  updated_at: string
+}
+
+export interface AIMessage {
+  id: string
+  conversation_id: string
+  user_id: string
+  role: 'user' | 'assistant' | 'system'
+  content: string
+  tokens_used?: number | null
+  model_used?: string | null
+  citations: Json
+  feedback_rating?: number | null
+  feedback_text?: string | null
+  created_at: string
+}

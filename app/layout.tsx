@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Crimson_Text, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { PostHogProvider, PostHogPageview } from "@/components/providers/PostHogProvider";
+import { Suspense } from 'react';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -80,9 +82,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${crimson.variable} ${jetbrainsMono.variable} scroll-smooth`}>
       <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider>
+            <Suspense fallback={null}>
+              <PostHogPageview />
+            </Suspense>
+            {children}
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
