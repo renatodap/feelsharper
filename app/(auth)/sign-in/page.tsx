@@ -13,6 +13,7 @@ function SignInForm() {
   const params = useSearchParams();
   const redirect = params.get("redirect") || "/today";
   const authError = params.get("error");
+  const errorDetails = params.get("details");
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +42,14 @@ function SignInForm() {
         {/* Auth Error Message */}
         {authError === 'auth_failed' && (
           <div className="mb-4 p-3 bg-error/10 border border-error/20 rounded-lg">
-            <p className="text-sm text-error">Authentication failed. Please try again.</p>
+            <p className="text-sm text-error">
+              Authentication failed. Please try again.
+              {errorDetails && (
+                <span className="block mt-1 text-xs opacity-75">
+                  Details: {decodeURIComponent(errorDetails)}
+                </span>
+              )}
+            </p>
           </div>
         )}
         

@@ -7,8 +7,10 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
   const next = searchParams.get('next') ?? '/today';
 
+  console.log('Auth callback received:', { code: !!code, next });
+
   if (code) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -27,13 +29,23 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    console.log('Attempting to exchange code for session...');
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+    if (error) {
+      console.error('Code exchange error:', error);
+      return NextResponse.redirect(`${origin}/sign-in?error=auth_failed&details=${encodeURIComponent(error.message)}`);
     }
+
+    console.log('Code exchange successful, user:', data.user?.email);
+    
+    // Create the redirect response
+    const redirectResponse = NextResponse.redirect(`${origin}${next}`);
+    
+    return redirectResponse;
   }
 
+  console.log('No code provided in callback');
   // Auth failed, redirect to sign-in with error
-  return NextResponse.redirect(`${origin}/sign-in?error=auth_failed`);
+  return NextResponse.redirect(`${origin}/sign-in?error=auth_failed&details=no_code`);
 }
