@@ -13,11 +13,23 @@ import { getMenuItems } from '@/lib/navigation/routes'
 
 export function AuthQuick() {
   const supabase = createSupabaseBrowser()
-  const [email, setEmail] = useState<string | null>(null)
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Get initial session
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+      setLoading(false)
+    })
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   const signOut = async () => {
@@ -25,10 +37,11 @@ export function AuthQuick() {
     window.location.href = '/sign-in'
   }
 
-  if (!email) return <a href="/sign-in" className="underline text-sm">Sign in</a>
+  if (loading) return <span className="text-sm">...</span>
+  if (!user) return <a href="/sign-in" className="underline text-sm">Sign in</a>
   return (
     <button onClick={signOut} className="text-sm underline">
-      Sign out
+      Sign out ({user.email?.split('@')[0]})
     </button>
   )
 }
