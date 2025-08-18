@@ -26,7 +26,8 @@ jobs:
       - name: Install dependencies
         run: |
           npm install --force
-          npm rebuild || true
+          npm install lightningcss-linux-x64-gnu --save-optional
+          npm rebuild lightningcss || true
       
       - name: Build
         run: npm run build
