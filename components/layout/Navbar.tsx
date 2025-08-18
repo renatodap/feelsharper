@@ -17,14 +17,16 @@ export function AuthQuick() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user)
+    // Get initial session (more reliable than getUser)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session:', session?.user?.email || 'None');
+      setUser(session?.user ?? null)
       setLoading(false)
     })
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state change:', event, session?.user?.email || 'None');
       setUser(session?.user ?? null)
       setLoading(false)
     })
@@ -62,8 +64,9 @@ export default function Navbar() {
   useEffect(() => {
     // Check auth status and update navigation
     const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      const authenticated = !!user
+      const { data: { session } } = await supabase.auth.getSession()
+      const authenticated = !!session?.user
+      console.log('Navbar auth check:', authenticated, session?.user?.email);
       setIsAuthenticated(authenticated)
       setNavigation(getMenuItems(authenticated, false))
     }
@@ -73,6 +76,7 @@ export default function Navbar() {
     // Subscribe to auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       const authenticated = !!session?.user
+      console.log('Navbar auth change:', event, authenticated);
       setIsAuthenticated(authenticated)
       setNavigation(getMenuItems(authenticated, false))
     })
