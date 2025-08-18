@@ -12,6 +12,7 @@ function SignInForm() {
   const [err, setErr] = useState<string | null>(null);
   const params = useSearchParams();
   const redirect = params.get("redirect") || "/today";
+  const authError = params.get("error");
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +37,13 @@ function SignInForm() {
       <SimpleHeader />
       <main className="mx-auto max-w-sm p-6 pt-20">
         <h1 className="text-2xl font-semibold mb-6 text-text-primary">Sign in to FeelSharper</h1>
+        
+        {/* Auth Error Message */}
+        {authError === 'auth_failed' && (
+          <div className="mb-4 p-3 bg-error/10 border border-error/20 rounded-lg">
+            <p className="text-sm text-error">Authentication failed. Please try again.</p>
+          </div>
+        )}
         
         {/* Google Sign In */}
         <div className="mb-6">
