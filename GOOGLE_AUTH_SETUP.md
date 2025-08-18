@@ -192,3 +192,10 @@ Once you complete these steps, users can sign in with Google. The existing code 
 
 Need help? The most common issue is the redirect URI - it must be EXACTLY:
 `https://[your-project-id].supabase.co/auth/v1/callback`
+
+## 🔧 Troubleshooting Vercel Deployment
+
+If you see "Application error: a server-side exception has occurred":
+1. Check environment variables are set in Vercel
+2. Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are correct
+3. Redeploy after adding environment variables
