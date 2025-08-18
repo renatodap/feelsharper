@@ -38,7 +38,7 @@ export default async function HomePage() {
             {/* Free Tier */}
             <div className="bg-surface border border-border rounded-xl p-8">
               <h3 className="text-2xl font-bold text-text-primary mb-2">Free</h3>
-              <div className="text-4xl font-bold text-navy mb-6">$0<span className="text-xl text-text-secondary font-normal">/month</span></div>
+              <div className="text-4xl font-bold text-navy-400 mb-6">$0<span className="text-xl text-text-secondary font-normal">/month</span></div>
               <ul className="text-left space-y-3 mb-8">
                 <li className="flex items-center text-text-secondary">
                   <div className="w-2 h-2 bg-success rounded-full mr-3"></div>
@@ -103,7 +103,7 @@ export default async function HomePage() {
             {/* Annual Tier */}
             <div className="bg-surface border border-border rounded-xl p-8">
               <h3 className="text-2xl font-bold text-text-primary mb-2">Premium Annual</h3>
-              <div className="text-4xl font-bold text-navy mb-2">$99<span className="text-xl text-text-secondary font-normal">/year</span></div>
+              <div className="text-4xl font-bold text-navy-400 mb-2">$99<span className="text-xl text-text-secondary font-normal">/year</span></div>
               <div className="text-sm text-success mb-6">Save $20 annually</div>
               <ul className="text-left space-y-3 mb-8">
                 <li className="flex items-center text-text-secondary">

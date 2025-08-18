@@ -45,13 +45,13 @@ export default function FitnessHero() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
           </span>
-          <span className="text-sm font-medium text-text-secondary">Freemium fitness tracking that works</span>
+          <span className="text-sm font-medium text-text-secondary">Fitness tracking that works</span>
         </div>
 
         {/* Main Heading */}
         <h1 className={`text-5xl md:text-7xl font-bold mb-6 transition-all duration-1000 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <span className="block text-text-primary">Feel</span>
-          <span className="block text-navy">
+          <span className="block text-navy-400">
             Sharper
           </span>
         </h1>
@@ -88,7 +88,7 @@ export default function FitnessHero() {
             const Icon = stat.icon;
             return (
               <div key={index} className="bg-surface border border-border rounded-xl p-6 group hover:scale-105 hover:bg-surface-2 transition-all duration-300">
-                <Icon className="w-8 h-8 mx-auto mb-3 text-navy group-hover:scale-110 transition-transform" />
+                <Icon className="w-8 h-8 mx-auto mb-3 text-navy-400 group-hover:scale-110 transition-transform" />
                 <div className="text-3xl font-bold text-text-primary mb-1">{stat.value}</div>
                 <div className="text-sm text-text-secondary">{stat.label}</div>
               </div>
@@ -103,8 +103,8 @@ export default function FitnessHero() {
             return (
               <div key={index} className="group relative">
                 <div className="relative bg-surface border border-border rounded-xl p-6 text-left hover:bg-surface-2 transition-all duration-300">
-                  <div className="inline-flex items-center justify-center w-12 h-12 mb-4 rounded-xl bg-navy">
-                    <Icon className="w-6 h-6 text-text-primary" />
+                  <div className="inline-flex items-center justify-center w-12 h-12 mb-4 rounded-xl bg-navy-400">
+                    <Icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-text-primary mb-2">{feature.title}</h3>
                   <p className="text-text-secondary">{feature.description}</p>
