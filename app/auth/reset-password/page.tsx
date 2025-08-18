@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import SimpleHeader from "@/components/navigation/SimpleHeader";
 import { createClient } from "@/lib/supabase/client";
 
@@ -17,36 +18,44 @@ function UpdatePasswordForm() {
   const supabase = createClient();
 
   useEffect(() => {
-    // Check for auth code in URL params
-    const code = searchParams.get("code");
-    const token_hash = searchParams.get("token_hash");
-    const type = searchParams.get("type");
+    const checkAuth = async () => {
+      // First check if we have a valid session (from the callback handler)
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        // User is authenticated and can reset password
+        setHasValidToken(true);
+        return;
+      }
 
-    if (code) {
-      // Exchange code for session
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-        if (error) {
+      // If no session, check for auth code in URL params
+      const code = searchParams.get("code");
+      const token_hash = searchParams.get("token_hash");
+      const type = searchParams.get("type");
+
+      if (code) {
+        // Try to exchange code for session
+        try {
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            setError("Invalid or expired reset link. Please request a new one.");
+          } else {
+            setHasValidToken(true);
+          }
+        } catch (err) {
           setError("Invalid or expired reset link. Please request a new one.");
-        } else {
-          setHasValidToken(true);
         }
-      });
-    } else if (token_hash && type === "recovery") {
-      // Handle recovery token (older Supabase format)
-      supabase.auth.verifyOtp({
-        token_hash,
-        type: 'recovery'
-      }).then(({ error }) => {
-        if (error) {
-          setError("Invalid or expired reset link. Please request a new one.");
-        } else {
-          setHasValidToken(true);
-        }
-      });
-    } else {
-      setError("No reset token found. Please use the link from your email to reset your password.");
-    }
-  }, [searchParams, supabase.auth]);
+      } else if (token_hash && type === "recovery") {
+        // This shouldn't happen with our flow, but handle it just in case
+        setError("Please use the link from your email to reset your password.");
+      } else {
+        // No valid authentication found
+        setError("No valid reset session found. Please use the link from your email or request a new reset.");
+      }
+    };
+
+    checkAuth();
+  }, [searchParams, supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
