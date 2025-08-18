@@ -22,7 +22,7 @@ jobs:
       - name: Install and Build
         run: |
           echo "Installing dependencies..."
-          npm ci
+          npm install
           
           echo "Creating env file..."
           cat > .env.local << 'EOF'
