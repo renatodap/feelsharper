@@ -21,13 +21,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
       
       - name: Install dependencies
         run: |
+          # Clear npm cache and remove existing modules
+          npm cache clean --force
+          rm -rf node_modules package-lock.json
+          
+          # Fresh install with platform-specific binaries
           npm install --force
-          npm install lightningcss-linux-x64-gnu --save-optional
-          npm rebuild lightningcss || true
+          
+          # Force reinstall lightningcss with correct binary
+          npm uninstall lightningcss
+          npm install lightningcss --force
+          
+          # Final rebuild of all native modules
+          npm rebuild --force
       
       - name: Build
         run: npm run build
