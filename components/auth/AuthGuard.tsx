@@ -1,47 +1,55 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useAuth } from './AuthProvider';
 import { useRouter } from 'next/navigation';
-import { createBrowserClient } from '@supabase/ssr';
+import { useEffect } from 'react';
 
-export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+interface AuthGuardProps {
+  children: React.ReactNode;
+  redirectTo?: string;
+  requireAuth?: boolean;
+}
+
+export default function AuthGuard({ 
+  children, 
+  redirectTo = '/sign-in',
+  requireAuth = true 
+}: AuthGuardProps) {
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-
-    // Check initial auth state
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsAuthenticated(!!session);
-      if (!session) {
-        router.push('/sign-in');
+    if (!loading) {
+      if (requireAuth && !user) {
+        // Redirect to sign-in with current path as redirect parameter
+        const currentPath = window.location.pathname;
+        const redirectUrl = `${redirectTo}?redirect=${encodeURIComponent(currentPath)}`;
+        router.push(redirectUrl);
+      } else if (!requireAuth && user) {
+        // If user is logged in but trying to access public-only pages (like login)
+        router.push('/today');
       }
-    });
+    }
+  }, [user, loading, router, redirectTo, requireAuth]);
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-      if (!session) {
-        router.push('/sign-in');
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [router]);
-
-  if (isAuthenticated === null) {
+  // Show loading spinner while checking authentication
+  if (loading) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-navy"></div>
+      <div className="min-h-screen bg-bg text-text-primary flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-2 border-navy border-t-transparent mx-auto mb-4"></div>
+          <p className="text-text-secondary">Loading...</p>
+        </div>
       </div>
     );
   }
 
-  if (!isAuthenticated) {
+  // Don't render children if auth requirements aren't met
+  if (requireAuth && !user) {
+    return null;
+  }
+
+  if (!requireAuth && user) {
     return null;
   }
 

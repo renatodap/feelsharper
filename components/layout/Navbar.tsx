@@ -10,41 +10,32 @@ import ThemeToggle from '@/components/theme/ThemeToggle'
 import { useTheme } from '@/components/theme/ThemeProvider'
 import { createSupabaseBrowser } from '@/lib/supabase/client'
 import { getMenuItems } from '@/lib/navigation/routes'
+import { useAuth } from '@/components/auth/AuthProvider'
+import LogoutButton from '@/components/auth/LogoutButton'
 
 export function AuthQuick() {
-  const supabase = createSupabaseBrowser()
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const { user, loading } = useAuth()
 
-  useEffect(() => {
-    // Get initial session (more reliable than getUser)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Initial session:', session?.user?.email || 'None');
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state change:', event, session?.user?.email || 'None');
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    window.location.href = '/sign-in'
+  if (loading) return <span className="text-sm">Loading...</span>
+  
+  if (!user) {
+    return (
+      <Link 
+        href="/sign-in" 
+        className="text-sm underline text-slate-700 hover:text-slate-900"
+      >
+        Sign in
+      </Link>
+    )
   }
-
-  if (loading) return <span className="text-sm">...</span>
-  if (!user) return <a href="/sign-in" className="underline text-sm">Sign in</a>
+  
   return (
-    <button onClick={signOut} className="text-sm underline">
-      Sign out ({user.email?.split('@')[0]})
-    </button>
+    <div className="flex items-center gap-3">
+      <span className="text-sm text-slate-600">
+        {user.email?.split('@')[0]}
+      </span>
+      <LogoutButton className="text-sm" />
+    </div>
   )
 }
 
@@ -55,34 +46,15 @@ export function AuthQuick() {
  */
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [navigation, setNavigation] = useState<any[]>([])
   const pathname = usePathname()
   const { theme } = useTheme()
-  const supabase = createSupabaseBrowser()
+  const { user } = useAuth()
 
   useEffect(() => {
-    // Check auth status and update navigation
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      const authenticated = !!session?.user
-      console.log('Navbar auth check:', authenticated, session?.user?.email);
-      setIsAuthenticated(authenticated)
-      setNavigation(getMenuItems(authenticated, false))
-    }
-    
-    checkAuth()
-    
-    // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      const authenticated = !!session?.user
-      console.log('Navbar auth change:', event, authenticated);
-      setIsAuthenticated(authenticated)
-      setNavigation(getMenuItems(authenticated, false))
-    })
-    
-    return () => subscription.unsubscribe()
-  }, [])
+    const isAuthenticated = !!user
+    setNavigation(getMenuItems(isAuthenticated, false))
+  }, [user])
 
   return (
     <header data-theme={theme} className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-sm data-[theme=dark]:bg-slate-900/80 data-[theme=dark]:border-slate-800">

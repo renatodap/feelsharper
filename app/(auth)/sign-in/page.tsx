@@ -92,7 +92,12 @@ function SignInForm() {
           {err && <p className="text-error text-sm">{err}</p>}
         </form>
         
-        <p className="mt-6 text-sm text-text-secondary text-center">
+        {/* Forgot Password Link */}
+        <p className="mt-4 text-sm text-text-secondary text-center">
+          <Link className="underline text-navy font-medium" href="/reset-password">Forgot your password?</Link>
+        </p>
+        
+        <p className="mt-4 text-sm text-text-secondary text-center">
           No account? <Link className="underline text-navy font-medium" href={`/sign-up?redirect=${encodeURIComponent(redirect)}`}>Create one</Link>
         </p>
       </main>

@@ -22,9 +22,23 @@ function SignUpForm() {
       // Dynamic import to avoid build issues
       const { createSupabaseBrowser } = await import("@/lib/supabase/client");
       const supabase = createSupabaseBrowser();
-      const { error } = await supabase.auth.signUp({ email, password: pass });
-      if (error) setErr(error.message);
-      else window.location.href = redirect;
+      const { data, error } = await supabase.auth.signUp({ 
+        email, 
+        password: pass,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirect)}`
+        }
+      });
+      
+      if (error) {
+        setErr(error.message);
+      } else if (data.user && !data.user.email_confirmed_at) {
+        // User needs to verify email
+        window.location.href = `/verify-email?email=${encodeURIComponent(email)}`;
+      } else {
+        // User is automatically confirmed (shouldn't happen with default Supabase settings)
+        window.location.href = redirect;
+      }
     } catch (error) {
       setErr("Sign up temporarily unavailable");
     }
@@ -55,17 +69,21 @@ function SignUpForm() {
         {/* Email/Password Form */}
         <form onSubmit={onSubmit} className="space-y-3">
           <input 
+            type="email"
             className="w-full rounded-md border border-border bg-surface p-2 text-text-primary" 
             placeholder="Email" 
             value={email} 
-            onChange={(e)=>setEmail(e.target.value)} 
+            onChange={(e)=>setEmail(e.target.value)}
+            required
           />
           <input 
             className="w-full rounded-md border border-border bg-surface p-2 text-text-primary" 
-            placeholder="Password" 
+            placeholder="Password (min. 6 characters)" 
             type="password" 
             value={pass} 
-            onChange={(e)=>setPass(e.target.value)} 
+            onChange={(e)=>setPass(e.target.value)}
+            minLength={6}
+            required
           />
           <button 
             disabled={loading} 
