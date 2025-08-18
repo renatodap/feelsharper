@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { BookTemplate, Plus, Search, Coffee, Sun, Moon, Cookie, Star, StarOff } from 'lucide-react';
-import Button from '@/components/ui/Button';
+import { Button } from '@/components/ui/Button';
 import MealTemplateCreator from '@/components/food/MealTemplateCreator';
 import type { MealTemplateWithItems } from '@/lib/types/database';
 
@@ -311,8 +311,7 @@ export default function MealTemplatesPage() {
                       size="sm" 
                       className="flex-1"
                       onClick={() => {
-                        // TODO: Open template editor/viewer
-                        console.log('Edit template:', template.id);
+                        window.location.href = `/food/templates/${template.id}`;
                       }}
                     >
                       View

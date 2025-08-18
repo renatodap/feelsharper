@@ -896,31 +896,42 @@ export interface ExerciseSet {
   completed: boolean
 }
 
-// AI Coaching Types
-export interface AIConversation {
-  id: string
-  user_id: string
-  title?: string | null
-  context?: string | null
-  started_at: string
-  last_message_at: string
-  message_count: number
-  is_archived: boolean
-  metadata: Json
-  created_at: string
-  updated_at: string
+// Business Intelligence Types
+export interface UserMetrics {
+  totalUsers: number;
+  activeUsers: number;
+  newUsers: number;
+  churnedUsers: number;
+  retentionRate: number;
+  avgSessionDuration: number;
+  avgDailySessions: number;
 }
 
-export interface AIMessage {
-  id: string
-  conversation_id: string
-  user_id: string
-  role: 'user' | 'assistant' | 'system'
-  content: string
-  tokens_used?: number | null
-  model_used?: string | null
-  citations: Json
-  feedback_rating?: number | null
-  feedback_text?: string | null
-  created_at: string
+export interface RevenueMetrics {
+  mrr: number; // Monthly Recurring Revenue
+  arr: number; // Annual Recurring Revenue
+  arpu: number; // Average Revenue Per User
+  ltv: number; // Lifetime Value
+  cac: number; // Customer Acquisition Cost
+  churnRate: number;
+  growthRate: number;
+}
+
+export interface ProductMetrics {
+  dau: number; // Daily Active Users
+  wau: number; // Weekly Active Users
+  mau: number; // Monthly Active Users
+  stickiness: number; // DAU/MAU ratio
+  featureAdoption: Record<string, number>;
+  timeToValue: number; // Days to first value
+}
+
+export interface HealthMetrics {
+  workoutsLogged: number;
+  avgWorkoutsPerUser: number;
+  foodEntriesLogged: number;
+  avgFoodEntriesPerUser: number;
+  weightEntriesLogged: number;
+  activeStreaks: number;
+  avgStreakLength: number;
 }

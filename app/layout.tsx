@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Inter, Crimson_Text, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
-import { PostHogProvider, PostHogPageview } from "@/components/providers/PostHogProvider";
-import { Suspense } from 'react';
+import { UpgradeBanner } from "@/components/premium/UpgradePrompt";
+import { PWAProvider } from "@/components/pwa/PWAProvider";
+import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
+import { FeedbackButton } from "@/components/feedback/FeedbackButton";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,6 +34,7 @@ export const metadata: Metadata = {
   creator: "Feel Sharper",
   publisher: "Feel Sharper",
   metadataBase: new URL('https://feelsharper.com'),
+  manifest: '/manifest.json',
   alternates: {
     canonical: '/',
   },
@@ -67,6 +70,24 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Feel Sharper',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
+    'apple-mobile-web-app-title': 'Feel Sharper',
+    'application-name': 'Feel Sharper',
+    'msapplication-TileColor': '#0B2A4A',
+    'msapplication-config': '/browserconfig.xml',
+    'theme-color': '#0B2A4A',
+  },
 };
 
 /**
@@ -81,15 +102,46 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${crimson.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+      <head>
+        {/* iOS Splash Screens */}
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-640x1136-iphone5.svg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-750x1334-iphone6.svg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1242x2208-iphone6plus.svg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-828x1792-iphonexr.svg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1125x2436-iphonex.svg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1242x2688-iphonexsmax.svg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1170x2532-iphone12.svg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1284x2778-iphone12promax.svg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1536x2048-ipad.svg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1668x2224-ipadpro10.svg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1668x2388-ipadpro11.svg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash/apple-splash-2048x2732-ipadpro12.svg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" />
+        
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png.svg" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png.svg" />
+        <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png.svg" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-128x128.png.svg" />
+        <link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-128x128.png.svg" />
+        <link rel="apple-touch-icon" sizes="76x76" href="/icons/icon-72x72.png.svg" />
+        <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png.svg" />
+        <link rel="apple-touch-icon" sizes="60x60" href="/icons/icon-72x72.png.svg" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/icons/icon-72x72.png.svg" />
+        
+        {/* Favicon */}
+        <link rel="icon" type="image/svg+xml" href="/icons/icon-72x72.png.svg" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-72x72.png.svg" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-72x72.png.svg" />
+      </head>
       <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
-        <PostHogProvider>
-          <ThemeProvider>
-            <Suspense fallback={null}>
-              <PostHogPageview />
-            </Suspense>
+        <ThemeProvider>
+          <PWAProvider>
+            <UpgradeBanner />
             {children}
-          </ThemeProvider>
-        </PostHogProvider>
+            <OfflineIndicator />
+            <FeedbackButton />
+          </PWAProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

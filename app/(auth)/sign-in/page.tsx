@@ -1,8 +1,9 @@
 "use client";
-import { useState, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import SimpleHeader from "@/components/navigation/SimpleHeader";
+import GoogleAuthButton from "@/components/auth/GoogleAuthButton";
 
 function SignInForm() {
   const [email, setEmail] = useState("");
@@ -34,7 +35,24 @@ function SignInForm() {
     <div className="min-h-screen bg-bg text-text-primary">
       <SimpleHeader />
       <main className="mx-auto max-w-sm p-6 pt-20">
-        <h1 className="text-2xl font-semibold mb-4 text-text-primary">Sign in</h1>
+        <h1 className="text-2xl font-semibold mb-6 text-text-primary">Sign in to FeelSharper</h1>
+        
+        {/* Google Sign In */}
+        <div className="mb-6">
+          <GoogleAuthButton mode="signin" redirectTo={redirect} />
+        </div>
+        
+        {/* Divider */}
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-bg text-text-secondary">Or continue with email</span>
+          </div>
+        </div>
+        
+        {/* Email/Password Form */}
         <form onSubmit={onSubmit} className="space-y-3">
           <input 
             className="w-full rounded-md border border-border bg-surface p-2 text-text-primary" 
@@ -57,8 +75,9 @@ function SignInForm() {
           </button>
           {err && <p className="text-error text-sm">{err}</p>}
         </form>
-        <p className="mt-4 text-sm text-text-secondary">
-          No account? <Link className="underline text-navy" href={`/sign-up?redirect=${encodeURIComponent(redirect)}`}>Create one</Link>
+        
+        <p className="mt-6 text-sm text-text-secondary text-center">
+          No account? <Link className="underline text-navy font-medium" href={`/sign-up?redirect=${encodeURIComponent(redirect)}`}>Create one</Link>
         </p>
       </main>
     </div>

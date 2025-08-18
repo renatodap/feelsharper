@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, Suspense } from 'react';
+import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, ArrowLeft, Plus, Apple, Calculator, Utensils } from 'lucide-react';
 import CustomFoodModal from '@/components/food/CustomFoodModal';
@@ -119,16 +119,46 @@ function AddFoodContent() {
   const handleSave = async () => {
     if (!selectedFood || !quantity) return;
 
-    // In real app, save to Supabase here
-    console.log('Saving food entry:', {
-      food: selectedFood,
-      quantity: parseFloat(quantity),
-      mealType,
-      nutrition: calculatedNutrition
-    });
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('/api/food/log', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          foodId: selectedFood.id,
+          name: selectedFood.name,
+          quantity: parseFloat(quantity),
+          unit: selectedFood.unit,
+          mealType,
+          calories: calculatedNutrition?.kcal || 0,
+          protein: calculatedNutrition?.protein || 0,
+          carbs: calculatedNutrition?.carbs || 0,
+          fat: calculatedNutrition?.fat || 0,
+          isCustom: selectedFood.isCustom || false,
+        }),
+      });
 
-    // Navigate back to food page
-    router.push('/food');
+      if (response.ok) {
+        // Successfully saved - navigate back to food page
+        router.push('/food');
+      } else {
+        const error = await response.json();
+        if (response.status === 401) {
+          // Not authenticated - redirect to sign in
+          router.push('/sign-in?redirect=/food/add');
+        } else {
+          alert(`Failed to save food: ${error.error || 'Unknown error'}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error saving food:', error);
+      alert('Failed to save food. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

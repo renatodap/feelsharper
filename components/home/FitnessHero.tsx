@@ -45,7 +45,7 @@ export default function FitnessHero() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
           </span>
-          <span className="text-sm font-medium text-text-secondary">Free fitness tracking that works</span>
+          <span className="text-sm font-medium text-text-secondary">Freemium fitness tracking that works</span>
         </div>
 
         {/* Main Heading */}
@@ -59,24 +59,25 @@ export default function FitnessHero() {
         {/* Subheading */}
         <p className={`text-xl md:text-2xl text-text-secondary max-w-3xl mx-auto mb-12 leading-relaxed transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           Track food, workouts, and weight. <br className="hidden md:block" />
-          See progress with clean graphs. Completely free.
+          See progress with clean graphs. Free forever with premium upgrades.
         </p>
 
         {/* CTA Buttons */}
         <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-20 transition-all duration-1000 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           <Link 
-            href="/sign-up" 
-            className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-text-primary transition-all duration-200 bg-navy hover:bg-navy-600 rounded-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-focus"
+            href="/onboarding?entry=quick_win" 
+            className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white transition-all duration-200 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 rounded-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-focus shadow-xl hover:shadow-2xl"
           >
-            <span className="relative">Start Tracking</span>
+            <Dumbbell className="w-5 h-5 mr-2" />
+            <span className="relative">Log Last Workout</span>
             <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
           </Link>
           
           <Link 
-            href="/today" 
+            href="/onboarding" 
             className="group inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-text-primary transition-all duration-200 bg-surface border border-border rounded-xl hover:bg-surface-2 hover:border-navy focus:outline-none focus:ring-2 focus:ring-focus"
           >
-            <span>View Demo</span>
+            <span>Full Setup</span>
             <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -115,11 +116,14 @@ export default function FitnessHero() {
 
         {/* Trust Badge */}
         <div className={`mt-20 flex items-center justify-center gap-8 transition-all duration-1000 delay-600 ${mounted ? 'opacity-60' : 'opacity-0'}`}>
-          <p className="text-sm text-text-muted font-medium">No subscriptions</p>
+          <p className="text-sm text-text-muted font-medium flex items-center gap-1">
+            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+            Free forever
+          </p>
           <p className="text-sm text-text-muted font-medium">•</p>
-          <p className="text-sm text-text-muted font-medium">No ads</p>
+          <p className="text-sm text-text-muted font-medium">No signup required to try</p>
           <p className="text-sm text-text-muted font-medium">•</p>
-          <p className="text-sm text-text-muted font-medium">Just fitness tracking</p>
+          <p className="text-sm text-text-muted font-medium">2-minute setup</p>
         </div>
       </div>
     </section>

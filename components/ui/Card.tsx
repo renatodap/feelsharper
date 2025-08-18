@@ -11,7 +11,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * Modern card component with subtle shadows and clean borders
  * Provides consistent container styling across the application
  */
-export default function Card({ 
+export function Card({ 
   children, 
   className,
   variant = 'default',
@@ -64,6 +64,27 @@ export function CardHeader({
     >
       {children}
     </div>
+  );
+}
+
+/**
+ * Card title component for main headings
+ */
+export function CardTitle({ 
+  children, 
+  className,
+  ...props 
+}: React.HTMLAttributes<HTMLHeadingElement>) {
+  return (
+    <h3
+      className={cn(
+        'text-lg font-semibold text-sharp-blue',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </h3>
   );
 }
 
