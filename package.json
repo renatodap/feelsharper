@@ -27,7 +27,6 @@
     "test-assistant": "npx tsx scripts/test-assistant.ts",
     "seed": "npx tsx scripts/seed.ts",
     "quality-check": "npx tsx scripts/quality-checks.ts",
-    "postinstall": "npm rebuild lightningcss || true",
     "docs:expand": "node scripts/docs-expand.js",
     "docs:serve": "cd docs && python -m http.server 8080 || python3 -m http.server 8080",
     "db:setup": "node scripts/setup-database.js",
@@ -66,7 +65,10 @@
     "stripe": "^18.4.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "web-push": "^3.6.7"
+    "web-push": "^3.6.7",
+    "tailwindcss": "^3.4.1",
+    "postcss": "^8.4.33",
+    "autoprefixer": "^10.4.19"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -79,13 +81,10 @@
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.1",
     "@types/web-push": "^3.6.3",
-    "autoprefixer": "^10.4.19",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
-    "tailwindcss": "^3.4.1",
-    "postcss": "^8.4.33",
     "tsx": "^4.20.3",
     "typescript": "^5"
   }
