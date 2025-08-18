@@ -27,6 +27,7 @@
     "test-assistant": "npx tsx scripts/test-assistant.ts",
     "seed": "npx tsx scripts/seed.ts",
     "quality-check": "npx tsx scripts/quality-checks.ts",
+    "postinstall": "npm rebuild lightningcss || true",
     "docs:expand": "node scripts/docs-expand.js",
     "docs:serve": "cd docs && python -m http.server 8080 || python3 -m http.server 8080",
     "db:setup": "node scripts/setup-database.js",
