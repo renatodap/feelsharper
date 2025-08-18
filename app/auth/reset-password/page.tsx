@@ -11,6 +11,7 @@ function UpdatePasswordForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [hasValidToken, setHasValidToken] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const supabase = createClient();
@@ -18,9 +19,32 @@ function UpdatePasswordForm() {
   useEffect(() => {
     // Check for auth code in URL params
     const code = searchParams.get("code");
+    const token_hash = searchParams.get("token_hash");
+    const type = searchParams.get("type");
+
     if (code) {
       // Exchange code for session
-      supabase.auth.exchangeCodeForSession(code);
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (error) {
+          setError("Invalid or expired reset link. Please request a new one.");
+        } else {
+          setHasValidToken(true);
+        }
+      });
+    } else if (token_hash && type === "recovery") {
+      // Handle recovery token (older Supabase format)
+      supabase.auth.verifyOtp({
+        token_hash,
+        type: 'recovery'
+      }).then(({ error }) => {
+        if (error) {
+          setError("Invalid or expired reset link. Please request a new one.");
+        } else {
+          setHasValidToken(true);
+        }
+      });
+    } else {
+      setError("No reset token found. Please use the link from your email to reset your password.");
     }
   }, [searchParams, supabase.auth]);
 
@@ -61,6 +85,48 @@ function UpdatePasswordForm() {
     setLoading(false);
   };
 
+  // Show error page if no valid token and error is set
+  if (error && !hasValidToken) {
+    return (
+      <div className="min-h-screen bg-bg text-text-primary">
+        <SimpleHeader />
+        <main className="mx-auto max-w-sm p-6 pt-20">
+          <div className="text-center">
+            <div className="mx-auto w-16 h-16 bg-error/10 rounded-full flex items-center justify-center mb-6">
+              <svg className="w-8 h-8 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            
+            <h1 className="text-2xl font-semibold mb-4 text-text-primary">
+              Reset Link Issue
+            </h1>
+            
+            <p className="text-text-secondary mb-6 leading-relaxed">
+              {error}
+            </p>
+            
+            <div className="space-y-3">
+              <Link 
+                href="/reset-password"
+                className="block w-full rounded-md bg-navy text-white py-2 px-4 hover:bg-navy-600"
+              >
+                Request New Reset Link
+              </Link>
+              
+              <Link 
+                href="/sign-in"
+                className="block text-sm text-navy underline"
+              >
+                Back to Sign In
+              </Link>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   if (success) {
     return (
       <div className="min-h-screen bg-bg text-text-primary">
@@ -81,6 +147,18 @@ function UpdatePasswordForm() {
             </p>
           </div>
         </main>
+      </div>
+    );
+  }
+
+  // Show loading while checking token
+  if (!hasValidToken && !error) {
+    return (
+      <div className="min-h-screen bg-bg text-text-primary flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-2 border-navy border-t-transparent mx-auto mb-4"></div>
+          <p className="text-text-secondary">Verifying reset link...</p>
+        </div>
       </div>
     );
   }

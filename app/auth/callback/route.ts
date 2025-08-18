@@ -5,6 +5,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
+  const type = searchParams.get('type');
   const next = searchParams.get('next') ?? '/today';
 
   console.log('Auth callback received:', { code: !!code, next });
@@ -39,7 +40,14 @@ export async function GET(request: NextRequest) {
 
     console.log('Code exchange successful, user:', data.user?.email);
     
-    // Create the redirect response
+    // Check if this is a password reset flow
+    if (type === 'recovery' || next.includes('reset-password')) {
+      // Redirect to password reset page for recovery flows
+      const redirectResponse = NextResponse.redirect(`${origin}/auth/reset-password`);
+      return redirectResponse;
+    }
+    
+    // Create the redirect response for normal auth flows
     const redirectResponse = NextResponse.redirect(`${origin}${next}`);
     
     return redirectResponse;
