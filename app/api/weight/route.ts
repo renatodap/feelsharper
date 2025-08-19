@@ -41,14 +41,14 @@ export async function POST(request: NextRequest) {
       weight_kg = weight_kg * 0.453592;
     }
 
-    // Check if entry exists for today
+    // Check if entry exists for today  
     const today = logged_at?.split('T')[0] || new Date().toISOString().split('T')[0];
     const { data: existing } = await supabase
-      .from('body_weight')
+      .from('body_measurements')
       .select('id')
       .eq('user_id', user.id)
-      .gte('logged_at', `${today}T00:00:00`)
-      .lte('logged_at', `${today}T23:59:59`)
+      .gte('measured_at', `${today}T00:00:00`)
+      .lte('measured_at', `${today}T23:59:59`)
       .single();
 
     let weightLog;
@@ -56,10 +56,10 @@ export async function POST(request: NextRequest) {
     if (existing) {
       // Update existing entry
       const { data, error } = await supabase
-        .from('body_weight')
+        .from('body_measurements')
         .update({
           weight_kg,
-          logged_at: logged_at || new Date().toISOString()
+          measured_at: logged_at || new Date().toISOString()
         })
         .eq('id', existing.id)
         .select()
@@ -70,11 +70,11 @@ export async function POST(request: NextRequest) {
     } else {
       // Create new entry
       const { data, error } = await supabase
-        .from('body_weight')
+        .from('body_measurements')
         .insert({
           user_id: user.id,
           weight_kg,
-          logged_at: logged_at || new Date().toISOString()
+          measured_at: logged_at || new Date().toISOString()
         })
         .select()
         .single();
@@ -129,11 +129,11 @@ export async function GET(request: NextRequest) {
 
     // Get weight logs
     const { data: weightLogs, error } = await supabase
-      .from('body_weight')
+      .from('body_measurements')
       .select('*')
       .eq('user_id', user.id)
-      .gte('logged_at', startDate.toISOString())
-      .order('logged_at', { ascending: true });
+      .gte('measured_at', startDate.toISOString())
+      .order('measured_at', { ascending: true });
 
     if (error) {
       console.error('Weight fetch error:', error);
@@ -213,7 +213,7 @@ export async function DELETE(request: NextRequest) {
   try {
     // Delete the weight log (RLS will ensure user owns it)
     const { error } = await supabase
-      .from('body_weight')
+      .from('body_measurements')
       .delete()
       .eq('id', logId)
       .eq('user_id', user.id);

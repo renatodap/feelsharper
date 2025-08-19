@@ -190,8 +190,15 @@ async function handleNavigationRequest(request) {
     const response = await fetch(request);
     
     if (response.ok) {
-      const cache = await caches.open(DYNAMIC_CACHE);
-      cache.put(request, response.clone());
+      try {
+        // Don't cache chrome-extension requests
+        if (!request.url.startsWith('chrome-extension:')) {
+          const cache = await caches.open(DYNAMIC_CACHE);
+          cache.put(request, response.clone());
+        }
+      } catch (cacheError) {
+        console.log('[SW] Cache put failed:', cacheError.message);
+      }
     }
     
     return response;
