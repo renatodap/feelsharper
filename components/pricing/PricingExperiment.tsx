@@ -156,7 +156,7 @@ export function PricingExperiment({
               Annual
               {annualSavings > 0 && (
                 <Badge 
-                  variant="success" 
+                  variant="secondary" 
                   className="absolute -top-2 -right-2 text-xs"
                 >
                   Save {experiment.formatPrice(annualSavings)}
@@ -217,7 +217,7 @@ export function PricingExperiment({
         }`}>
           {billingCycle === 'monthly' && (
             <Badge 
-              variant="primary" 
+              variant="secondary" 
               className="absolute -top-3 left-1/2 transform -translate-x-1/2"
             >
               Most Popular
@@ -254,7 +254,7 @@ export function PricingExperiment({
           }`}>
             {billingCycle === 'annual' && (
               <Badge 
-                variant="success" 
+                variant="secondary" 
                 className="absolute -top-3 left-1/2 transform -translate-x-1/2"
               >
                 Best Value

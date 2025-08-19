@@ -2,6 +2,32 @@
 
 **"Iron sharpens iron"** - A revolutionary fitness app that uses natural language AI to make health tracking effortless.
 
+## 📁 Organized Project Structure
+
+```
+feelsharper-deploy/
+├── app/                    # Next.js app router pages
+├── components/             # React components
+├── lib/                    # Utilities and services
+├── public/                 # Static assets
+├── supabase/              # Database
+│   └── migrations/        # 3 essential SQL files only
+├── tests/                 # All test files (organized)
+│   ├── api/              # API tests
+│   ├── browser/          # Browser-based tests
+│   ├── database/         # Database tests
+│   ├── e2e/              # End-to-end tests
+│   ├── integration/      # Integration tests
+│   └── reports/          # Test reports & lighthouse
+├── tools/                 # Development tools
+│   └── scripts/          # Migration & utility scripts
+├── docs/                  # Documentation
+│   ├── mvp/              # MVP docs (MVP_TRUTH, etc)
+│   └── guides/           # Setup guides
+├── config/                # Configuration files
+└── 99-ARCHIVE/           # Old files (safely archived)
+```
+
 ## 🚀 What Makes This Different
 
 **Traditional fitness apps**: Forms, databases, manual entry, clicking through menus  

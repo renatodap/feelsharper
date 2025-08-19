@@ -5,6 +5,21 @@ import { OpenAIParser } from '@/lib/ai/services/openai-parser';
 import { ClaudeCoach } from '@/lib/ai/services/claude-coach';
 import { AIOrchestrator } from '@/lib/ai/services/ai-orchestrator';
 
+// Parse multiple activities from a single input
+function parseMultipleActivities(text: string): any[] {
+  const activities = [];
+  const segments = text.split(/[,;]|\sand\s/i);
+  
+  for (const segment of segments) {
+    const parsed = quickPatternMatch(segment.trim());
+    if (parsed && parsed.type !== 'unknown') {
+      activities.push(parsed);
+    }
+  }
+  
+  return activities.length > 0 ? activities : [quickPatternMatch(text)];
+}
+
 // PROVEN pattern matching (94% success rate)
 function quickPatternMatch(text: string): any {
   const normalizedText = text.toLowerCase().trim();
@@ -199,7 +214,26 @@ export async function POST(request: NextRequest) {
     // Demo mode for testing without auth (but with real AI)
     if (demo) {
       try {
-        // Use real OpenAI parsing
+        // First try pattern matching for multiple activities
+        const activities = parseMultipleActivities(text);
+        
+        // If we found multiple activities, return them
+        if (activities.length > 1) {
+          const coach = getClaudeCoach();
+          const coachResponse = await coach.generateResponse(text, activities[0], {});
+          
+          return NextResponse.json({
+            success: true,
+            parsed: activities[0], // Primary activity
+            allActivities: activities, // All parsed activities
+            coach: coachResponse,
+            saved: false,
+            demo: true,
+            multipleActivities: true
+          });
+        }
+        
+        // Single activity - use AI parsing
         const parser = getOpenAIParser();
         const parsed = await parser.parse(text);
         

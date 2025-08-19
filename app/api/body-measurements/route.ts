@@ -9,13 +9,26 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = await createSupabaseServer();
     
+    // Check for demo mode
+    const url = new URL(request.url);
+    const isDemo = url.searchParams.get('demo') === 'true';
+    
+    if (isDemo) {
+      // Return demo data for testing
+      return NextResponse.json({
+        measurements: [
+          { id: '1', weight: 175, measurement_date: new Date().toISOString() },
+          { id: '2', weight: 174, measurement_date: new Date(Date.now() - 86400000).toISOString() }
+        ]
+      });
+    }
+    
     // Check authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const url = new URL(request.url);
     const startDate = url.searchParams.get('start_date');
     const endDate = url.searchParams.get('end_date');
     const limit = Math.min(parseInt(url.searchParams.get('limit') || '100'), 365);

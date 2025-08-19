@@ -521,7 +521,7 @@ export default function IntelligentMealPlanner() {
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`w-3 h-3 ${i < Math.floor(day.meals.breakfast.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`}
+                                className={`w-3 h-3 ${i < Math.floor(day.meals.breakfast?.rating || 0) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`}
                               />
                             ))}
                           </div>
@@ -551,7 +551,7 @@ export default function IntelligentMealPlanner() {
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`w-3 h-3 ${i < Math.floor(day.meals.lunch.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`}
+                                className={`w-3 h-3 ${i < Math.floor(day.meals.lunch?.rating || 0) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`}
                               />
                             ))}
                           </div>
@@ -581,7 +581,7 @@ export default function IntelligentMealPlanner() {
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`w-3 h-3 ${i < Math.floor(day.meals.dinner.rating) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`}
+                                className={`w-3 h-3 ${i < Math.floor(day.meals.dinner?.rating || 0) ? 'text-yellow-400 fill-current' : 'text-gray-600'}`}
                               />
                             ))}
                           </div>

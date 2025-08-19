@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -288,19 +289,19 @@ export default function SmartOnboardingWizard({
             <span className="text-blue-600 font-bold">{Math.round(progress)}%</span>
           </div>
           <div className="relative w-full h-3 bg-slate-200 rounded-full overflow-hidden">
-            <div 
+            <motion.div 
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
               initial={{ width: "0%" }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <div className="absolute inset-0 bg-white opacity-30 animate-pulse"></div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
         {/* Live Stats Banner */}
-        <div
+        <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-6"
@@ -328,14 +329,14 @@ export default function SmartOnboardingWizard({
               </div>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Main Content */}
         <Card className="bg-white/90 backdrop-blur-lg shadow-2xl border-0 overflow-hidden">
           <CardContent className="p-8">
             {/* Step Header */}
             <div className="text-center mb-8">
-              <h1 
+              <motion.h1 
                 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3"
                 key={`title-${currentStep}`}
                 initial={{ opacity: 0, y: 20 }}
@@ -343,8 +344,8 @@ export default function SmartOnboardingWizard({
                 transition={{ duration: 0.4 }}
               >
                 {steps[currentStep].title}
-              </h1>
-              <p 
+              </motion.h1>
+              <motion.p 
                 className="text-slate-600 text-lg"
                 key={`subtitle-${currentStep}`}
                 initial={{ opacity: 0, y: 20 }}
@@ -355,13 +356,13 @@ export default function SmartOnboardingWizard({
                 {steps[currentStep].optional && (
                   <Badge variant="outline" className="ml-2 text-xs">Optional</Badge>
                 )}
-              </p>
+              </motion.p>
             </div>
 
-            <div mode="wait">
+            <AnimatePresence mode="wait">
               {/* Step 0: Goal Selection */}
               {currentStep === 0 && (
-                <div
+                <motion.div
                   key="goals"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -370,7 +371,7 @@ export default function SmartOnboardingWizard({
                 >
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {GOALS.map((goal) => (
-                      <button
+                      <motion.button
                         key={goal.id}
                         onClick={() => handleGoalSelect(goal)}
                         className={`p-6 rounded-2xl text-left transition-all duration-300 transform hover:scale-105 ${
@@ -397,14 +398,14 @@ export default function SmartOnboardingWizard({
                         }`}>
                           {goal.description}
                         </p>
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
 
                   {/* AI Preview */}
                   <div>
                     {showAiPreview && selectedGoal && (
-                      <div
+                      <motion.div
                         initial={{ opacity: 0, y: 20, height: 0 }}
                         animate={{ opacity: 1, y: 0, height: 'auto' }}
                         exit={{ opacity: 0, y: -20, height: 0 }}
@@ -434,15 +435,15 @@ export default function SmartOnboardingWizard({
                             </div>
                           </CardContent>
                         </Card>
-                      </div>
+                      </motion.div>
                     )}
                   </div>
-                </div>
+                </motion.div>
               )}
 
               {/* Step 1: Experience Level */}
               {currentStep === 1 && (
-                <div
+                <motion.div
                   key="experience"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -450,7 +451,7 @@ export default function SmartOnboardingWizard({
                   className="space-y-4"
                 >
                   {EXPERIENCE_LEVELS.map((level) => (
-                    <button
+                    <motion.button
                       key={level.id}
                       onClick={() => handleExperienceSelect(level)}
                       className={`w-full p-6 rounded-2xl text-left transition-all duration-300 transform hover:scale-[1.02] ${
@@ -487,14 +488,14 @@ export default function SmartOnboardingWizard({
                           <CheckCircle2 className="w-6 h-6 text-white flex-shrink-0" />
                         )}
                       </div>
-                    </button>
+                    </motion.button>
                   ))}
-                </div>
+                </motion.div>
               )}
 
               {/* Step 2: Quick Details */}
               {currentStep === 2 && (
-                <div
+                <motion.div
                   key="details"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -549,7 +550,7 @@ export default function SmartOnboardingWizard({
                       ].map(option => (
                         <Button
                           key={option.value}
-                          variant={data.timeConstraint === option.value ? "default" : "outline"}
+                          variant={data.timeConstraint === option.value ? "primary" : "outline"}
                           className="w-full justify-start"
                           onClick={() => setData(prev => ({ ...prev, timeConstraint: option.value }))}
                         >
@@ -559,12 +560,12 @@ export default function SmartOnboardingWizard({
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
               )}
 
               {/* Step 3: AI Preferences */}
               {currentStep === 3 && (
-                <div
+                <motion.div
                   key="ai-preferences"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -640,12 +641,12 @@ export default function SmartOnboardingWizard({
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               )}
 
               {/* Step 4: Ready to Start */}
               {currentStep === 4 && (
-                <div
+                <motion.div
                   key="complete"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -709,9 +710,9 @@ export default function SmartOnboardingWizard({
                       Ready to transform your fitness in just minutes a day
                     </p>
                   </div>
-                </div>
+                </motion.div>
               )}
-            </div>
+            </AnimatePresence>
 
             {/* Navigation */}
             {currentStep < 4 && (

@@ -5,7 +5,15 @@ import { createCheckoutSession, PRICING_TIERS } from '@/lib/payments/lemonsqueez
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { plan, userId } = body;
+    const { plan, userId, test } = body;
+
+    // Demo/test mode
+    if (test) {
+      return NextResponse.json({ 
+        url: 'http://localhost:3000/settings?mock_upgrade=test',
+        success: true 
+      });
+    }
 
     if (!plan) {
       return NextResponse.json({ error: 'Plan is required' }, { status: 400 });

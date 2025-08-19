@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -93,7 +94,7 @@ export function RealUserMetrics() {
 
   // Show real metrics when available
   return (
-    <div
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="mb-6"
@@ -154,7 +155,7 @@ export function RealUserMetrics() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 }
 
@@ -286,7 +287,7 @@ export function TrustSignals() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
       {signals.map((signal, index) => (
-        <div
+        <motion.div
           key={signal.title}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -296,7 +297,7 @@ export function TrustSignals() {
           <signal.icon className={`w-8 h-8 mx-auto mb-2 ${signal.color}`} />
           <div className="text-sm font-semibold text-text-primary">{signal.title}</div>
           <div className="text-xs text-text-secondary mt-1">{signal.description}</div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

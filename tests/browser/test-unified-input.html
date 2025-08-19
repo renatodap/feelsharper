@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Unified Input</title>
+</head>
+<body>
+    <h1>Testing FeelSharper Unified Input</h1>
+    <iframe src="http://localhost:7893/today" width="100%" height="800px"></iframe>
+    
+    <div id="test-results">
+        <h2>Test Results:</h2>
+        <ul id="results-list"></ul>
+    </div>
+
+    <script>
+        const tests = [];
+        
+        // Test 1: Check if page loads
+        fetch('http://localhost:7893/today')
+            .then(res => {
+                tests.push(`✅ Page loads: ${res.status === 200 ? 'PASS' : 'FAIL'}`);
+                updateResults();
+            })
+            .catch(err => {
+                tests.push(`❌ Page load failed: ${err.message}`);
+                updateResults();
+            });
+
+        // Test 2: Check if API endpoint works
+        fetch('http://localhost:7893/api/ai/parse', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: 'weight 175', demo: true })
+        })
+            .then(res => res.json())
+            .then(data => {
+                tests.push(`✅ API parse works: ${data.success ? 'PASS' : 'FAIL'}`);
+                tests.push(`  - Type detected: ${data.parsed?.type}`);
+                tests.push(`  - Confidence: ${data.parsed?.confidence}`);
+                updateResults();
+            })
+            .catch(err => {
+                tests.push(`❌ API parse failed: ${err.message}`);
+                updateResults();
+            });
+
+        // Test 3: Test multi-activity parsing
+        fetch('http://localhost:7893/api/ai/parse', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                text: 'weight 175, ran 5k, had eggs for breakfast', 
+                demo: true 
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.allActivities && data.allActivities.length === 3) {
+                    tests.push(`✅ Multi-activity parsing: PASS (${data.allActivities.length} activities)`);
+                } else {
+                    tests.push(`❌ Multi-activity parsing: FAIL`);
+                }
+                updateResults();
+            })
+            .catch(err => {
+                tests.push(`❌ Multi-activity test failed: ${err.message}`);
+                updateResults();
+            });
+
+        // Test 4: Check if voice API exists
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            tests.push('✅ Voice API available: PASS');
+        } else {
+            tests.push('❌ Voice API available: FAIL');
+        }
+        updateResults();
+
+        function updateResults() {
+            const list = document.getElementById('results-list');
+            list.innerHTML = tests.map(t => `<li>${t}</li>`).join('');
+        }
+    </script>
+</body>
+</html>

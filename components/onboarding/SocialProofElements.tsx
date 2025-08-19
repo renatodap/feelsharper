@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -157,8 +158,8 @@ export function RecentAchievements() {
 
   return (
     <div className="h-16 overflow-hidden">
-      <div mode="wait">
-        <div
+      <AnimatePresence mode="wait">
+        <motion.div
           key={currentIndex}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -179,8 +180,8 @@ export function RecentAchievements() {
             <p className="text-xs text-slate-500">{achievements[currentIndex].timeAgo}</p>
           </div>
           <CheckCircle2 className="w-4 h-4 text-green-500 flex-shrink-0" />
-        </div>
-      </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
@@ -225,8 +226,8 @@ export function TestimonialCarousel() {
           </div>
         </div>
 
-        <div mode="wait">
-          <div
+        <AnimatePresence mode="wait">
+          <motion.div
             key={currentIndex}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -255,8 +256,8 @@ export function TestimonialCarousel() {
               <div className="font-semibold text-slate-800">{testimonials[currentIndex].name}</div>
               <div className="text-slate-600">in {testimonials[currentIndex].timeframe}</div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </CardContent>
     </Card>
   );
@@ -293,7 +294,7 @@ export function TrustSignals() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
       {signals.map((signal, index) => (
-        <div
+        <motion.div
           key={signal.title}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -303,7 +304,7 @@ export function TrustSignals() {
           <signal.icon className={`w-6 h-6 mx-auto mb-2 ${signal.color}`} />
           <div className="text-sm font-semibold text-slate-800">{signal.title}</div>
           <div className="text-xs text-slate-600">{signal.description}</div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

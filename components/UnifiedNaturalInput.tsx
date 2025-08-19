@@ -139,18 +139,34 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
       const data = await response.json();
       
       if (data.success) {
-        setParsedResult(data.parsed);
-        setAiResponse(data.coach?.message || '');
-
-        // Auto-log if confidence is high (>80%)
-        if (data.parsed.confidence > 0.8) {
-          await autoLog(data.parsed);
-        } else if (data.parsed.confidence > 0.5) {
-          // Need confirmation for medium confidence
-          setNeedsConfirmation(true);
+        // Handle multiple activities
+        if (data.multipleActivities && data.allActivities) {
+          let successCount = 0;
+          for (const activity of data.allActivities) {
+            if (activity.confidence > 0.8) {
+              await autoLog(activity);
+              successCount++;
+            }
+          }
+          if (successCount > 0) {
+            setAiResponse(`✓ Logged ${successCount} activities: ${data.allActivities.map((a: any) => a.type).join(', ')}`);
+          }
+          setParsedResult(null);
         } else {
-          // Too uncertain, ask user to clarify
-          setAiResponse("I'm not quite sure what you meant. Could you be more specific? For example: 'weight 175' or 'ran 5k' or 'ate chicken salad'");
+          // Single activity
+          setParsedResult(data.parsed);
+          setAiResponse(data.coach?.message || '');
+
+          // Auto-log if confidence is high (>80%)
+          if (data.parsed.confidence > 0.8) {
+            await autoLog(data.parsed);
+          } else if (data.parsed.confidence > 0.5) {
+            // Need confirmation for medium confidence
+            setNeedsConfirmation(true);
+          } else {
+            // Too uncertain, ask user to clarify
+            setAiResponse("I'm not quite sure what you meant. Could you be more specific? For example: 'weight 175' or 'ran 5k' or 'ate chicken salad'");
+          }
         }
       }
     } catch (error) {
@@ -167,7 +183,7 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
       const response = await fetch('/api/activities/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(activity)
+        body: JSON.stringify({ ...activity, demo: true }) // Add demo flag for testing
       });
 
       if (response.ok) {
