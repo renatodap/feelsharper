@@ -2,13 +2,14 @@
 CREATE TABLE IF NOT EXISTS activity_logs (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  type TEXT NOT NULL CHECK (type IN ('weight', 'food', 'workout', 'mood', 'energy', 'sleep', 'water', 'unknown')),
-  data JSONB NOT NULL,
-  raw_text TEXT NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('weight', 'food', 'exercise', 'mood', 'energy', 'sleep', 'water', 'unknown')),
+  raw_input TEXT NOT NULL,
+  parsed_data JSONB NOT NULL,
   confidence REAL CHECK (confidence >= 0 AND confidence <= 1),
-  metadata JSONB,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  auto_logged BOOLEAN DEFAULT false,
+  ai_response TEXT,
+  timestamp TIMESTAMPTZ DEFAULT NOW(),
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Create indexes for performance

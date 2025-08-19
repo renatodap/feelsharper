@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Apple, Dumbbell, Activity, TrendingUp, Plus, Calendar, MessageCircle } from 'lucide-react';
+import { Apple, Dumbbell, Activity, TrendingUp, Plus, Calendar, MessageCircle, Sparkles } from 'lucide-react';
 import { quickActions } from '@/lib/navigation/routes';
 import SimpleHeader from '@/components/navigation/SimpleHeader';
 import ChatAssistant from '@/components/ai/ChatAssistant';
+import UnifiedNaturalInput from '@/components/UnifiedNaturalInput';
 import { useRouter } from 'next/navigation';
 
 interface DailyTotals {
@@ -110,6 +111,22 @@ export default function TodayPage() {
           <h1 className="text-4xl font-bold mb-2">Today</h1>
           <p className="text-text-secondary text-lg">{today}</p>
         </div>
+
+        {/* Unified Natural Language Input - THE KEY FEATURE */}
+        <section className="mb-12">
+          <div className="flex items-center gap-2 mb-4">
+            <Sparkles className="w-6 h-6 text-primary" />
+            <h2 className="text-2xl font-semibold text-text-primary">Quick Log Anything</h2>
+          </div>
+          <UnifiedNaturalInput 
+            onActivityLogged={() => {
+              fetchDailyData(); // Refresh all data after logging
+            }}
+          />
+          <p className="text-sm text-text-secondary mt-2">
+            Just type, speak, or photo: "weight 175" • "ran 5k" • "ate chicken salad" • Or snap a photo of your meal
+          </p>
+        </section>
 
         {/* Quick Actions */}
         <section className="mb-12">
