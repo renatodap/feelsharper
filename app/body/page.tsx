@@ -5,7 +5,7 @@ import {
   Activity, Plus, TrendingDown, TrendingUp, Target, Calendar, 
   Scale, Zap, Droplets, Bone, Clock, Ruler, Camera, Edit3, Save, X 
 } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { SimpleLineChart } from '@/components/ui/SimpleChart';
 import { format, subDays } from 'date-fns';
 import { createClient } from '@/lib/supabase/client';
 import type { BodyMeasurement, BodyTrend, BodyGoal } from '@/lib/types/database';
@@ -552,58 +552,19 @@ export default function BodyMetricsPage() {
           
           <div className="bg-surface border border-border rounded-xl p-6">
             {chartData.length > 0 ? (
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#2A2A2A" />
-                    <XAxis 
-                      dataKey="date" 
-                      stroke="#8B9096" 
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis 
-                      stroke="#8B9096" 
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#1A1A1A', 
-                        border: '1px solid #2A2A2A', 
-                        borderRadius: '8px',
-                        color: '#FFFFFF'
-                      }}
-                      labelStyle={{ color: '#C7CBD1' }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="weight" 
-                      stroke="#0B2A4A" 
-                      strokeWidth={3}
-                      dot={{ fill: '#0B2A4A', strokeWidth: 2, r: 4 }}
-                      name="Weight (kg)"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="bodyFat" 
-                      stroke="#D97706" 
-                      strokeWidth={2}
-                      dot={{ fill: '#D97706', strokeWidth: 2, r: 3 }}
-                      name="Body Fat (%)"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="muscleMass" 
-                      stroke="#10B981" 
-                      strokeWidth={2}
-                      dot={{ fill: '#10B981', strokeWidth: 2, r: 3 }}
-                      name="Muscle Mass (kg)"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-sm font-medium text-text-secondary mb-2">Weight (kg)</h4>
+                  <SimpleLineChart data={chartData} dataKey="weight" stroke="#0B2A4A" height={120} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-text-secondary mb-2">Body Fat (%)</h4>
+                  <SimpleLineChart data={chartData} dataKey="bodyFat" stroke="#D97706" height={120} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-text-secondary mb-2">Muscle Mass (kg)</h4>
+                  <SimpleLineChart data={chartData} dataKey="muscleMass" stroke="#10B981" height={120} />
+                </div>
               </div>
             ) : (
               <div className="bg-surface-2 border-2 border-dashed border-border rounded-xl p-12 text-center">

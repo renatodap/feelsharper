@@ -303,7 +303,7 @@ export function SmartProgressTracker() {
           
           <div className="flex items-center justify-between">
             <Badge 
-              variant={metric.isOnTrack ? "default" : "destructive"}
+              variant={metric.isOnTrack ? "default" : "error"}
               className="text-xs"
             >
               {metric.isOnTrack ? 'On Track' : 'Behind'}

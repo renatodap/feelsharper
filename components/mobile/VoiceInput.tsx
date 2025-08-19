@@ -29,7 +29,7 @@ export function VoiceInput({
   useEffect(() => {
     // Check if speech recognition is supported
     if (typeof window !== 'undefined') {
-      const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       setIsSupported(!!SpeechRecognition);
 
       if (SpeechRecognition) {
@@ -46,7 +46,7 @@ export function VoiceInput({
           }
         };
 
-        recognition.onresult = (event) => {
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
           let interim = '';
           let final = '';
 
@@ -76,7 +76,7 @@ export function VoiceInput({
           }
         };
 
-        recognition.onerror = (event) => {
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
           console.error('Speech recognition error:', event.error);
           setIsListening(false);
           
@@ -248,7 +248,7 @@ export function useVoiceCommands(commands: Record<string, () => void>) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
@@ -256,7 +256,7 @@ export function useVoiceCommands(commands: Record<string, () => void>) {
         recognition.interimResults = false;
         recognition.lang = 'en-US';
 
-        recognition.onresult = (event) => {
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
           const lastResult = event.results[event.results.length - 1];
           if (lastResult.isFinal) {
             const transcript = lastResult[0].transcript.toLowerCase().trim();

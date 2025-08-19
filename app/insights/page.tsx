@@ -1,8 +1,22 @@
 "use client";
 
-import { useState } from 'react';
-import { BarChart3, TrendingUp, Activity, Apple, Dumbbell, Calendar } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { useState, useEffect } from 'react';
+import { 
+  BarChart3, TrendingUp, TrendingDown, Activity, Apple, Dumbbell, Calendar,
+  Target, Award, Zap, Heart, Users, Download, Share2, Filter
+} from 'lucide-react';
+import { SimpleLineChart, SimpleBarChart } from '@/components/ui/SimpleChart';
+import SimpleHeader from '@/components/navigation/SimpleHeader';
+
+const CHART_COLORS = {
+  primary: '#0B2A4A',
+  success: '#10B981',
+  warning: '#F59E0B',
+  error: '#EF4444',
+  info: '#3B82F6',
+  purple: '#8B5CF6',
+  pink: '#EC4899'
+};
 
 // Mock data for demonstration
 const weightData = [
@@ -107,39 +121,12 @@ export default function InsightsPage() {
             <div className="bg-surface border border-border rounded-xl p-6">
               <h3 className="text-xl font-semibold mb-6">Weight Progress</h3>
               <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={weightData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#23272E" />
-                    <XAxis 
-                      dataKey="date" 
-                      stroke="#8B9096"
-                      tick={{ fontSize: 12 }}
-                      tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    />
-                    <YAxis 
-                      stroke="#8B9096" 
-                      tick={{ fontSize: 12 }}
-                      domain={['dataMin - 0.5', 'dataMax + 0.5']}
-                    />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#161A1F', 
-                        border: '1px solid #23272E', 
-                        borderRadius: '8px',
-                        color: '#FFFFFF'
-                      }}
-                      formatter={(value) => [`${value}kg`, 'Weight']}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="weight" 
-                      stroke="#3B82F6" 
-                      strokeWidth={3} 
-                      dot={{ fill: '#3B82F6', strokeWidth: 2, r: 5 }}
-                      activeDot={{ r: 8, stroke: '#3B82F6', strokeWidth: 2 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+                <SimpleLineChart 
+                  data={weightData} 
+                  dataKey="weight" 
+                  stroke="#3B82F6" 
+                  height={320}
+                />
               </div>
             </div>
           </div>

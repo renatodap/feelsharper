@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import Stripe from 'stripe';
+
 import { createSupabaseServer } from '@/lib/supabase/server';
 
 // Initialize Stripe conditionally

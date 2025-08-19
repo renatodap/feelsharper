@@ -1,4 +1,4 @@
-import { lemonSqueezySetup, createCheckout, getProduct, getSubscription, getWebhook } from '@lemonsqueezy/lemonsqueezy.js';
+import { lemonSqueezySetup, createCheckout, getProduct, getSubscription, listSubscriptions, getWebhook } from '@lemonsqueezy/lemonsqueezy.js';
 
 // Initialize LemonSqueezy
 export function initLemonSqueezy() {
@@ -106,11 +106,11 @@ export async function createCheckoutSession(
           desc: true,
           discount: false,
           dark: true,
-          subscription_preview: true,
-          button_color: '#0B2A4A'
+          subscriptionPreview: true,
+          buttonColor: '#0B2A4A'
         },
         productOptions: {
-          enabled_variants: [variantId],
+          enabledVariants: [parseInt(variantId)], // Must be number array
           redirect_url: redirectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/settings?upgraded=true`,
           receipt_button_text: 'Go to Dashboard',
           receipt_link_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`,
@@ -141,9 +141,9 @@ export async function getUserSubscription(userId: string) {
   initLemonSqueezy();
 
   try {
-    const { data } = await getSubscriptions({
+    const { data } = await listSubscriptions({
       filter: {
-        user_id: userId
+        user_email: userId // LemonSqueezy uses email, not user_id
       }
     });
 

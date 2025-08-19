@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Activity, Plus, TrendingDown, TrendingUp, Minus, Target, Calendar, Zap } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { SimpleLineChart } from '@/components/ui/SimpleChart';
 import { format, subDays } from 'date-fns';
 import { createClient } from '@/lib/supabase/client';
 import type { BodyMeasurement, BodyTrend, BodyGoal } from '@/lib/types/database';

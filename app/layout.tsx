@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Crimson_Text, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { UpgradeBanner } from "@/components/premium/UpgradePrompt";
@@ -7,24 +7,13 @@ import { PWAProvider } from "@/components/pwa/PWAProvider";
 import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
 import { FeedbackButton } from "@/components/feedback/FeedbackButton";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-});
-
-const crimson = Crimson_Text({
-  subsets: ["latin"],
-  variable: "--font-crimson",
-  weight: ["400", "600", "700"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
-  display: "swap",
+  weight: ["400", "500", "600", "700"], // Include needed weights
 });
 
 export const metadata: Metadata = {
@@ -102,49 +91,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${crimson.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} scroll-smooth`}>
       <head>
-        {/* iOS Splash Screens */}
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-640x1136-iphone5.svg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-750x1334-iphone6.svg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1242x2208-iphone6plus.svg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-828x1792-iphonexr.svg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1125x2436-iphonex.svg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1242x2688-iphonexsmax.svg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1170x2532-iphone12.svg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1284x2778-iphone12promax.svg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1536x2048-ipad.svg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1668x2224-ipadpro10.svg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-1668x2388-ipadpro11.svg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" />
-        <link rel="apple-touch-startup-image" href="/splash/apple-splash-2048x2732-ipadpro12.svg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" />
-        
-        {/* Apple Touch Icons */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png.svg" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png.svg" />
-        <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png.svg" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-128x128.png.svg" />
-        <link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-128x128.png.svg" />
-        <link rel="apple-touch-icon" sizes="76x76" href="/icons/icon-72x72.png.svg" />
-        <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png.svg" />
-        <link rel="apple-touch-icon" sizes="60x60" href="/icons/icon-72x72.png.svg" />
-        <link rel="apple-touch-icon" sizes="57x57" href="/icons/icon-72x72.png.svg" />
-        
-        {/* Favicon */}
-        <link rel="icon" type="image/svg+xml" href="/icons/icon-72x72.png.svg" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-72x72.png.svg" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-72x72.png.svg" />
+        {/* Essential Icons Only */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
       </head>
       <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
-        <ThemeProvider>
-          <AuthProvider>
-            <PWAProvider>
-              <UpgradeBanner />
-              {children}
-              <OfflineIndicator />
-              <FeedbackButton />
-            </PWAProvider>
-          </AuthProvider>
-        </ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider>
+            <AuthProvider>
+              <PWAProvider>
+                <UpgradeBanner />
+                {children}
+                <OfflineIndicator />
+                <FeedbackButton />
+              </PWAProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

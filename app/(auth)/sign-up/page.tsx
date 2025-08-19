@@ -8,8 +8,10 @@ import GoogleAuthButton from "@/components/auth/GoogleAuthButton";
 function SignUpForm() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const params = useSearchParams();
   const redirect = params.get("redirect") || "/today";
 
@@ -17,6 +19,20 @@ function SignUpForm() {
     e.preventDefault();
     setLoading(true);
     setErr(null);
+    
+    // Validate passwords match
+    if (pass !== confirmPass) {
+      setErr("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+    
+    // Validate password strength
+    if (pass.length < 6) {
+      setErr("Password must be at least 6 characters");
+      setLoading(false);
+      return;
+    }
     
     try {
       // Dynamic import to avoid build issues
@@ -32,18 +48,52 @@ function SignUpForm() {
       
       if (error) {
         setErr(error.message);
-      } else if (data.user && !data.user.email_confirmed_at) {
-        // User needs to verify email
-        window.location.href = `/verify-email?email=${encodeURIComponent(email)}`;
-      } else {
-        // User is automatically confirmed (shouldn't happen with default Supabase settings)
-        window.location.href = redirect;
+      } else if (data.user) {
+        // Check if email confirmation is required
+        if (data.user.identities?.length === 0) {
+          setSuccess(true);
+          setErr(null);
+        } else {
+          // Auto-sign in if email confirmation is not required
+          window.location.href = redirect;
+        }
       }
     } catch (error) {
       setErr("Sign up temporarily unavailable");
     }
     setLoading(false);
   };
+
+  if (success) {
+    return (
+      <div className="min-h-screen bg-bg text-text-primary">
+        <SimpleHeader />
+        <main className="mx-auto max-w-sm p-6 pt-20">
+          <div className="text-center">
+            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-navy/10">
+              <svg className="h-8 w-8 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-semibold mb-3 text-text-primary">Check Your Email</h1>
+            <p className="text-text-secondary mb-6">
+              We've sent a confirmation link to {email}. 
+              Please check your email and click the link to activate your account.
+            </p>
+            <p className="text-sm text-text-muted">
+              Didn't receive the email? Check your spam folder or{" "}
+              <button 
+                onClick={() => setSuccess(false)} 
+                className="text-navy underline hover:no-underline"
+              >
+                try again
+              </button>
+            </p>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg text-text-primary">
@@ -71,7 +121,7 @@ function SignUpForm() {
           <input 
             type="email"
             className="w-full rounded-md border border-border bg-surface p-2 text-text-primary" 
-            placeholder="Email" 
+            placeholder="Email address" 
             value={email} 
             onChange={(e)=>setEmail(e.target.value)}
             required
@@ -85,13 +135,39 @@ function SignUpForm() {
             minLength={6}
             required
           />
+          <input 
+            className="w-full rounded-md border border-border bg-surface p-2 text-text-primary" 
+            placeholder="Confirm password" 
+            type="password" 
+            value={confirmPass} 
+            onChange={(e)=>setConfirmPass(e.target.value)}
+            minLength={6}
+            required
+          />
+          
+          {/* Password requirements */}
+          <div className="text-xs text-text-muted space-y-1">
+            <p className={pass.length >= 6 ? "text-green-500" : ""}>
+              • At least 6 characters
+            </p>
+            <p className={pass === confirmPass && pass.length > 0 ? "text-green-500" : ""}>
+              • Passwords match
+            </p>
+          </div>
+          
           <button 
             disabled={loading} 
-            className="w-full rounded-md bg-navy text-white py-2 hover:bg-navy-600 disabled:opacity-50"
+            type="submit"
+            className="w-full rounded-md bg-navy text-white py-2 hover:bg-navy-600 disabled:opacity-50 transition-colors"
           >
-            {loading ? "Creating..." : "Sign up"}
+            {loading ? "Creating account..." : "Create account"}
           </button>
-          {err && <p className="text-error text-sm">{err}</p>}
+          
+          {err && (
+            <div className="p-3 bg-error/10 border border-error/20 rounded-lg">
+              <p className="text-sm text-error">{err}</p>
+            </div>
+          )}
         </form>
         
         <p className="mt-6 text-sm text-text-secondary text-center">

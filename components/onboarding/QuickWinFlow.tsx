@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// Removed framer-motion for lighter bundle
 import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -184,7 +184,7 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
             <span className="text-blue-600 font-bold">{Math.round(((currentStep + 1) / steps.length) * 100)}%</span>
           </div>
           <div className="relative w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-            <motion.div 
+            <div 
               className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
               initial={{ width: "0%" }}
               animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
@@ -194,9 +194,9 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
         </div>
 
         {/* Social Proof Banner */}
-        <AnimatePresence>
+        <div>
           {showSocialProof && (
-            <motion.div
+            <div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -219,37 +219,37 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
 
         {/* Main Content Card */}
         <Card className="bg-white/80 backdrop-blur-lg shadow-2xl border-0">
           <CardContent className="p-8">
             {/* Header */}
             <div className="text-center mb-8">
-              <motion.h1 
+              <h1 
                 className="text-3xl font-bold text-slate-800 mb-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               >
                 {steps[currentStep].title}
-              </motion.h1>
-              <motion.p 
+              </h1>
+              <p 
                 className="text-slate-600 text-lg"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
                 {steps[currentStep].subtitle}
-              </motion.p>
+              </p>
             </div>
 
-            <AnimatePresence mode="wait">
+            <div mode="wait">
               {/* Step 1: Workout Selection */}
               {currentStep === 0 && (
-                <motion.div
+                <div
                   key="workout-selection"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -264,7 +264,7 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
 
                   <div className="grid grid-cols-2 gap-4">
                     {SAMPLE_WORKOUTS.map((workout) => (
-                      <motion.button
+                      <button
                         key={workout.id}
                         onClick={() => handleWorkoutSelect(workout)}
                         className="p-4 rounded-xl border-2 border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all text-left group"
@@ -295,7 +295,7 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
                           {workout.exercises.slice(0, 2).join(", ")}
                           {workout.exercises.length > 2 && ` +${workout.exercises.length - 2} more`}
                         </div>
-                      </motion.button>
+                      </button>
                     ))}
                   </div>
 
@@ -304,12 +304,12 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
                       No signup required • Get instant insights
                     </p>
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {/* Step 2: AI Response */}
               {currentStep === 1 && (
-                <motion.div
+                <div
                   key="ai-response"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -328,7 +328,7 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
                       <div className="flex justify-center">
                         <div className="flex space-x-1">
                           {[0, 1, 2].map((i) => (
-                            <motion.div
+                            <div
                               key={i}
                               className="w-2 h-2 bg-blue-500 rounded-full"
                               animate={{
@@ -432,12 +432,12 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
                       </Button>
                     </div>
                   )}
-                </motion.div>
+                </div>
               )}
 
               {/* Step 3: Signup Prompt */}
               {currentStep === 2 && (
-                <motion.div
+                <div
                   key="signup-prompt"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -509,9 +509,9 @@ export default function QuickWinFlow({ onComplete, onSignupPrompt }: QuickWinFlo
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
+            </div>
           </CardContent>
         </Card>
       </div>

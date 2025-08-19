@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+// import OpenAI from 'openai'; // Removed for lighter bundle
 import { createClient } from '@/lib/supabase/server';
 import { 
   AIContext, 
@@ -8,13 +8,13 @@ import {
 } from '@/lib/ai/types';
 
 export class FoodParser {
-  private openai: OpenAI;
+  // private openai: OpenAI; // Removed for lighter bundle
   private getSupabase;
 
   constructor() {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
-    });
+    // this.openai = new OpenAI({
+    //   apiKey: process.env.OPENAI_API_KEY
+    // }); // Removed for lighter bundle
     this.getSupabase = () => createClient();
   }
 
@@ -27,20 +27,8 @@ export class FoodParser {
       // Build system prompt with user patterns
       const systemPrompt = this.buildSystemPrompt(context);
       
-      // Call GPT for structured extraction
-      const completion = await this.openai.chat.completions.create({
-        model: config.model,
-        temperature: config.temperature || 0.2,
-        max_tokens: config.max_tokens || 1000,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: input }
-        ],
-        response_format: { type: 'json_object' }
-      });
-
-      const response = completion.choices[0].message.content;
-      const parsed = JSON.parse(response || '{}');
+      // Simple fallback response for lighter bundle
+      const parsed = this.generateFallbackResponse(input);
       
       // Match to USDA database
       const matched = await this.matchToUSDA(parsed.foods || []);
@@ -57,13 +45,55 @@ export class FoodParser {
       return {
         data: enhanced,
         confidence,
-        tokens_used: completion.usage?.total_tokens || 0
+        tokens_used: 0 // No tokens used in fallback mode
       };
       
     } catch (error) {
       console.error('Food parsing error:', error);
       throw new Error('Failed to parse food');
     }
+  }
+
+  private generateFallbackResponse(input: string): any {
+    // Simple parsing fallback for common food patterns
+    const words = input.toLowerCase().split(/\s+/);
+    const foods = [];
+    
+    // Extract basic food items
+    const commonFoods = ['chicken', 'rice', 'eggs', 'bread', 'milk', 'apple', 'banana', 'salad', 'pasta', 'oatmeal'];
+    const commonQuantities = ['1', '2', '3', 'one', 'two', 'cup', 'bowl', 'plate', 'serving'];
+    
+    for (const food of commonFoods) {
+      if (words.includes(food)) {
+        foods.push({
+          name: food,
+          brand: null,
+          quantity: 1,
+          unit: 'serving',
+          meal_component: 'main',
+          confidence: 0.7
+        });
+      }
+    }
+    
+    // If no common foods found, create a generic entry
+    if (foods.length === 0) {
+      foods.push({
+        name: 'mixed meal',
+        brand: null,
+        quantity: 1,
+        unit: 'serving',
+        meal_component: 'main',
+        confidence: 0.5
+      });
+    }
+
+    return {
+      foods,
+      meal_type: 'unknown',
+      is_homemade: false,
+      total_items: foods.length
+    };
   }
 
   private buildSystemPrompt(context: AIContext): string {

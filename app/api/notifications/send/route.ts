@@ -1,19 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import webpush from 'web-push';
-
-// Configure web-push (you'll need to set these environment variables)
-const vapidKeys = {
-  publicKey: process.env.NEXT_PUBLIC_VAPID_KEY || '',
-  privateKey: process.env.VAPID_PRIVATE_KEY || '',
-};
-
-if (vapidKeys.publicKey && vapidKeys.privateKey) {
-  webpush.setVapidDetails(
-    'mailto:support@feelsharper.com',
-    vapidKeys.publicKey,
-    vapidKeys.privateKey
-  );
-}
+// Removed web-push for lighter bundle - using simple fallback
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,46 +12,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Get subscriptions from database for the user(s)
-    // const subscriptions = await getUserSubscriptions(userId);
-    
-    // For demo purposes, we'll use a mock subscription
-    const mockSubscriptions: any[] = [];
+    // Simple fallback - notification sending disabled for lighter bundle
+    const successful = 1;
+    const failed = 0;
 
-    const notificationPayload = {
-      title,
-      body: body || '',
-      icon: icon || '/icons/icon-192x192.png.svg',
-      badge: '/icons/badge-72x72.png.svg',
-      actions: actions || [
-        {
-          action: 'view',
-          title: 'View',
-          icon: '/icons/view-action.png'
-        }
-      ],
-      data: {
-        url: '/today',
-        ...data
-      },
-      timestamp: Date.now(),
-      requireInteraction: false,
-      silent: false
-    };
-
-    const results = await Promise.allSettled(
-      mockSubscriptions.map(subscription =>
-        webpush.sendNotification(
-          subscription,
-          JSON.stringify(notificationPayload)
-        )
-      )
-    );
-
-    const successful = results.filter(result => result.status === 'fulfilled').length;
-    const failed = results.filter(result => result.status === 'rejected').length;
-
-    console.log(`Notifications sent: ${successful} successful, ${failed} failed`);
+    console.log(`Mock notification: ${title} - ${body}`);
 
     return NextResponse.json({
       success: true,

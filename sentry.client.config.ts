@@ -54,17 +54,4 @@ Sentry.init({
     
     return event;
   },
-  
-  // User feedback
-  beforeSendFeedback(feedback) {
-    // Add user context
-    const user = Sentry.getCurrentScope().getUser();
-    if (user) {
-      feedback.user = {
-        email: user.email,
-        id: user.id,
-      };
-    }
-    return feedback;
-  },
 });

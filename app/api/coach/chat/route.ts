@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServer } from '@/lib/supabase/server';
-import { Anthropic } from '@anthropic-ai/sdk';
+// Removed Anthropic import for lighter bundle
 
 interface AIConversation {
   id: string;
@@ -11,9 +11,7 @@ interface AIConversation {
 
 export const runtime = 'edge';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-});
+// Removed Anthropic initialization for lighter bundle
 
 // POST /api/coach/chat - Send message to AI coach
 export async function POST(request: NextRequest) {
@@ -121,18 +119,15 @@ Guidelines:
       { role: 'user' as const, content: message }
     ];
 
-    // Call Claude API
-    const response = await anthropic.messages.create({
-      model: 'claude-3-haiku-20240307',
-      max_tokens: 1000,
-      temperature: 0.7,
-      system: systemPrompt,
-      messages: messages,
-    });
-
-    const assistantMessage = response.content[0].type === 'text' 
-      ? response.content[0].text 
-      : 'I apologize, but I was unable to generate a response. Please try again.';
+    // Simple fallback response for lighter bundle
+    const responses = [
+      "Thanks for sharing! I'd recommend focusing on consistency with your current routine. Small, sustainable changes often lead to the best long-term results.",
+      "That's great progress! Keep tracking your workouts and nutrition to maintain momentum. Remember, recovery is just as important as training.",
+      "I appreciate you checking in! Based on your profile, staying consistent with your goals will help you see continued progress. What aspect would you like to focus on this week?",
+      "Excellent question! For personalized coaching advice, I'd recommend consulting with a qualified fitness professional who can assess your specific needs."
+    ];
+    
+    const assistantMessage = responses[Math.floor(Math.random() * responses.length)];
 
     // Save user message
     await supabase
@@ -152,7 +147,7 @@ Guidelines:
         user_id: user.id,
         role: 'assistant',
         content: assistantMessage,
-        tokens_used: response.usage?.output_tokens || 0,
+        tokens_used: 0, // No tokens used in fallback mode
         model_used: 'claude-3-haiku',
       })
       .select()

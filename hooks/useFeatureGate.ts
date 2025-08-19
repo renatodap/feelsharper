@@ -13,6 +13,8 @@ interface FeatureGateHook extends FeatureAccess {
   checkAccess: () => Promise<void>;
   trackUsage: () => Promise<void>;
   upgradeUrl: string;
+  canUse: (count?: number) => boolean;
+  getRemainingUses: () => number | null;
 }
 
 export function useFeatureGate(feature: FeatureKey): FeatureGateHook {
@@ -120,12 +122,28 @@ export function useFeatureGate(feature: FeatureKey): FeatureGateHook {
     ? '/upgrade?plan=elite' 
     : '/upgrade?plan=pro';
 
+  // Check if user can use the feature
+  const canUse = useCallback((count: number = 1): boolean => {
+    if (!access.hasAccess) return false;
+    if (!access.usageLimit) return true;
+    return access.usageLimit.current_usage + count <= (access.usageLimit.monthly_limit || 0);
+  }, [access]);
+
+  // Get remaining uses
+  const getRemainingUses = useCallback((): number | null => {
+    if (!access.usageLimit) return null;
+    if (!access.usageLimit.monthly_limit) return null;
+    return Math.max(0, access.usageLimit.monthly_limit - access.usageLimit.current_usage);
+  }, [access]);
+
   return {
     ...access,
     loading,
     checkAccess,
     trackUsage,
-    upgradeUrl
+    upgradeUrl,
+    canUse,
+    getRemainingUses
   };
 }
 

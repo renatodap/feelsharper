@@ -308,7 +308,7 @@ export class PatternDetector {
     // Store frequently used exercise patterns
     if (patterns.workout?.top_exercises) {
       for (const exercise of patterns.workout.top_exercises.slice(0, 5)) {
-        await await this.getSupabase().rpc('increment_pattern_frequency', {
+        await (await this.getSupabase()).rpc('increment_pattern_frequency', {
           p_user_id: userId,
           p_pattern_type: 'workout_style',
           p_pattern_key: exercise.name,
@@ -320,7 +320,7 @@ export class PatternDetector {
     // Store common food patterns
     if (patterns.nutrition?.common_foods) {
       for (const food of patterns.nutrition.common_foods.slice(0, 10)) {
-        await await this.getSupabase().rpc('increment_pattern_frequency', {
+        await (await this.getSupabase()).rpc('increment_pattern_frequency', {
           p_user_id: userId,
           p_pattern_type: 'food_preference',
           p_pattern_key: food.name,
@@ -335,7 +335,7 @@ export class PatternDetector {
         .sort((a: any, b: any) => b[1] - a[1])[0];
       
       if (preferredDay) {
-        await await this.getSupabase().rpc('increment_pattern_frequency', {
+        await (await this.getSupabase()).rpc('increment_pattern_frequency', {
           p_user_id: userId,
           p_pattern_type: 'schedule',
           p_pattern_key: 'preferred_day',
@@ -380,7 +380,7 @@ export class PatternDetector {
 
     // Store insights in database
     for (const insight of insights) {
-      await await this.getSupabase().from('ai_insights').insert({
+      await (await this.getSupabase()).from('ai_insights').insert({
         user_id: userId,
         insight_type: insight.type,
         title: insight.title,

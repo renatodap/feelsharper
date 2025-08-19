@@ -107,7 +107,7 @@ export class FeatureGate {
     const limits = FEATURE_LIMITS[feature];
     
     if (limits.elite === null || limits.elite === true) return 'elite';
-    if ('pro' in limits && (limits.pro === null || limits.pro === true)) return 'pro';
+    if (limits.pro === null || limits.pro === true) return 'pro';
     return 'free';
   }
 

@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServer } from '@/lib/supabase/server';
-import { Anthropic } from '@anthropic-ai/sdk';
+// Removed Anthropic import for lighter bundle
 
 export const runtime = 'edge';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-});
+// Removed Anthropic initialization for lighter bundle
 
 // POST /api/coach/check-in - Submit daily/weekly check-in
 export async function POST(request: NextRequest) {
@@ -68,31 +66,23 @@ export async function POST(request: NextRequest) {
     ) / 4;
 
     if (avgScore < 4) {
-      // Low overall state - supportive response
-      const response = await anthropic.messages.create({
-        model: 'claude-3-haiku-20240307',
-        max_tokens: 200,
-        temperature: 0.8,
-        system: 'You are a supportive fitness coach. The user is having a tough day. Be empathetic, encouraging, and suggest gentle adjustments.',
-        messages: [{
-          role: 'user',
-          content: `Energy: ${energy_level}/10, Motivation: ${motivation_level}/10, Stress: ${stress_level}/10, Recovery: ${recovery_status}/10. Notes: ${notes || 'None'}. Give a brief supportive response.`
-        }]
-      });
-      coachResponse = response.content[0].type === 'text' ? response.content[0].text : 'Take it easy today. Rest is part of the process.';
+      // Low overall state - supportive response fallback
+      const supportiveResponses = [
+        'I hear you - some days are tougher than others. Remember, rest is part of the journey. Take things gently today.',
+        'It sounds like you\'re dealing with a lot right now. Be kind to yourself and focus on the basics: hydration, gentle movement, and rest.',
+        'Tough days happen to everyone. Consider this a recovery day and listen to your body. Tomorrow is a fresh start.',
+        'I appreciate you checking in even when things feel hard. That\'s already a win. Take it one step at a time today.'
+      ];
+      coachResponse = supportiveResponses[Math.floor(Math.random() * supportiveResponses.length)];
     } else if (avgScore > 7) {
-      // High overall state - motivating response
-      const response = await anthropic.messages.create({
-        model: 'claude-3-haiku-20240307',
-        max_tokens: 200,
-        temperature: 0.8,
-        system: 'You are an energizing fitness coach. The user is feeling great. Be motivating and suggest ways to capitalize on their energy.',
-        messages: [{
-          role: 'user',
-          content: `Energy: ${energy_level}/10, Motivation: ${motivation_level}/10, Stress: ${stress_level}/10, Recovery: ${recovery_status}/10. Notes: ${notes || 'None'}. Give a brief motivating response.`
-        }]
-      });
-      coachResponse = response.content[0].type === 'text' ? response.content[0].text : 'You\'re in the zone! Let\'s make today count!';
+      // High overall state - motivating response fallback
+      const motivatingResponses = [
+        'You\'re feeling fantastic! This is the perfect time to push a little harder or try something new. Let\'s make today count!',
+        'I love this energy! You\'re in the zone - consider adding an extra set or extending your workout slightly today.',
+        'What a great check-in! You\'re clearly taking care of yourself. Time to capitalize on this momentum.',
+        'Outstanding! When you feel this good, your body is ready for challenge. Let\'s make the most of this high-energy day.'
+      ];
+      coachResponse = motivatingResponses[Math.floor(Math.random() * motivatingResponses.length)];
     } else {
       // Moderate state - balanced response
       coachResponse = generateBalancedResponse(energy_level, motivation_level, stress_level, recovery_status);

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseServer } from '@/lib/supabase/server';
-import Stripe from 'stripe';
+
 
 // Initialize Stripe conditionally
 const getStripe = () => {

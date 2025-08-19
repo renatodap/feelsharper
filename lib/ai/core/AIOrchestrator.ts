@@ -118,7 +118,7 @@ export class AIOrchestrator {
     const supabase = await this.getSupabase();
     
     // Get user tier
-    const { data: profile } = await supabase
+    const { data: profile } = await (await this.getSupabase())
       .from('user_profiles')
       .select('subscription_tier')
       .eq('user_id', userId)
@@ -137,7 +137,7 @@ export class AIOrchestrator {
     startOfMonth.setDate(1);
     startOfMonth.setHours(0, 0, 0, 0);
 
-    const { data: usage } = await supabase
+    const { data: usage } = await (await this.getSupabase())
       .from('ai_usage_tracking')
       .select('id')
       .eq('user_id', userId)
@@ -159,7 +159,7 @@ export class AIOrchestrator {
 
   private async loadUserContext(userId: string): Promise<AIContext> {
     // Check cache first
-    const { data: cache } = await supabase
+    const { data: cache } = await (await this.getSupabase())
       .from('user_ai_context_cache')
       .select('*')
       .eq('user_id', userId)
@@ -189,14 +189,14 @@ export class AIOrchestrator {
     const [profile, workouts, nutrition, bodyMetrics, goals, patterns, conversations] = 
       await Promise.all([
         // User profile
-        supabase
+        (await this.getSupabase())
           .from('user_profiles')
           .select('*')
           .eq('user_id', userId)
           .single(),
         
         // Recent workouts
-        supabase
+        (await this.getSupabase())
           .from('workouts')
           .select('*')
           .eq('user_id', userId)
@@ -205,7 +205,7 @@ export class AIOrchestrator {
           .limit(30),
         
         // Recent nutrition
-        supabase
+        (await this.getSupabase())
           .from('food_logs')
           .select('*')
           .eq('user_id', userId)
@@ -213,7 +213,7 @@ export class AIOrchestrator {
           .order('date', { ascending: false }),
         
         // Body metrics
-        supabase
+        (await this.getSupabase())
           .from('body_weight')
           .select('*')
           .eq('user_id', userId)
@@ -221,14 +221,14 @@ export class AIOrchestrator {
           .limit(10),
         
         // Active goals
-        supabase
+        (await this.getSupabase())
           .from('user_goals')
           .select('*')
           .eq('user_id', userId)
           .eq('status', 'active'),
         
         // User patterns
-        supabase
+        (await this.getSupabase())
           .from('user_patterns')
           .select('*')
           .eq('user_id', userId)
@@ -236,7 +236,7 @@ export class AIOrchestrator {
           .limit(50),
         
         // Recent conversations
-        supabase
+        (await this.getSupabase())
           .from('ai_conversation_memory')
           .select('*')
           .eq('user_id', userId)
@@ -286,7 +286,7 @@ export class AIOrchestrator {
       stale_after: new Date(Date.now() + 60 * 60 * 1000).toISOString() // 1 hour
     };
 
-    await supabase
+    await (await this.getSupabase())
       .from('user_ai_context_cache')
       .upsert(cacheData, { onConflict: 'user_id' });
   }
@@ -329,7 +329,7 @@ export class AIOrchestrator {
     input: any,
     result: any
   ) {
-    await supabase.from('user_context_store').insert({
+    await (await this.getSupabase()).from('user_context_store').insert({
       user_id: userId,
       context_type: type.split('_')[1], // Extract main type
       raw_input: typeof input === 'string' ? input : JSON.stringify(input),
@@ -349,13 +349,13 @@ export class AIOrchestrator {
     model: string,
     success: boolean = true
   ) {
-    const { data: profile } = await supabase
+    const { data: profile } = await (await this.getSupabase())
       .from('user_profiles')
       .select('subscription_tier')
       .eq('user_id', userId)
       .single();
 
-    await supabase.from('ai_usage_tracking').insert({
+    await (await this.getSupabase()).from('ai_usage_tracking').insert({
       user_id: userId,
       endpoint: `/api/ai/${type}`,
       operation: type,
@@ -381,7 +381,7 @@ export class AIOrchestrator {
       // Learn exercise abbreviations
       for (const exercise of result.data.exercises) {
         if (input.includes(exercise.name.substring(0, 3))) {
-          await supabase.rpc('increment_pattern_frequency', {
+          await (await this.getSupabase()).rpc('increment_pattern_frequency', {
             p_user_id: userId,
             p_pattern_type: 'exercise_alias',
             p_pattern_key: exercise.name.substring(0, 3).toLowerCase(),
@@ -394,7 +394,7 @@ export class AIOrchestrator {
     if (type === 'parse_food' && result.data?.foods) {
       // Learn food preferences
       for (const food of result.data.foods) {
-        await supabase.rpc('increment_pattern_frequency', {
+        await (await this.getSupabase()).rpc('increment_pattern_frequency', {
           p_user_id: userId,
           p_pattern_type: 'food_preference',
           p_pattern_key: food.name.toLowerCase(),
@@ -409,7 +409,7 @@ export class AIOrchestrator {
 
   // Public method for getting user's usage summary
   async getUserUsageSummary(userId: string) {
-    const { data } = await supabase
+    const { data } = await (await this.getSupabase())
       .rpc('get_monthly_ai_usage', { p_user_id: userId });
     
     return data;
@@ -417,7 +417,7 @@ export class AIOrchestrator {
 
   // Check if user should be prompted to upgrade
   async shouldPromptUpgrade(userId: string): Promise<boolean> {
-    const { data } = await supabase
+    const { data } = await (await this.getSupabase())
       .rpc('check_free_tier_exceeded', { p_user_id: userId });
     
     return data === true;

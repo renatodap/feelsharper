@@ -5,6 +5,35 @@
 
 import { SleepData, SocialData, AchievementData } from '../types';
 
+// Define missing types
+export interface WorkoutData {
+  id: string;
+  date: Date;
+  exercises: any[];
+  duration?: number;
+  calories?: number;
+}
+
+export interface NutritionData {
+  id: string;
+  date: Date;
+  meals: any[];
+  totalCalories: number;
+  macros: {
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
+}
+
+export interface BodyMetricData {
+  id: string;
+  date: Date;
+  weight?: number;
+  bodyFat?: number;
+  measurements?: any;
+}
+
 export interface ExportRequest {
   requestId: string;
   userId: string;

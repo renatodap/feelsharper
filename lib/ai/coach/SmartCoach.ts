@@ -1,4 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
+
 import { createClient } from '@/lib/supabase/server';
 import { 
   AIContext, 

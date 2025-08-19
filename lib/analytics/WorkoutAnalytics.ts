@@ -102,7 +102,7 @@ export class WorkoutAnalytics {
 
     // Group by exercise
     workouts.forEach(workout => {
-      workout.exercises?.forEach(exercise => {
+      workout.exercises?.forEach((exercise: any) => {
         const key = exercise.name.toLowerCase();
         if (!exerciseMap.has(key)) {
           exerciseMap.set(key, []);
@@ -132,10 +132,10 @@ export class WorkoutAnalytics {
     const sortedHistory = history.sort((a, b) => a.date.getTime() - b.date.getTime());
     
     // Calculate totals
-    const totalVolume = sortedHistory.reduce((sum, ex) => 
+    const totalVolume = sortedHistory.reduce((sum: number, ex: any) => 
       sum + (ex.sets * ex.reps * (ex.weight || 0)), 0);
-    const totalSets = sortedHistory.reduce((sum, ex) => sum + ex.sets, 0);
-    const totalReps = sortedHistory.reduce((sum, ex) => sum + (ex.sets * ex.reps), 0);
+    const totalSets = sortedHistory.reduce((sum: number, ex: any) => sum + ex.sets, 0);
+    const totalReps = sortedHistory.reduce((sum: number, ex: any) => sum + (ex.sets * ex.reps), 0);
     
     // Weight analysis
     const weights = sortedHistory.map(ex => ex.weight).filter(w => w > 0);
@@ -143,7 +143,7 @@ export class WorkoutAnalytics {
     const maxWeight = Math.max(...weights, 0);
     
     // One Rep Max calculation (Epley formula: weight × (1 + reps/30))
-    const oneRepMax = sortedHistory.reduce((max, ex) => {
+    const oneRepMax = sortedHistory.reduce((max: number, ex: any) => {
       if (ex.weight && ex.reps) {
         const estimated1RM = ex.weight * (1 + ex.reps / 30);
         return Math.max(max, estimated1RM);
@@ -200,7 +200,7 @@ export class WorkoutAnalytics {
     const workouts = await this.getWorkouts(userId, timeframe);
     
     return workouts.map(workout => {
-      const totalVolume = workout.exercises?.reduce((sum, ex) => 
+      const totalVolume = workout.exercises?.reduce((sum: number, ex: any) => 
         sum + (ex.sets * ex.reps * (ex.weight || 0)), 0) || 0;
       
       const exerciseCount = workout.exercises?.length || 0;
@@ -316,7 +316,7 @@ export class WorkoutAnalytics {
     const muscleGroupMap = new Map<string, ExerciseMetrics[]>();
 
     // Group exercises by muscle group
-    exercises.forEach(exercise => {
+    exercises.forEach((exercise: any) => {
       exercise.muscleGroups.forEach(muscle => {
         if (!muscleGroupMap.has(muscle)) {
           muscleGroupMap.set(muscle, []);
@@ -607,7 +607,7 @@ export class WorkoutAnalytics {
     const exercises = workout.exercises || [];
     if (exercises.length === 0) return 0;
     
-    const avgRPE = exercises.reduce((sum, ex) => sum + (ex.rpe || 7), 0) / exercises.length;
+    const avgRPE = exercises.reduce((sum: number, ex: any) => sum + (ex.rpe || 7), 0) / exercises.length;
     return (avgRPE / 10) * 100;
   }
 
@@ -619,8 +619,8 @@ export class WorkoutAnalytics {
     const firstHalf = exercises.slice(0, Math.ceil(exercises.length / 2));
     const secondHalf = exercises.slice(Math.floor(exercises.length / 2));
     
-    const firstHalfAvg = firstHalf.reduce((sum, ex) => sum + (ex.weight || 0), 0) / firstHalf.length;
-    const secondHalfAvg = secondHalf.reduce((sum, ex) => sum + (ex.weight || 0), 0) / secondHalf.length;
+    const firstHalfAvg = firstHalf.reduce((sum: number, ex: any) => sum + (ex.weight || 0), 0) / firstHalf.length;
+    const secondHalfAvg = secondHalf.reduce((sum: number, ex: any) => sum + (ex.weight || 0), 0) / secondHalf.length;
     
     const performanceDrop = firstHalfAvg > 0 ? ((firstHalfAvg - secondHalfAvg) / firstHalfAvg) * 100 : 0;
     return Math.max(0, performanceDrop);
@@ -630,7 +630,7 @@ export class WorkoutAnalytics {
     const distribution = new Map<string, number>();
     const exercises = workout.exercises || [];
     
-    exercises.forEach(exercise => {
+    exercises.forEach((exercise: any) => {
       const muscles = this.getMuscleGroups(exercise.name);
       muscles.forEach(muscle => {
         const currentVolume = distribution.get(muscle) || 0;
@@ -646,7 +646,7 @@ export class WorkoutAnalytics {
     const exercises = workout.exercises || [];
     if (exercises.length === 0) return 'strength';
     
-    const avgReps = exercises.reduce((sum, ex) => sum + ex.reps, 0) / exercises.length;
+    const avgReps = exercises.reduce((sum: number, ex: any) => sum + ex.reps, 0) / exercises.length;
     
     if (avgReps <= 5) return 'strength';
     if (avgReps <= 8) return 'power';

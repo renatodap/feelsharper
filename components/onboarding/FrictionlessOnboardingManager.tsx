@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// Removed framer-motion for lighter bundle - using CSS transitions
 import { useRouter, useSearchParams } from 'next/navigation';
 import QuickWinFlow from './QuickWinFlow';
 import SmartOnboardingWizard from './SmartOnboardingWizard';
@@ -185,10 +185,10 @@ export default function FrictionlessOnboardingManager({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <AnimatePresence mode="wait">
+      <div mode="wait">
         {/* Flow Selector */}
         {showFlowSelector && (
-          <motion.div
+          <div
             key="flow-selector"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -198,13 +198,13 @@ export default function FrictionlessOnboardingManager({
             <div className="w-full max-w-4xl">
               {/* Social Proof */}
               {showSocialProof && (
-                <motion.div
+                <div
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="mb-8"
                 >
                   <SocialProofSection variant="compact" />
-                </motion.div>
+                </div>
               )}
 
               {/* Main Card */}
@@ -212,14 +212,14 @@ export default function FrictionlessOnboardingManager({
                 <CardContent className="p-8">
                   {/* Header */}
                   <div className="text-center mb-8">
-                    <motion.div
+                    <div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ type: "spring", delay: 0.2 }}
                       className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4"
                     >
                       <Sparkles className="w-8 h-8 text-white" />
-                    </motion.div>
+                    </div>
                     
                     <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-3">
                       How would you like to start?
@@ -232,7 +232,7 @@ export default function FrictionlessOnboardingManager({
                   {/* Flow Options */}
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
                     {/* Quick Win Option */}
-                    <motion.button
+                    <button
                       onClick={() => handleFlowSelect('quick_win')}
                       className="p-6 text-left bg-gradient-to-br from-green-50 to-blue-50 border-2 border-green-200 rounded-2xl hover:border-green-300 hover:shadow-xl transition-all duration-300 group"
                       whileHover={{ scale: 1.02, y: -2 }}
@@ -273,10 +273,10 @@ export default function FrictionlessOnboardingManager({
                         <span>Start now</span>
                         <ArrowRight className="w-4 h-4 ml-1" />
                       </div>
-                    </motion.button>
+                    </button>
 
                     {/* Full Onboarding Option */}
-                    <motion.button
+                    <button
                       onClick={() => handleFlowSelect('full_wizard')}
                       className="p-6 text-left bg-gradient-to-br from-purple-50 to-pink-50 border-2 border-purple-200 rounded-2xl hover:border-purple-300 hover:shadow-xl transition-all duration-300 group"
                       whileHover={{ scale: 1.02, y: -2 }}
@@ -317,7 +317,7 @@ export default function FrictionlessOnboardingManager({
                         <span>Customize everything</span>
                         <ArrowRight className="w-4 h-4 ml-1" />
                       </div>
-                    </motion.button>
+                    </button>
                   </div>
 
                   {/* Skip Option */}
@@ -334,7 +334,7 @@ export default function FrictionlessOnboardingManager({
               </Card>
 
               {/* Trust Indicators */}
-              <motion.div
+              <div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
@@ -354,14 +354,14 @@ export default function FrictionlessOnboardingManager({
                     <span>89% success rate</span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Quick Win Flow */}
         {currentFlow === 'quick_win' && (
-          <motion.div
+          <div
             key="quick-win"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
@@ -371,12 +371,12 @@ export default function FrictionlessOnboardingManager({
               onComplete={handleQuickWinComplete}
               onSignupPrompt={handleSignupPrompt}
             />
-          </motion.div>
+          </div>
         )}
 
         {/* Full Onboarding Wizard */}
         {currentFlow === 'full_wizard' && (
-          <motion.div
+          <div
             key="full-wizard"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
@@ -387,12 +387,12 @@ export default function FrictionlessOnboardingManager({
               onSkip={() => router.push('/dashboard')}
               showSkipOption={flowConfig.showSkip !== false}
             />
-          </motion.div>
+          </div>
         )}
 
         {/* Minimal Flow */}
         {currentFlow === 'minimal' && (
-          <motion.div
+          <div
             key="minimal"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
@@ -421,13 +421,13 @@ export default function FrictionlessOnboardingManager({
                 </Button>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </div>
 
       {/* Floating Social Proof (only on flow selector) */}
       {showFlowSelector && showSocialProof && (
-        <motion.div
+        <div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1 }}
@@ -448,7 +448,7 @@ export default function FrictionlessOnboardingManager({
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       )}
     </div>
   );

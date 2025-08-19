@@ -1,17 +1,9 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { Check, X, Zap, Trophy, Star } from 'lucide-react';
+"use client";
 
-export const metadata: Metadata = {
-  title: 'Pricing - FeelSharper | AI Fitness Tracking Plans',
-  description: 'Choose the perfect FeelSharper plan. Free forever option or upgrade to Pro for AI coaching, unlimited tracking, and advanced analytics.',
-  keywords: 'fitness app pricing, AI coach subscription, workout tracker cost, nutrition app plans',
-  openGraph: {
-    title: 'FeelSharper Pricing - Start Free, Upgrade Anytime',
-    description: 'Track fitness free forever or unlock AI coaching for $9.99/month',
-    images: ['/images/pricing-og.png'],
-  },
-};
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Check, X, Zap, Trophy, Star, Loader } from 'lucide-react';
 
 const plans = [
   {

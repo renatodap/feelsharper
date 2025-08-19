@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig: NextConfig = {
   // Temporarily disable type checking in build for React 19 compatibility
   typescript: {
@@ -25,10 +29,18 @@ const nextConfig: NextConfig = {
       'lucide-react', 
       '@radix-ui/react-checkbox', 
       '@radix-ui/react-label',
-      '@radix-ui/react-*',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-radio-group',
       'framer-motion',
       '@supabase/ssr',
-      '@supabase/supabase-js'
+      '@supabase/supabase-js',
+      'recharts',
+      'date-fns',
+      '@anthropic-ai/sdk',
+      'openai',
+      'stripe',
+      'posthog-js',
+      '@tanstack/react-query'
     ],
   },
   
@@ -116,25 +128,52 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Webpack optimizations
+  // Webpack optimizations for bundle size
   webpack: (config, { dev, isServer }) => {
     // Production optimizations
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
+        minSize: 20000,
+        maxSize: 150000,
         cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
+          default: false,
+          vendors: false,
+          // Split framework chunk  
+          framework: {
+            name: 'framework',
             chunks: 'all',
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types)[\\/]/,
+            priority: 40,
             enforce: true,
           },
+          // Split large libs
+          lib: {
+            test(module: any) {
+              return module.size() > 100000 &&
+                /node_modules[/\\]/.test(module.identifier());
+            },
+            name(module: any) {
+              const identifier = module.identifier();
+              const parts = identifier.split('/');
+              const nameIndex = parts.findIndex((part: string) => part === 'node_modules') + 1;
+              return parts[nameIndex] || 'lib';
+            },
+            priority: 30,
+            minChunks: 1,
+            reuseExistingChunk: true,
+          },
+          // Common chunks
+          commons: {
+            name: 'commons',
+            chunks: 'all',
+            minChunks: 2,
+            priority: 20,
+            reuseExistingChunk: true,
+          },
         },
+        maxAsyncRequests: 10,
+        maxInitialRequests: 10,
       };
     }
 
@@ -142,4 +181,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

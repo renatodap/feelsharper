@@ -8,9 +8,7 @@
  * - Automatic experiment management
  */
 
-import { createServerClient } from '@/lib/supabase/server';
 import { createClient } from '@/lib/supabase/client';
-import { cookies } from 'next/headers';
 
 // Types
 export interface ExperimentConfig {
@@ -87,7 +85,8 @@ export class ABTestingService {
   private supabase;
   
   constructor(serverSide: boolean = false) {
-    this.supabase = serverSide ? createServerClient() : createClient();
+    // For now, always use client-side to avoid server component issues
+    this.supabase = createClient();
   }
 
   /**

@@ -148,7 +148,7 @@ export class PushNotificationManager {
       
       this.subscription = await this.registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: convertedVapidKey.buffer
+        applicationServerKey: convertedVapidKey
       });
 
       // Send subscription to server (in production)

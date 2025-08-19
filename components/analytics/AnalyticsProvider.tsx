@@ -4,7 +4,14 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getAnalytics, PostHogAnalytics, POSTHOG_CONFIG } from '../../../../packages/analytics/posthog-config';
+import { posthogConfig } from '@/packages/analytics/posthog-config';
+
+// Define analytics types
+interface PostHogAnalytics {
+  track: (event: string, properties?: any) => void;
+  identify: (userId: string, properties?: any) => void;
+  reset: () => void;
+}
 import { useUser } from '@/lib/auth/useUser';
 import { createClient } from '@/lib/supabase/client';
 
