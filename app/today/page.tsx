@@ -53,8 +53,8 @@ export default function TodayPage() {
       const foodResponse = await fetch('/api/food/log');
       if (foodResponse.ok) {
         const foodData = await foodResponse.json();
-        setFoodTotals(foodData.totals);
-        setRecentLogs(foodData.foodLogs.slice(-3)); // Last 3 logs
+        setFoodTotals(foodData.totals || { kcal: 0, protein_g: 0, carbs_g: 0, fat_g: 0 });
+        setRecentLogs(foodData.foodLogs ? foodData.foodLogs.slice(-3) : []); // Last 3 logs
       }
 
       // Fetch weight data

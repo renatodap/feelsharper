@@ -52,14 +52,20 @@ export function useFeatureAccess(featureKey: string): FeatureAccess {
           return;
         }
 
-        // Get user subscription tier
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('subscription_tier')
-          .eq('id', user.id)
-          .single();
+        // Get user subscription tier (fallback to 'free' if column doesn't exist)
+        let userTier = 'free';
+        try {
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('subscription_tier')
+            .eq('id', user.id)
+            .single();
 
-        const userTier = profile?.subscription_tier || 'free';
+          userTier = profile?.subscription_tier || 'free';
+        } catch (error) {
+          console.log('Subscription tier column not found, defaulting to free');
+          userTier = 'free';
+        }
 
         // Check if user has required tier
         const hasTierAccess = feature.tier_required === 'free' || 
@@ -144,17 +150,27 @@ export function useSubscriptionStatus() {
           return;
         }
 
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('subscription_tier, subscription_status')
-          .eq('id', user.id)
-          .single();
+        // Try to get subscription info, fallback to free if columns don't exist
+        try {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('subscription_tier, subscription_status')
+            .eq('id', user.id)
+            .single();
 
-        setStatus({
-          tier: profile?.subscription_tier || 'free',
-          status: profile?.subscription_status || 'active',
-          loading: false,
-        });
+          setStatus({
+            tier: profile?.subscription_tier || 'free',
+            status: profile?.subscription_status || 'active',
+            loading: false,
+          });
+        } catch (error) {
+          console.log('Subscription columns not found, defaulting to free');
+          setStatus({
+            tier: 'free',
+            status: 'active',
+            loading: false,
+          });
+        }
 
       } catch (error) {
         console.error('Error getting subscription status:', error);
