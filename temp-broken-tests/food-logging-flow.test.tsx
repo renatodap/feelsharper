@@ -29,6 +29,10 @@ describe('Food Logging Flow Integration', () => {
     // Mock food search results from USDA database
     mockSupabase.from.mockImplementation(() => ({
       select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          order: jest.fn(() => Promise.resolve({ data: [], error: null })),
+          single: jest.fn(() => Promise.resolve({ data: null, error: null })),
+        })),
         ilike: jest.fn(() => ({
           limit: jest.fn(() => Promise.resolve({
             data: [

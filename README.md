@@ -1,254 +1,205 @@
-# Feel Sharper 🏋️‍♂️
+# Feel Sharper 🎯 - AI Fitness Coach That Actually Understands You
 
-*Last Updated: August 14, 2025*
-*Status: Development Complete - Awaiting Deployment*
+**"Iron sharpens iron"** - A revolutionary fitness app that uses natural language AI to make health tracking effortless.
 
-A comprehensive, dark-first fitness tracker for logging food, workouts, and weight with intelligent analytics and progress tracking.
+## 🚀 What Makes This Different
 
-**Current State**: 🚧 Ready for production deployment but not yet live
+**Traditional fitness apps**: Forms, databases, manual entry, clicking through menus  
+**Feel Sharper**: Just talk naturally - AI handles everything
+
+```
+You: "Had eggs and toast, ran 5k, weight 175, feeling great"
+AI: "Logged! Great run pace today. You're on track for your goal. Tomorrow try..."
+```
+
+## 🎯 Core Philosophy
+
+Part of the **Sharpened Ecosystem** - AI-powered platforms for human improvement:
+- **FeelSharper**: Fitness & health (this app)
+- **StudySharper**: Learning optimization (coming soon)
+- **SkillSharper**: Professional development (coming soon)
+
+As AI replaces jobs, humans must sharpen themselves. We make that frictionless.
+
+## ✨ MVP V2 Features (Natural Language Focus)
+
+### What Users Can Do
+- **Talk naturally**: "Had a burger for lunch" → AI logs calories automatically
+- **Voice input**: Speak instead of type - perfect for post-workout logging
+- **AI coaching**: Get personalized insights based on your patterns
+- **Simple dashboard**: See only what matters for YOUR goals
+- **Quick check-ins**: Rate energy/mood with one tap
+- **Pattern recognition**: AI spots trends and suggests improvements
+
+### What We Removed (On Purpose)
+- ❌ No complex food databases to search through
+- ❌ No forms with 20 fields to fill out
+- ❌ No manual calorie counting
+- ❌ No overwhelming dashboards
+- ❌ No generic, one-size-fits-all advice
+
+## 🏗️ Tech Stack
+
+- **Frontend**: Next.js 15.4.5, React 19, TypeScript
+- **Styling**: Tailwind CSS 4 (dark-first design)
+- **Database**: Supabase (PostgreSQL + Auth)
+- **AI**: OpenAI GPT-4 (parsing) + Claude 3 (coaching)
+- **Voice**: Web Speech API
+- **Deployment**: Vercel
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 20+ (recommended: use [nvm](https://github.com/nvm-sh/nvm))
+- Node.js 20+
 - npm or pnpm
-- Git
-- Supabase account (for database)
+- Supabase account
+- OpenAI API key
+- Anthropic API key
 
-### One-Command Setup
-
-⚠️ **Note**: Repository not yet public. Contact founder for access.
-
-**Windows (PowerShell):**
-```powershell
-# Clone and setup (requires access)
-git clone [private-repo-url]
-cd feelsharper
-./scripts/bootstrap.ps1
-```
-
-**macOS/Linux:**
-```bash
-# Clone and setup  
-git clone https://github.com/renatodap/feelsharper.git
-cd feelsharper
-./scripts/bootstrap.sh
-```
-
-### Manual Setup
+### Setup
 
 1. **Clone and install:**
    ```bash
-   git clone https://github.com/renatodap/feelsharper.git
+   git clone https://github.com/yourusername/feelsharper.git
    cd feelsharper
    npm install
    ```
 
-2. **Environment setup:**
+2. **Configure environment:**
    ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your keys (see Environment Variables below)
+   cp env.example .env.local
    ```
-
-3. **Database setup:**
-   ```bash
-   # If using local Supabase
-   npx supabase start
-   npm run db:migrate
-   npm run db:seed
    
-   # If using hosted Supabase
-   npm run db:push
+   Edit `.env.local`:
+   ```env
+   # Supabase
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+   
+   # AI APIs (Required for MVP V2)
+   OPENAI_API_KEY=your_openai_key
+   ANTHROPIC_API_KEY=your_claude_key
    ```
 
-4. **Start development:**
+3. **Run development server:**
    ```bash
    npm run dev
    ```
+   
+   Open [http://localhost:3000](http://localhost:3000)
 
-Visit [http://localhost:3000](http://localhost:3000) to see the app!
+## 📁 Project Structure
 
----
-
-## 🛠️ Development
-
-### Core Commands
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run typecheck    # TypeScript validation
-npm test             # Run tests
-npm run test:e2e     # End-to-end tests
 ```
-
-### Database Commands
-```bash
-npm run db:migrate   # Run migrations
-npm run db:reset     # Reset local database
-npm run db:seed      # Seed with sample data
-npm run db:types     # Generate TypeScript types
+feelsharper/
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx           # Home with natural language input
+│   ├── chat/              # AI coach conversation
+│   └── api/               # API routes
+│       ├── ai/            # AI processing endpoints
+│       └── activity/      # Activity logging
+├── components/            
+│   ├── ai/               # AI chat components
+│   ├── voice/            # Voice input components
+│   └── ui/               # Reusable UI components
+├── lib/
+│   ├── ai/               # AI integration (OpenAI, Claude)
+│   ├── parsers/          # Natural language parsers
+│   └── supabase/         # Database client
+└── docs/
+    └── MVP_V2_NATURAL_LANGUAGE.md  # Full MVP documentation
 ```
-
-### Documentation
-```bash
-npm run docs:expand  # Auto-generate/update docs
-npm run docs:serve   # Serve documentation locally
-```
-
----
-
-## 🏗️ Tech Stack
-
-- **Framework:** Next.js 15 with App Router
-- **Language:** TypeScript 5
-- **Styling:** Tailwind CSS 4 (dark-first design)
-- **Database:** Supabase (PostgreSQL with RLS)
-- **Auth:** Supabase Auth
-- **Deployment:** Vercel
-- **Testing:** Jest + Playwright
-- **Linting:** ESLint + Prettier
-- **CI/CD:** GitHub Actions
-
----
-
-## 🌍 Environment Variables
-
-Create `.env.local` based on `.env.example`:
-
-### Required for Production
-```bash
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# AI Features (Optional)
-ANTHROPIC_API_KEY=your_anthropic_key
-OPENAI_API_KEY=your_openai_key
-```
-
-### Development Only
-```bash
-# Local development
-DATABASE_URL=postgresql://postgres:postgres@localhost:54322/postgres
-```
-
----
-
-## 🎯 Features
-
-Feel Sharper includes comprehensive fitness tracking capabilities:
-
-### ✅ Core Features
-- **Food Logging:** USDA database with 8000+ verified foods
-- **Workout Tracking:** AI-powered exercise parser and logging
-- **Weight Tracking:** Quick daily weight and measurement entry
-- **Progress Analytics:** Charts, trends, and goal tracking
-- **Dark Mode:** Beautiful dark-first design system
-
-### 🚧 Coming Soon
-- Wearable integrations (Apple Health, Garmin, etc.)
-- Social features and squad challenges
-- Advanced coaching and meal planning
-- Comprehensive health integrations
-
-See [FEATURES.md](./FEATURES.md) for the complete roadmap.
-
----
 
 ## 🧪 Testing
 
-### Unit Tests
 ```bash
-npm test                    # Run all tests
-npm test -- --watch        # Watch mode
-npm test -- --coverage     # Coverage report
+# Run all tests
+npm test
+
+# Type checking
+npm run typecheck
+
+# Linting
+npm run lint
 ```
 
-### End-to-End Tests
-```bash
-npm run test:e2e           # Run E2E tests
-npm run test:e2e:ui        # Interactive mode
-```
+## 🚢 Deployment
 
-### Database Tests
-```bash
-npm run test:db            # Test RLS policies
-npm run test:migrations    # Test migration safety
-```
+### Quick Deploy to Vercel
 
----
-
-## 📚 Documentation
-
-- [Architecture Overview](./docs/architecture.md)
-- [Database Schema](./docs/database/schema.md)
-- [API Documentation](./docs/api/README.md)
-- [Feature Specifications](./docs/features/README.md)
-- [Deployment Guide](./docs/deploy.md)
-
----
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. **Connect repository:** Import to Vercel dashboard
-2. **Set environment variables:** Add all production env vars
-3. **Deploy:** Automatic on main branch pushes
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/feelsharper)
 
 ### Manual Deployment
-```bash
-npm run build              # Build production bundle
-npm run start              # Start production server
+
+1. **Build for production:**
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy to Vercel:**
+   ```bash
+   vercel --prod
+   ```
+
+## 📊 Database Schema (Simplified for MVP V2)
+
+```sql
+-- Single table for all activities
+CREATE TABLE activity_logs (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users,
+  timestamp TIMESTAMPTZ,
+  type TEXT, -- 'food', 'weight', 'workout', 'mood'
+  raw_input TEXT, -- Original user input
+  parsed_data JSONB, -- AI-parsed data
+  ai_response TEXT -- What AI replied
+);
 ```
 
-### Health Checks
-- **Health:** `/api/health` - Service status
-- **Version:** `/api/version` - Build information
+## 🎯 Roadmap
 
----
+### Phase 1: MVP V2 (Current)
+- ✅ Natural language input
+- ✅ AI parsing
+- ✅ Voice input
+- ⬜ Pattern recognition
+- ⬜ Daily challenges
+
+### Phase 2: Intelligence
+- ⬜ Advanced coaching
+- ⬜ Predictive insights
+- ⬜ Habit formation
+- ⬜ Social features
+
+### Phase 3: Expansion
+- ⬜ Wearable integration
+- ⬜ Meal planning
+- ⬜ Form checking (video)
+- ⬜ Native mobile apps
 
 ## 🤝 Contributing
 
-### Development Workflow
-1. **Fork** the repository
-2. **Create** feature branch: `git checkout -b feature/amazing-feature`
-3. **Commit** changes: `git commit -m 'feat: add amazing feature'`
-4. **Push** to branch: `git push origin feature/amazing-feature`
-5. **Open** a Pull Request
+This is currently a solo project, but contributions are welcome!
 
-### Code Standards
-- **Conventional Commits:** Use semantic commit messages
-- **TypeScript:** All code must be typed
-- **Tests:** Add tests for new features
-- **Linting:** Code must pass ESLint and Prettier
-- **Documentation:** Update docs for user-facing changes
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
----
+## 📝 License
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🆘 Support
-
-- **Issues:** [GitHub Issues](https://github.com/renatodap/feelsharper/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/renatodap/feelsharper/discussions)
-- **Documentation:** [docs/](./docs/)
-
----
+Proprietary - All rights reserved
 
 ## 🙏 Acknowledgments
 
-- **USDA FoodData Central** for nutrition database
-- **Supabase** for backend infrastructure
-- **Vercel** for deployment platform
-- **Tailwind CSS** for styling system
+- OpenAI for GPT-4 natural language processing
+- Anthropic for Claude coaching capabilities
+- The fitness community for inspiration
+- "Iron sharpens iron" - Proverbs 27:17
 
 ---
 
-*Feel Sharper - Track smarter, progress faster* ⚡# Trigger deployment - Tue, Aug 12, 2025 10:55:07 PM
+**Remember**: We're not building another fitness tracker. We're building an AI that understands you through natural conversation and helps you become sharper every day.
+
+For detailed MVP documentation, see [MVP_V2_NATURAL_LANGUAGE.md](./MVP_V2_NATURAL_LANGUAGE.md)

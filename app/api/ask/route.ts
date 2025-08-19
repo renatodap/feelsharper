@@ -46,7 +46,11 @@ function getIdentifierFromRequest(request: NextRequest): string {
 
 function getRateLimiter() {
   return {
-    check: async () => ({ success: true }) // No rate limiting in simplified version
+    check: async () => ({ 
+      success: true, 
+      error: null as string | null, 
+      resetTime: null as number | null 
+    })
   };
 }
 
@@ -55,7 +59,7 @@ export async function POST(request: NextRequest) {
     // Rate limiting check (simplified)
     const identifier = getIdentifierFromRequest(request);
     const rateLimiter = getRateLimiter();
-    const rateLimitResult = await rateLimiter.check(identifier);
+    const rateLimitResult = await rateLimiter.check();
     
     if (!rateLimitResult.success) {
       return NextResponse.json(

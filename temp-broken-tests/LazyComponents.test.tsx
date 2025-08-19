@@ -3,6 +3,7 @@
  * Tests that lazy loading components render properly
  */
 
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { 
   LazyWorkoutLogger, 

@@ -1,29 +1,46 @@
 # Feel Sharper - Claude Code Instructions
 
 ## Project Overview
-Dark-first, free fitness tracker for logging food, workouts, and weight with progress graphs.
+AI-powered fitness companion using natural language processing for frictionless health tracking. "Iron sharpens iron" - users interact through conversation, not forms.
 
-## MVP PRIORITY (CURRENT FOCUS)
-**Target**: Deliverable MVP for friends/family testing in 1 week
+## MVP V2 - NATURAL LANGUAGE AI COACH (NEW FOCUS)
+**Target**: Revolutionary fitness app that understands natural language
+**Documentation**: See `MVP_V2_NATURAL_LANGUAGE.md` for full details
 
-### MVP Core Features (ONLY THESE)
-1. **Food Logging** (`/food`, `/food/add`) - USDA verified search & logging
-2. **Weight Entry** (`/weight`) - One-tap daily weight tracking  
-3. **Today Dashboard** (`/today`) - Today's food + weight summary
-4. **Basic Progress** (`/insights`) - Simple weight trend chart
+### Core MVP Features (COMPLETE PIVOT)
+1. **Natural Language Input** - One input box for everything
+   - "Had eggs and toast for breakfast" → Auto-logs nutrition
+   - "Ran 5k in 25 minutes" → Auto-logs workout
+   - "Weight 175, feeling great" → Logs weight + mood
+   
+2. **AI Coach Chat** - Real conversations, not forms
+   - Pattern recognition from user data
+   - Personalized daily challenges
+   - Intelligent responses to user needs
+   
+3. **Simplified Dashboard** - Only what matters
+   - Today's mission (1 clear goal)
+   - Quick natural language input
+   - Energy/mood tracker
+   - One key insight from AI
 
-### MVP Exclusions (DO NOT WORK ON)
-- ❌ **Workout Tracking** - Too complex for MVP, remove entirely
-- ❌ **Advanced Analytics** - Keep only basic weight trends
-- ❌ **Goals/Streaks** - Not essential for core value
-- ❌ **Social Features** - Future enhancement only
+4. **Voice Input** - Speak instead of type
+   - Web Speech API integration
+   - Transcribe → Parse → Save automatically
 
-### MVP Operating Rules
-1. **Feature Requests**: Only work on MVP core features above
-2. **Bug Priority**: Food logging > Weight entry > Today dashboard > Progress
-3. **UI Focus**: Make existing flows perfect vs adding new features
-4. **Testing**: Every MVP feature must have working user flow
-5. **Deployment**: Must be ready for real user testing within 1 week
+### What We're REMOVING from Old MVP
+- ❌ Complex food search with 8000 foods
+- ❌ Multiple separate pages for each feature
+- ❌ Form-based input screens
+- ❌ Manual food selection and calculation
+- ❌ Static, one-size-fits-all dashboard
+
+### New Technical Requirements
+1. **OpenAI Integration** - Natural language parsing
+2. **Claude API** - Advanced coaching conversations
+3. **Unified activity_logs table** - One table for all inputs
+4. **Voice input** - Web Speech API
+5. **Real-time AI responses** - <2 second target
 
 ## Core Tech Stack
 - Next.js 15.4.5 + React 19.1.0 + TypeScript

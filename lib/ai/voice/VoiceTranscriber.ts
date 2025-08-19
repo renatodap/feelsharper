@@ -1,4 +1,5 @@
 
+import OpenAI from 'openai';
 import { ModelConfig } from '@/lib/ai/types';
 
 export class VoiceTranscriber {

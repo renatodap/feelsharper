@@ -143,7 +143,7 @@ export default function CTASection({
           >
             <Button 
               variant="secondary" 
-              size="xl" 
+              size="lg" 
               className="group min-w-[250px] bg-text-primary text-navy hover:bg-text-primary/90 shadow-xl hover:shadow-2xl hover:scale-105"
             >
               <Zap className="w-5 h-5 mr-2" />
@@ -159,7 +159,7 @@ export default function CTASection({
             >
               <Button 
                 variant="ghost" 
-                size="xl" 
+                size="lg" 
                 className="group min-w-[250px] border-2 border-text-primary/30 text-text-primary hover:border-text-primary hover:bg-text-primary/10"
               >
                 <span>{ctaSecondary}</span>

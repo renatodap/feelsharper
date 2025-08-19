@@ -111,10 +111,10 @@ export async function createCheckoutSession(
         },
         productOptions: {
           enabledVariants: [parseInt(variantId)], // Must be number array
-          redirect_url: redirectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/settings?upgraded=true`,
-          receipt_button_text: 'Go to Dashboard',
-          receipt_link_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`,
-          receipt_thank_you_note: 'Thank you for upgrading to FeelSharper Pro!'
+          redirectUrl: redirectUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/settings?upgraded=true`,
+          receiptButtonText: 'Go to Dashboard',
+          receiptLinkUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`,
+          receiptThankYouNote: 'Thank you for upgrading to FeelSharper Pro!'
         }
       }
     );
@@ -143,7 +143,7 @@ export async function getUserSubscription(userId: string) {
   try {
     const { data } = await listSubscriptions({
       filter: {
-        user_email: userId // LemonSqueezy uses email, not user_id
+        userEmail: userId // LemonSqueezy uses email, not user_id
       }
     });
 
@@ -164,8 +164,8 @@ export async function getUserSubscription(userId: string) {
       tier: subscription.attributes.product_name?.toLowerCase() || 'free',
       status,
       expiresAt,
-      cancelledAt: subscription.attributes.cancelled_at,
-      resumesAt: subscription.attributes.resumes_at
+      cancelledAt: subscription.attributes.cancelled,
+      resumesAt: subscription.attributes.renews_at
     };
   } catch (error) {
     console.error('Failed to get subscription:', error);

@@ -84,7 +84,7 @@ export function PushNotificationProvider({
       
       const pushSubscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidKey)
+        applicationServerKey: urlBase64ToUint8Array(vapidKey) as BufferSource
       });
 
       setSubscription(pushSubscription);

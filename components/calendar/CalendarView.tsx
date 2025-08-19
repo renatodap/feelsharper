@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -558,14 +559,18 @@ export default function CalendarView() {
                 Quick Actions
               </h3>
               <div className="space-y-2">
-                <Button variant="outline" className="w-full justify-start" href="/log/workout">
-                  <Dumbbell className="w-4 h-4 mr-2" />
-                  Log Workout
-                </Button>
-                <Button variant="outline" className="w-full justify-start" href="/log/meal">
-                  <Apple className="w-4 h-4 mr-2" />
-                  Log Meal
-                </Button>
+                <Link href="/workouts/add">
+                  <Button variant="outline" className="w-full justify-start">
+                    <Dumbbell className="w-4 h-4 mr-2" />
+                    Log Workout
+                  </Button>
+                </Link>
+                <Link href="/food/add">
+                  <Button variant="outline" className="w-full justify-start">
+                    <Apple className="w-4 h-4 mr-2" />
+                    Log Meal
+                  </Button>
+                </Link>
                 <Button variant="outline" className="w-full justify-start">
                   <Target className="w-4 h-4 mr-2" />
                   Add Measurement

@@ -169,10 +169,6 @@ export default function SmartNotifications() {
       badge: '/icon-192x192.png',
       tag: schedule.id,
       requireInteraction: false,
-      actions: [
-        { action: 'log', title: 'Log Now' },
-        { action: 'dismiss', title: 'Dismiss' }
-      ]
     });
 
     // Reschedule for tomorrow

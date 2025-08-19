@@ -13,13 +13,7 @@ export default function OnboardingPage() {
         </div>
       </div>
     }>
-      <FrictionlessOnboardingManager
-        autoStart={false}
-        showSocialProof={true}
-        onComplete={(data) => {
-          console.log('Onboarding completed:', data);
-        }}
-      />
+      <FrictionlessOnboardingManager />
     </Suspense>
   );
 }

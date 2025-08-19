@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -193,7 +194,9 @@ export default function Dashboard() {
           <Target className="w-12 h-12 text-slate-400 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">Welcome to Feel Sharper</h2>
           <p className="text-slate-600 dark:text-slate-400 mb-4">Complete your onboarding to get started</p>
-          <Button href="/onboarding">Get Started</Button>
+          <Link href="/onboarding">
+            <Button>Get Started</Button>
+          </Link>
         </div>
       </div>
     );
@@ -377,17 +380,17 @@ function QuickActionsWidget({ data }: { data: DashboardData }) {
       
       <div className="grid grid-cols-2 gap-3">
         {actions.map((action) => (
-          <Button
-            key={action.label}
-            href={action.href}
-            variant="outline"
-            className="flex flex-col items-center space-y-2 h-auto py-4"
-          >
-            <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", action.color)}>
-              <action.icon className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-sm font-medium">{action.label}</span>
-          </Button>
+          <Link key={action.label} href={action.href}>
+            <Button
+              variant="outline"
+              className="flex flex-col items-center space-y-2 h-auto py-4 w-full"
+            >
+              <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", action.color)}>
+                <action.icon className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-sm font-medium">{action.label}</span>
+            </Button>
+          </Link>
         ))}
       </div>
     </Card>

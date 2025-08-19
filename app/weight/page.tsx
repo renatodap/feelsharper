@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Activity, Plus, TrendingDown, TrendingUp, Minus, Target, Calendar, Zap } from 'lucide-react';
-import { SimpleLineChart } from '@/components/ui/SimpleChart';
+import { SimpleLineChart, ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line } from '@/components/ui/SimpleChart';
 import { format, subDays } from 'date-fns';
 import { createClient } from '@/lib/supabase/client';
 import type { BodyMeasurement, BodyTrend, BodyGoal } from '@/lib/types/database';
@@ -340,7 +340,7 @@ export default function WeightPage() {
                       tickLine={false}
                       axisLine={false}
                       domain={['dataMin - 2', 'dataMax + 2']}
-                      tickFormatter={(value) => `${value.toFixed(1)} ${unit === 'lb' ? 'lb' : 'kg'}`}
+                      tickFormatter={(value: number) => `${value.toFixed(1)} ${unit === 'lb' ? 'lb' : 'kg'}`}
                     />
                     <Tooltip 
                       contentStyle={{ 

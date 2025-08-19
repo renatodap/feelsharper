@@ -43,7 +43,7 @@ export default function Hero() {
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-slide-up">
             <Button 
-              size="xl" 
+              size="lg" 
               className="group min-w-[200px]"
               onClick={() => {
                 // Scroll to Ask Feel Sharper or open chat
@@ -62,7 +62,7 @@ export default function Hero() {
             
             <Button 
               variant="ghost" 
-              size="xl"
+              size="lg"
               className="group min-w-[200px]"
               onClick={() => {
                 document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
