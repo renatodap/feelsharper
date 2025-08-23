@@ -66,9 +66,9 @@ async function buildUserContext(
 ): Promise<UserContext> {
   // Fetch user profile
   const { data: profile } = await supabase
-    .from('user_profiles')
+    .from('profiles')
     .select('*')
-    .eq('user_id', userId)
+    .eq('id', userId)
     .single();
   
   // Fetch recent activity logs (last 7 days)
@@ -79,8 +79,8 @@ async function buildUserContext(
     .from('activity_logs')
     .select('*')
     .eq('user_id', userId)
-    .gte('created_at', sevenDaysAgo.toISOString())
-    .order('created_at', { ascending: false })
+    .gte('timestamp', sevenDaysAgo.toISOString())
+    .order('timestamp', { ascending: false })
     .limit(100);
   
   // Get last meal
@@ -88,8 +88,8 @@ async function buildUserContext(
     .from('activity_logs')
     .select('*')
     .eq('user_id', userId)
-    .eq('activity_type', 'nutrition')
-    .order('created_at', { ascending: false })
+    .eq('type', 'food')
+    .order('timestamp', { ascending: false })
     .limit(1)
     .single();
   
@@ -98,8 +98,8 @@ async function buildUserContext(
     .from('activity_logs')
     .select('*')
     .eq('user_id', userId)
-    .in('activity_type', ['cardio', 'strength', 'sport'])
-    .order('created_at', { ascending: false })
+    .eq('type', 'exercise')
+    .order('timestamp', { ascending: false })
     .limit(1)
     .single();
   
@@ -108,30 +108,30 @@ async function buildUserContext(
     .from('activity_logs')
     .select('*')
     .eq('user_id', userId)
-    .eq('activity_type', 'sleep')
-    .order('created_at', { ascending: false })
+    .eq('type', 'sleep')
+    .order('timestamp', { ascending: false })
     .limit(1)
     .single();
   
-  // Extract patterns from user's detected_patterns
-  const patterns = profile?.detected_patterns || {};
+  // Extract patterns from user's secondary_goals or detected patterns
+  const patterns = profile?.secondary_goals?.detected_patterns || {};
   
   // Build the context object
   const context: UserContext = {
     profile: {
-      userType: profile?.user_type || 'sport', // Default to sport for tennis players
-      dietary: profile?.preferences?.dietary || [],
-      goals: profile?.preferences?.goals || [],
-      constraints: profile?.preferences?.constraints || []
+      userType: profile?.primary_goal || 'sport', // Default to sport for tennis players
+      dietary: profile?.secondary_goals?.dietary || [],
+      goals: [profile?.primary_goal].filter(Boolean) || [],
+      constraints: profile?.secondary_goals?.constraints || []
     },
     recentLogs: recentLogs?.map((log: any) => ({
       id: log.id,
-      timestamp: new Date(log.created_at),
-      type: log.activity_type,
-      data: log.structured_data,
-      confidenceLevel: log.confidence_level,
-      originalText: log.original_text,
-      subjectiveNotes: log.subjective_notes
+      timestamp: new Date(log.timestamp),
+      type: log.type,
+      data: log.data,
+      confidenceLevel: log.confidence,
+      originalText: log.raw_text,
+      subjectiveNotes: log.metadata?.subjective_notes
     })) || [],
     patterns: {
       preMatchMeals: patterns.preMatchMeals,
@@ -141,17 +141,17 @@ async function buildUserContext(
       stressResponse: patterns.stressResponse
     },
     lastMeal: lastMeal ? {
-      timestamp: new Date(lastMeal.created_at),
-      description: lastMeal.original_text
+      timestamp: new Date(lastMeal.timestamp),
+      description: lastMeal.raw_text
     } : undefined,
     lastWorkout: lastWorkout ? {
-      timestamp: new Date(lastWorkout.created_at),
-      type: lastWorkout.activity_type,
-      intensity: lastWorkout.structured_data?.intensity || 5
+      timestamp: new Date(lastWorkout.timestamp),
+      type: lastWorkout.type,
+      intensity: lastWorkout.data?.intensity || 5
     } : undefined,
     lastSleep: lastSleep ? {
-      hours: lastSleep.structured_data?.hours || 0,
-      quality: lastSleep.structured_data?.quality || 5
+      hours: lastSleep.data?.hours || 0,
+      quality: lastSleep.data?.quality || 5
     } : undefined
   };
   

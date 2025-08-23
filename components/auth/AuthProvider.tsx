@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -27,7 +27,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      console.log('🔄 AuthProvider: Getting initial session...');
+      const { data: { session }, error } = await supabase.auth.getSession();
+      console.log('🔄 AuthProvider: Initial session result:', { 
+        hasSession: !!session, 
+        hasUser: !!session?.user,
+        error: error?.message 
+      });
+      
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -38,15 +45,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('🔄 AuthProvider: Auth state changed:', { 
+          event, 
+          hasSession: !!session, 
+          hasUser: !!session?.user,
+          userEmail: session?.user?.email 
+        });
+        
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
 
         if (event === 'SIGNED_IN') {
+          console.log('✅ AuthProvider: User signed in, redirecting to /today');
           router.push('/today');
         }
         
         if (event === 'SIGNED_OUT') {
+          console.log('👋 AuthProvider: User signed out, redirecting to /');
           router.push('/');
         }
       }
@@ -55,19 +71,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [router, supabase.auth]);
 
-  const signOut = async () => {
+  // Memoize auth functions to prevent unnecessary re-renders
+  const signOut = useCallback(async () => {
     setLoading(true);
     await supabase.auth.signOut();
-  };
+  }, [supabase.auth]);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
+    console.log('🔐 AuthProvider signIn called for:', email);
     setLoading(true);
     const result = await supabase.auth.signInWithPassword({ email, password });
+    console.log('🔐 AuthProvider signIn result:', { 
+      success: !result.error, 
+      hasUser: !!result.data?.user,
+      error: result.error?.message 
+    });
     setLoading(false);
     return result;
-  };
+  }, [supabase.auth]);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = useCallback(async (email: string, password: string) => {
     setLoading(true);
     const result = await supabase.auth.signUp({ 
       email, 
@@ -78,16 +101,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     setLoading(false);
     return result;
-  };
+  }, [supabase.auth]);
 
-  const resetPassword = async (email: string) => {
+  const resetPassword = useCallback(async (email: string) => {
     const result = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/callback?type=recovery&next=/auth/reset-password`,
     });
     return result;
-  };
+  }, [supabase.auth]);
 
-  const value = {
+  // Memoize context value to prevent unnecessary provider re-renders
+  const value = useMemo(() => ({
     user,
     session,
     loading,
@@ -95,7 +119,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signIn,
     signUp,
     resetPassword
-  };
+  }), [user, session, loading, signOut, signIn, signUp, resetPassword]);
 
   return (
     <AuthContext.Provider value={value}>

@@ -119,7 +119,7 @@ export class AIOrchestrator {
     
     // Get user tier
     const { data: profile } = await (await this.getSupabase())
-      .from('user_profiles')
+      .from('profiles')
       .select('subscription_tier')
       .eq('user_id', userId)
       .single();
@@ -190,7 +190,7 @@ export class AIOrchestrator {
       await Promise.all([
         // User profile
         (await this.getSupabase())
-          .from('user_profiles')
+          .from('profiles')
           .select('*')
           .eq('user_id', userId)
           .single(),
@@ -350,7 +350,7 @@ export class AIOrchestrator {
     success: boolean = true
   ) {
     const { data: profile } = await (await this.getSupabase())
-      .from('user_profiles')
+      .from('profiles')
       .select('subscription_tier')
       .eq('user_id', userId)
       .single();

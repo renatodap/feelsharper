@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import SimpleHeader from "@/components/navigation/SimpleHeader";
 import GoogleAuthButton from "@/components/auth/GoogleAuthButton";
+import { createClient } from "@/lib/supabase/client";
 
 function SignInForm() {
   const [email, setEmail] = useState("");
@@ -21,13 +22,34 @@ function SignInForm() {
     setErr(null);
     
     try {
-      // Dynamic import to avoid build issues
-      const { createSupabaseBrowser } = await import("@/lib/supabase/client");
-      const supabase = createSupabaseBrowser();
-      const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
-      if (error) setErr(error.message);
-      else window.location.href = redirect;
+      console.log('🔐 Attempting sign in with:', { email, hasPassword: !!pass });
+      console.log('🔧 Environment check:', {
+        hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+        hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      });
+      
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signInWithPassword({ 
+        email, 
+        password: pass 
+      });
+      
+      console.log('🔐 Sign in result:', { 
+        success: !error, 
+        hasUser: !!data?.user,
+        hasSession: !!data?.session,
+        error: error?.message 
+      });
+      
+      if (error) {
+        console.error('🔴 Sign in error:', error);
+        setErr(error.message);
+      } else {
+        console.log('✅ Sign in successful, redirecting to:', redirect);
+        window.location.href = redirect;
+      }
     } catch (error) {
+      console.error('🔴 Sign in exception:', error);
       setErr("Sign in temporarily unavailable");
     }
     setLoading(false);

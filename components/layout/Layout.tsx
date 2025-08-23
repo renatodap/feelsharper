@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, memo } from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import BottomNav from './BottomNav'
@@ -16,7 +16,7 @@ interface LayoutProps {
  * Integrates AI assistant as a prominent banner feature
  * Fixed: Clean structure prevents duplicate components
  */
-export default function Layout({ 
+function Layout({ 
   children, 
   title, 
   description, 
@@ -43,3 +43,6 @@ export default function Layout({
     </div>
   )
 }
+
+// Memoize Layout since it rarely changes and prevents unnecessary re-renders of navigation
+export default memo(Layout);

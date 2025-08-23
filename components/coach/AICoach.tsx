@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, memo } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -26,18 +26,31 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import FrictionReductionUI from './FrictionReductionUI';
+import type { CoachingResponse } from '@/lib/ai-coach/coaching-engine';
 
 interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
-  type?: 'text' | 'suggestion' | 'insight' | 'plan';
+  type?: 'text' | 'suggestion' | 'insight' | 'plan' | 'habit_design' | 'celebration';
   metadata?: {
     category?: string;
     confidence?: number;
     sources?: string[];
     actionItems?: string[];
+    // Enhanced coaching metadata
+    tinyHabit?: any;
+    identityReinforcement?: string;
+    motivationalDesign?: {
+      celebration?: string;
+      progress_visualization?: string;
+      streak_acknowledgment?: string;
+    };
+    behaviorAnalysis?: any;
+    // Phase 5.5: Full coaching response for friction reduction
+    fullCoachingResponse?: CoachingResponse;
   };
 }
 
@@ -138,10 +151,12 @@ const SAMPLE_INSIGHTS: CoachingInsight[] = [
   }
 ];
 
-export default function AICoach() {
+function AICoach() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamingMessage, setStreamingMessage] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [insights, setInsights] = useState<CoachingInsight[]>(SAMPLE_INSIGHTS);
   const [selectedInsight, setSelectedInsight] = useState<string | null>(null);
@@ -202,7 +217,8 @@ export default function AICoach() {
     }
   };
 
-  const sendMessage = async (content: string) => {
+  // Enhanced sendMessage with behavior model coaching
+  const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -218,15 +234,18 @@ export default function AICoach() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/ask', {
+      // Try enhanced coaching endpoint first
+      const response = await fetch('/api/coach', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           message: content,
-          context: 'coaching',
-          includePersonalData: true
+          context: {
+            coaching_focus: 'behavioral_design',
+            user_intent: 'habit_formation'
+          }
         }),
       });
 
@@ -235,27 +254,71 @@ export default function AICoach() {
       }
 
       const data = await response.json();
+      const coachResponse = data.response;
+
+      // Determine message type based on response content
+      let messageType: Message['type'] = 'text';
+      if (coachResponse.tinyHabit) messageType = 'habit_design';
+      else if (coachResponse.motivationalDesign?.celebration) messageType = 'celebration';
+      else if (coachResponse.actionItems?.length > 0) messageType = 'suggestion';
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.response,
+        content: coachResponse.message,
         timestamp: new Date().toISOString(),
-        type: data.type || 'text',
+        type: messageType,
         metadata: {
-          confidence: data.confidence,
-          sources: data.sources,
-          actionItems: data.actionItems
+          confidence: coachResponse.confidence === 'high' ? 90 : coachResponse.confidence === 'medium' ? 70 : 50,
+          actionItems: coachResponse.actionItems,
+          // Enhanced metadata
+          tinyHabit: coachResponse.tinyHabit,
+          identityReinforcement: coachResponse.identityReinforcement,
+          motivationalDesign: coachResponse.motivationalDesign,
+          behaviorAnalysis: coachResponse.behaviorAnalysis,
+          // Phase 5.5: Store full response for friction reduction UI
+          fullCoachingResponse: coachResponse
         }
       };
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Save conversation to database
+      // Save conversation to database with enhanced metadata
       await saveConversation(userMessage, assistantMessage);
 
     } catch (error) {
       console.error('Error sending message:', error);
+      
+      // Fallback to simple /api/ask endpoint
+      try {
+        const fallbackResponse = await fetch('/api/ask', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: content,
+            context: 'coaching'
+          }),
+        });
+        
+        if (fallbackResponse.ok) {
+          const fallbackData = await fallbackResponse.json();
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            role: 'assistant',
+            content: fallbackData.response,
+            timestamp: new Date().toISOString(),
+            type: 'text'
+          };
+          setMessages(prev => [...prev, assistantMessage]);
+          await saveConversation(userMessage, assistantMessage);
+          return;
+        }
+      } catch (fallbackError) {
+        console.error('Fallback also failed:', fallbackError);
+      }
+      
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -267,7 +330,7 @@ export default function AICoach() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [isLoading]);
 
   const saveConversation = async (userMessage: Message, assistantMessage: Message) => {
     try {
@@ -297,15 +360,50 @@ export default function AICoach() {
     }
   };
 
-  const handleQuickAction = (action: QuickAction) => {
+  const handleQuickAction = useCallback((action: QuickAction) => {
     sendMessage(action.prompt);
-  };
+  }, [sendMessage]);
 
-  const handleInsightAction = (insight: CoachingInsight) => {
+  const handleInsightAction = useCallback((insight: CoachingInsight) => {
     const prompt = `Can you give me more specific advice about: ${insight.description}`;
     sendMessage(prompt);
     setSelectedInsight(insight.id);
-  };
+  }, [sendMessage]);
+
+  // Phase 5.5: Handle friction reduction actions
+  const handleFrictionAction = useCallback(async (action: string, label: string) => {
+    console.log(`Friction reduction action: ${action} - ${label}`);
+    
+    // Handle different action types
+    switch (action) {
+      case 'log_meal_suggestion':
+        // In a full implementation, this would log the suggested meal
+        sendMessage('I logged the meal you suggested');
+        break;
+      case 'start_workout_timer':
+        // In a full implementation, this would start a workout timer
+        sendMessage('Started the workout timer');
+        break;
+      case 'set_bedtime_reminder':
+        // In a full implementation, this would set a bedtime reminder
+        sendMessage('Set the bedtime reminder');
+        break;
+      case 'complete_tiny_habit':
+        // Celebrate habit completion
+        sendMessage('I completed the tiny habit!');
+        break;
+      case 'acknowledge_advice':
+        // Simple acknowledgment
+        sendMessage('Thanks for the advice!');
+        break;
+      default:
+        sendMessage(`I want to ${label.toLowerCase()}`);
+    }
+  }, [sendMessage]);
+
+  const handleDefaultChoice = useCallback((choice: string) => {
+    sendMessage(`I choose: ${choice}`);
+  }, [sendMessage]);
 
   const startVoiceInput = () => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -344,12 +442,12 @@ export default function AICoach() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage(inputValue);
     }
-  };
+  }, [inputValue, sendMessage]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -383,12 +481,18 @@ export default function AICoach() {
                       <Sparkles className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                      Welcome to your AI Coach!
+                      Welcome to your Enhanced AI Coach!
                     </h3>
                     <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
-                      I'm here to help you optimize your workouts, nutrition, sleep, and overall wellness journey. 
-                      Ask me anything or try one of the quick actions below.
+                      I'm powered by behavior science to help you build lasting habits. I'll design tiny habits, 
+                      reinforce your identity, and celebrate your progress. Try asking me to help you start a new habit!
                     </p>
+                    <div className="flex flex-wrap gap-2 justify-center mb-4">
+                      <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">BJ Fogg Model</span>
+                      <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Tiny Habits</span>
+                      <span className="px-2 py-1 text-xs bg-amber-100 text-amber-800 rounded-full">Identity-Based</span>
+                      <span className="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full">Habit Loops</span>
+                    </div>
                   </div>
                 )}
 
@@ -411,7 +515,10 @@ export default function AICoach() {
                         "max-w-[80%] rounded-lg px-4 py-3",
                         message.role === 'user'
                           ? 'bg-amber-500 text-white'
-                          : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700'
+                          : 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700',
+                        // Special styling for enhanced message types
+                        message.type === 'habit_design' && message.role === 'assistant' && 'border-l-4 border-l-green-500',
+                        message.type === 'celebration' && message.role === 'assistant' && 'border-l-4 border-l-amber-400'
                       )}
                     >
                       <p className={cn(
@@ -422,8 +529,73 @@ export default function AICoach() {
                       )}>
                         {message.content}
                       </p>
+
+                      {/* Enhanced: Identity Reinforcement */}
+                      {message.metadata?.identityReinforcement && (
+                        <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded border-l-2 border-blue-400">
+                          <p className="text-xs font-medium text-blue-800 dark:text-blue-400 mb-1">
+                            Identity Reinforcement:
+                          </p>
+                          <p className="text-xs text-blue-700 dark:text-blue-300">
+                            {message.metadata.identityReinforcement}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Enhanced: Tiny Habit */}
+                      {message.metadata?.tinyHabit && (
+                        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded border border-green-200 dark:border-green-800">
+                          <p className="text-xs font-semibold text-green-800 dark:text-green-400 mb-2 flex items-center">
+                            <Target className="w-3 h-3 mr-1" />
+                            Your New Tiny Habit:
+                          </p>
+                          <div className="space-y-2 text-xs">
+                            <div className="flex items-start space-x-2">
+                              <span className="font-medium text-green-700 dark:text-green-400">When:</span>
+                              <span className="text-green-700 dark:text-green-300">{message.metadata.tinyHabit.trigger.description}</span>
+                            </div>
+                            <div className="flex items-start space-x-2">
+                              <span className="font-medium text-green-700 dark:text-green-400">Do:</span>
+                              <span className="text-green-700 dark:text-green-300">{message.metadata.tinyHabit.behavior}</span>
+                            </div>
+                            <div className="flex items-start space-x-2">
+                              <span className="font-medium text-green-700 dark:text-green-400">Celebrate:</span>
+                              <span className="text-green-700 dark:text-green-300">{message.metadata.tinyHabit.reward}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Enhanced: Motivational Design */}
+                      {message.metadata?.motivationalDesign && (
+                        <div className="mt-3 p-2 bg-amber-50 dark:bg-amber-900/20 rounded border-l-2 border-amber-400">
+                          {message.metadata.motivationalDesign.celebration && (
+                            <p className="text-xs text-amber-800 dark:text-amber-300 mb-1">
+                              🎉 {message.metadata.motivationalDesign.celebration}
+                            </p>
+                          )}
+                          {message.metadata.motivationalDesign.streak_acknowledgment && (
+                            <p className="text-xs text-amber-700 dark:text-amber-300">
+                              🔥 {message.metadata.motivationalDesign.streak_acknowledgment}
+                            </p>
+                          )}
+                        </div>
+                      )}
                       
-                      {message.metadata?.actionItems && message.metadata.actionItems.length > 0 && (
+                      {/* Phase 5.5: Friction Reduction UI */}
+                      {message.role === 'assistant' && message.metadata?.fullCoachingResponse?.frictionReduction && (
+                        <div className="mt-4">
+                          <FrictionReductionUI
+                            response={message.metadata.fullCoachingResponse}
+                            onActionTap={handleFrictionAction}
+                            onDefaultChoice={handleDefaultChoice}
+                          />
+                        </div>
+                      )}
+
+                      {/* Fallback: Traditional Action Items (for messages without friction reduction) */}
+                      {message.metadata?.actionItems && message.metadata.actionItems.length > 0 && 
+                       !message.metadata?.fullCoachingResponse?.frictionReduction && (
                         <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-600">
                           <p className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
                             Action Items:
@@ -615,3 +787,5 @@ export default function AICoach() {
     </div>
   );
 }
+
+export default memo(AICoach);

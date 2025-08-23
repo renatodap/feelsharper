@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/theme/ThemeProvider";
 
 const items = [
-  { name: "Home", href: "/dashboard", icon: Home, match: (p: string) => p === "/" || p.startsWith("/dashboard") },
+  { name: "Insights", href: "/coach-insights", icon: Home, match: (p: string) => p === "/" || p.startsWith("/coach-insights") },
   { name: "Coach", href: "/coach", icon: MessageSquare, match: (p: string) => p.startsWith("/coach") },
-  { name: "Log", href: "/log/workout", icon: Dumbbell, match: (p: string) => p.startsWith("/log") },
-  { name: "Calendar", href: "/calendar", icon: Calendar, match: (p: string) => p.startsWith("/calendar") },
+  { name: "Log", href: "/log", icon: Dumbbell, match: (p: string) => p.startsWith("/log") },
+  { name: "Dashboard", href: "/my-dashboard", icon: Calendar, match: (p: string) => p.startsWith("/my-dashboard") },
   { name: "Settings", href: "/settings", icon: Settings, match: (p: string) => p.startsWith("/settings") },
 ];
 

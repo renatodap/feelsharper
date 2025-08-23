@@ -1,5 +1,13 @@
 # 🚨 CLAUDE CODE - FEELSHARPER MVP LAUNCH INSTRUCTIONS
 
+## 🎨 SHARPENED BRAND GUIDE - CRITICAL REFERENCE
+**ALWAYS CHECK FIRST**: The official Sharpened brand guide is located at:
+- **Path**: `C:\Users\pradord\Documents\Projects\Sharpened\brand-guide.html`
+- **Fonts**: Use SF Pro Display for headings, Inter for body text (NOT Russo One)
+- **Colors**: Follow exact brand guide colors (--feel-primary: #4169E1, etc.)
+- **Design**: Sharp angular cuts, lightning elements, dark backgrounds
+- **THIS OVERRIDES ALL OTHER DESIGN DECISIONS**
+
 ## ⚡ MANDATORY ACTIONS - RUN EVERY PROMPT
 
 ### 1. CLEAN DOCUMENTATION
@@ -52,6 +60,33 @@ npm run typecheck    # Check types (MUST PASS)
 npm run build        # Production build
 npm test            # Run tests
 ```
+
+## 🗄️ DATABASE SCHEMA VALIDATION (MANDATORY AFTER EACH MINI-STEP)
+
+### AUTO-VALIDATION WORKFLOW
+After EVERY mini-step completion, Claude Code MUST:
+
+1. **Read current schema**: `supabase/migrations/current_schema_2025218_443am`
+2. **Scan API routes**: Check all `/app/api/**/*.ts` files for database references
+3. **Identify gaps**: Missing tables, fields, or constraints
+4. **Generate migration**: Create new `.sql` file if gaps found
+5. **Update documentation**: Record schema status in MVP_LAUNCH_PLAN.md
+
+### SCHEMA VALIDATION COMMAND
+```bash
+# Claude Code runs this automatically after each mini-step:
+# 1. Read current schema file
+# 2. Grep all API routes for database operations
+# 3. Cross-reference and identify missing elements
+# 4. Generate migration SQL if needed
+# 5. Update tracking docs
+```
+
+### CURRENT SCHEMA STATUS
+- **Base Schema**: `current_schema_2025218_443am` (Phase 2 complete)
+- **Pending Migration**: `20250821_complete_mvp_schema.sql` (Phases 5.1-5.4 requirements)
+- **Status**: ⚠️ MIGRATION REQUIRED - Run pending migration on Supabase
+- **Next Update**: After user runs migration, consolidate into new current_schema file
 
 ## 🚀 MVP LAUNCH WORKFLOW
 

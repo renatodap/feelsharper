@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { 
@@ -31,7 +31,7 @@ interface ProgressDashboardProps {
   targetProtein?: number;
 }
 
-export default function ProgressDashboard({ 
+function ProgressDashboard({ 
   userId, 
   targetCalories = 2000, 
   targetProtein = 150 
@@ -49,9 +49,16 @@ export default function ProgressDashboard({
   const [currentStreak, setCurrentStreak] = useState(0);
   const [achievements, setAchievements] = useState<string[]>([]);
 
-  // Calculate progress percentages
-  const calorieProgress = Math.min((todayStats.calories / targetCalories) * 100, 100);
-  const proteinProgress = Math.min((todayStats.protein / targetProtein) * 100, 100);
+  // Memoize progress calculations to prevent unnecessary re-renders
+  const calorieProgress = useMemo(() => 
+    Math.min((todayStats.calories / targetCalories) * 100, 100),
+    [todayStats.calories, targetCalories]
+  );
+  
+  const proteinProgress = useMemo(() => 
+    Math.min((todayStats.protein / targetProtein) * 100, 100),
+    [todayStats.protein, targetProtein]
+  );
 
   // Mock data for visualization (replace with real API calls)
   useEffect(() => {
@@ -102,16 +109,23 @@ export default function ProgressDashboard({
     setAchievements(newAchievements);
   }, [targetProtein, todayStats.protein, todayStats.workoutCompleted]);
 
-  const getProgressColor = (progress: number) => {
+  // Memoize utility functions to prevent recreation on every render
+  const getProgressColor = useCallback((progress: number) => {
     if (progress < 50) return 'text-red-500';
     if (progress < 80) return 'text-yellow-500';
     return 'text-green-500';
-  };
+  }, []);
 
-  const formatDate = (dateStr: string) => {
+  const formatDate = useCallback((dateStr: string) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en', { weekday: 'short' });
-  };
+  }, []);
+
+  // Memoize weekly averages
+  const weeklyAverages = useMemo(() => ({
+    calories: Math.round(weeklyStats.reduce((sum, s) => sum + s.calories, 0) / weeklyStats.length) || 0,
+    protein: Math.round(weeklyStats.reduce((sum, s) => sum + s.protein, 0) / weeklyStats.length) || 0
+  }), [weeklyStats]);
 
   return (
     <div className="space-y-6">
@@ -215,7 +229,7 @@ export default function ProgressDashboard({
             <div className="flex justify-between text-sm mb-2">
               <span className="text-muted-foreground">Calories</span>
               <span className="font-medium">
-                Avg: {Math.round(weeklyStats.reduce((sum, s) => sum + s.calories, 0) / weeklyStats.length)}
+                Avg: {weeklyAverages.calories}
               </span>
             </div>
             <div className="flex gap-1 h-20">
@@ -244,7 +258,7 @@ export default function ProgressDashboard({
             <div className="flex justify-between text-sm mb-2">
               <span className="text-muted-foreground">Protein</span>
               <span className="font-medium">
-                Avg: {Math.round(weeklyStats.reduce((sum, s) => sum + s.protein, 0) / weeklyStats.length)}g
+                Avg: {weeklyAverages.protein}g
               </span>
             </div>
             <div className="flex gap-1 h-20">
@@ -329,3 +343,5 @@ export default function ProgressDashboard({
     </div>
   );
 }
+
+export default memo(ProgressDashboard);

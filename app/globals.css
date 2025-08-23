@@ -2,84 +2,131 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== FEEL SHARPER DARK-FIRST FITNESS DESIGN SYSTEM ===== */
+/* Sharpened Brand Custom Fonts */
+.font-orbitron {
+  font-family: var(--font-orbitron), monospace !important;
+}
+
+.font-russo {
+  font-family: var(--font-russo), sans-serif !important;
+}
+
+/* ===== SHARPENED ELECTRIC DESIGN SYSTEM ===== */
+/* Philosophy: Sharp angles, electric energy, conversational warmth */
 :root {
-  /* Dark-First Color Palette */
-  --navy: #0B2A4A;              /* Primary brand navy */
-  --navy-600: #123B69;          /* Darker navy */
-  --navy-400: #1F5798;          /* Lighter navy */
-  --navy-50: #EBF2F9;           /* Very light navy (for light mode) */
+  /* Core Brand Colors from Official Guide */
+  --sharpened-black: #000000;
+  --sharpened-void: #0A0A0A;
+  --sharpened-dark: #111111;
+  --sharpened-coal: #1A1A1A;
+  --sharpened-charcoal: #2A2A2A;
+  --sharpened-gray: #666666;
+  --sharpened-light-gray: #999999;
+  --sharpened-white: #FFFFFF;
   
-  --bg: #0A0A0A;                /* Pure black background */
-  --surface: #111418;           /* Near-black surface */
-  --surface-2: #161A1F;         /* Elevated surface */
-  --surface-3: #1D2127;         /* Higher elevation */
+  /* FeelSharper Lightning Colors (Official) */
+  --feel-primary: #4169E1;     /* Royal Blue */
+  --feel-secondary: #00BFFF;   /* Deep Sky Blue */
+  --feel-accent: #87CEEB;      /* Sky Blue */
   
-  --text-primary: #FFFFFF;      /* Primary text (white) */
-  --text-secondary: #C7CBD1;    /* Secondary text (light gray) */
-  --text-muted: #8B9096;        /* Muted text (mid gray) */
-  --text-disabled: #6B6F76;     /* Disabled text */
+  /* Legacy mappings for compatibility */
+  --voltage-black: var(--sharpened-black);
+  --static-black: var(--sharpened-void);
+  --charge-black: var(--sharpened-dark);
+  --spark-surface: var(--sharpened-coal);
+  --blue-electric: var(--feel-primary);
+  --blue-cyan: var(--feel-secondary);
+  --blue-glow: var(--feel-accent);
+  --blue-deep: #1E40AF;
   
-  --success: #10B981;           /* Success green */
-  --warning: #F59E0B;           /* Warning amber */
-  --error: #EF4444;             /* Error red */
-  --info: #3B82F6;              /* Info blue */
+  /* Premium Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--feel-primary) 0%, var(--feel-secondary) 100%);
+  --gradient-purple: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --gradient-green: linear-gradient(135deg, #10B981 0%, #84CC16 100%);
+  --gradient-gold: linear-gradient(135deg, #F59E0B 0%, #EAB308 100%);
+  --gradient-mesh: radial-gradient(at 40% 20%, hsla(210, 100%, 60%, 0.3) 0px, transparent 50%),
+                   radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.3) 0px, transparent 50%),
+                   radial-gradient(at 0% 50%, hsla(270, 100%, 60%, 0.2) 0px, transparent 50%),
+                   radial-gradient(at 80% 50%, hsla(340, 100%, 76%, 0.2) 0px, transparent 50%),
+                   radial-gradient(at 0% 100%, hsla(240, 100%, 70%, 0.2) 0px, transparent 50%);
   
-  --border: #23272E;            /* Border color */
-  --focus: #E5E7EB;             /* Focus rings */
+  /* Sharp Edges (Minimal glass, maximum contrast) */
+  --sharp-bg: rgba(255, 255, 255, 0.01);
+  --sharp-border: rgba(59, 130, 246, 0.2);
+  --sharp-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+  --electric-shadow: 0 0 40px rgba(6, 182, 212, 0.4);
   
-  /* Gradients */
-  --gradient-navy: linear-gradient(135deg, #1F5798 0%, #0B2A4A 100%);
-  --gradient-dark: linear-gradient(135deg, #161A1F 0%, #0A0A0A 100%);
+  /* Angular measurements */
+  --angle-sharp: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+  --angle-bolt: polygon(0 0, 90% 0, 100% 40%, 85% 100%, 0 100%, 10% 40%);
   
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+  /* Text */
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --text-disabled: rgba(255, 255, 255, 0.4);
+  
+  /* Premium Effects */
+  --glow-blue: 0 0 30px rgba(59, 130, 246, 0.5);
+  --glow-purple: 0 0 30px rgba(139, 92, 246, 0.5);
+  --glow-green: 0 0 30px rgba(16, 185, 129, 0.5);
   
   /* Animations */
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+/* ===== ELECTRIC ANIMATIONS (Performance Optimized) ===== */
+@keyframes voltage-spike {
+  0%, 100% { transform: scaleY(1); opacity: 0.1; }
+  50% { transform: scaleY(1.5); opacity: 1; }
 }
 
-@keyframes slideUp {
-  from {
+@keyframes electric-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+@keyframes voice-wave {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1); }
+}
+
+@keyframes type-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes sharp-slide {
+  from { 
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
     opacity: 0;
-    transform: translateY(20px);
   }
-  to {
+  to { 
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+    opacity: 1;
+  }
+}
+
+@keyframes lightning-strike {
+  0%, 95%, 100% { 
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  96%, 99% { 
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
+/* Respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -95,27 +142,43 @@ html {
   text-rendering: optimizeLegibility;
 }
 
-/* Dark-first design - body always dark */
+/* Electric Canvas */
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
+  font-family: 'SF Pro Display', var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--voltage-black);
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  min-height: 100vh;
 }
 
-/* Subtle dark background pattern */
+/* Single electric accent line */
 body::before {
   content: '';
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 2px;
   height: 100%;
+  background: linear-gradient(180deg, 
+    transparent 0%,
+    var(--blue-electric) 50%,
+    transparent 100%);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Sharp grid pattern (subtle) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
   background-image: 
-    radial-gradient(circle at 20% 50%, rgba(31, 87, 152, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(11, 42, 74, 0.05) 0%, transparent 50%);
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 100px 100px;
   pointer-events: none;
   z-index: -1;
 }
@@ -147,23 +210,141 @@ h3 {
   border-radius: 4px;
 }
 
-/* ===== SCROLLBAR ===== */
+/* ===== ELECTRIC SCROLLBAR ===== */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 3px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface);
+  background: var(--voltage-black);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--navy);
-  border-radius: 4px;
+  background: var(--blue-electric);
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--navy-600);
+  background: var(--blue-cyan);
+  box-shadow: 0 0 10px var(--blue-electric);
+}
+
+/* ===== SHARPENED UNIQUE UTILITIES ===== */
+
+/* Sharp edge containers */
+.sharp-box {
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+  background: var(--sharp-bg);
+  border: 1px solid var(--sharp-border);
+  position: relative;
+}
+
+.sharp-box-left {
+  clip-path: polygon(5% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.sharp-box-bolt {
+  clip-path: polygon(0 0, 90% 0, 100% 40%, 85% 100%, 0 100%, 10% 40%);
+}
+
+/* Electric borders */
+.electric-border {
+  position: relative;
+  border: 1px solid transparent;
+  background: linear-gradient(var(--voltage-black), var(--voltage-black)) padding-box,
+              linear-gradient(90deg, var(--blue-electric), var(--blue-cyan)) border-box;
+}
+
+.electric-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, var(--blue-electric), transparent, var(--blue-cyan));
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.electric-border:hover::before {
+  opacity: 0.5;
+}
+
+/* Voice wave visualization */
+.voice-wave {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 40px;
+}
+
+.voice-bar {
+  width: 3px;
+  background: var(--blue-electric);
+  animation: voice-wave 0.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.voice-bar:nth-child(2) { animation-delay: 0.1s; height: 60%; }
+.voice-bar:nth-child(3) { animation-delay: 0.2s; height: 80%; }
+.voice-bar:nth-child(4) { animation-delay: 0.3s; height: 50%; }
+.voice-bar:nth-child(5) { animation-delay: 0.4s; height: 70%; }
+
+/* Conversational typing */
+.typing-cursor::after {
+  content: '|';
+  color: var(--blue-electric);
+  animation: type-cursor 1s infinite;
+  margin-left: 2px;
+}
+
+/* Electric pulse on click */
+.electric-pulse {
+  position: relative;
+  overflow: visible;
+}
+
+.electric-pulse:active {
+  animation: electric-pulse 0.3s;
+}
+
+/* Sharp transitions */
+.sharp-appear {
+  animation: sharp-slide 0.5s var(--ease-smooth) forwards;
+}
+
+/* Lightning accent */
+.lightning-accent {
+  position: relative;
+}
+
+.lightning-accent::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--blue-electric), transparent);
+  animation: lightning-strike 3s infinite;
+}
+
+/* Unique focus states */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--blue-electric);
+  border-radius: 0;
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.no-blur {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

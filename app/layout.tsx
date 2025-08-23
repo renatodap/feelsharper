@@ -1,19 +1,42 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Space_Grotesk, Orbitron, Russo_One } from "next/font/google";
 import "./globals.css";
+import "./brand.css";
+import "./sharpened.css";
+import "./sharpened-system.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { UpgradeBanner } from "@/components/premium/UpgradePrompt";
 import { PWAProvider } from "@/components/pwa/PWAProvider";
 import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
 import { FeedbackButton } from "@/components/feedback/FeedbackButton";
 import { AuthProvider } from "@/components/auth/AuthProvider";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-  weight: ["400", "500", "600", "700"], // Include needed weights
+  weight: ["400", "500", "600", "700"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const russoOne = Russo_One({
+  subsets: ["latin"],
+  variable: "--font-russo",
+  display: "swap",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -91,7 +114,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${orbitron.variable} ${russoOne.variable} scroll-smooth`}>
       <head>
         {/* Essential Icons Only */}
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
@@ -99,18 +122,16 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
       </head>
       <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
-        <ErrorBoundary>
-          <ThemeProvider>
-            <AuthProvider>
-              <PWAProvider>
-                <UpgradeBanner />
-                {children}
-                <OfflineIndicator />
-                <FeedbackButton />
-              </PWAProvider>
-            </AuthProvider>
-          </ThemeProvider>
-        </ErrorBoundary>
+        <ThemeProvider>
+          <AuthProvider>
+            <PWAProvider>
+              <UpgradeBanner />
+              {children}
+              <OfflineIndicator />
+              <FeedbackButton />
+            </PWAProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

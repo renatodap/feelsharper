@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -11,13 +11,13 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * Modern card component with subtle shadows and clean borders
  * Provides consistent container styling across the application
  */
-export function Card({ 
+const Card = memo(({ 
   children, 
   className,
   variant = 'default',
   padding = 'md',
   ...props 
-}: CardProps) {
+}: CardProps) => {
   const variants = {
     default: 'bg-clean-white border border-neutral-200 shadow-sm',
     elevated: 'bg-clean-white shadow-lg border-0',
@@ -44,16 +44,18 @@ export function Card({
       {children}
     </div>
   );
-}
+});
+
+Card.displayName = 'Card';
 
 /**
  * Card header component for titles and actions
  */
-export function CardHeader({ 
+const CardHeader = memo(({ 
   children, 
   className,
   ...props 
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
       className={cn(
@@ -65,16 +67,18 @@ export function CardHeader({
       {children}
     </div>
   );
-}
+});
+
+CardHeader.displayName = 'CardHeader';
 
 /**
  * Card title component for main headings
  */
-export function CardTitle({ 
+const CardTitle = memo(({ 
   children, 
   className,
   ...props 
-}: React.HTMLAttributes<HTMLHeadingElement>) {
+}: React.HTMLAttributes<HTMLHeadingElement>) => {
   return (
     <h3
       className={cn(
@@ -86,16 +90,18 @@ export function CardTitle({
       {children}
     </h3>
   );
-}
+});
+
+CardTitle.displayName = 'CardTitle';
 
 /**
  * Card content area with proper spacing
  */
-export function CardContent({ 
+const CardContent = memo(({ 
   children, 
   className,
   ...props 
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
       className={cn(
@@ -107,16 +113,18 @@ export function CardContent({
       {children}
     </div>
   );
-}
+});
+
+CardContent.displayName = 'CardContent';
 
 /**
  * Card footer for actions and metadata
  */
-export function CardFooter({ 
+const CardFooter = memo(({ 
   children, 
   className,
   ...props 
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
       className={cn(
@@ -128,4 +136,8 @@ export function CardFooter({
       {children}
     </div>
   );
-}
+});
+
+CardFooter.displayName = 'CardFooter';
+
+export { Card, CardHeader, CardTitle, CardContent, CardFooter };

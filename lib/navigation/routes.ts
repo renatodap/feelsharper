@@ -17,7 +17,11 @@ import {
   Apple,
   Activity,
   TrendingUp,
-  Scale
+  Scale,
+  Mic,
+  Sparkles,
+  LayoutDashboard,
+  MessageCircle
 } from 'lucide-react';
 
 export interface NavigationItem {
@@ -41,39 +45,39 @@ export const mainNavigation: NavigationItem[] = [
     showInFooter: false
   },
   { 
-    name: 'Today', 
-    href: '/today', 
-    icon: Target,
+    name: 'Insights', 
+    href: '/coach-insights', 
+    icon: Sparkles,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
   },
   { 
-    name: 'Food', 
-    href: '/food', 
-    icon: Apple,
+    name: 'Log', 
+    href: '/log', 
+    icon: MessageSquare,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
   },
   { 
-    name: 'Weight', 
-    href: '/weight', 
-    icon: Activity,
+    name: 'Dashboard', 
+    href: '/my-dashboard', 
+    icon: LayoutDashboard,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
   },
   { 
-    name: 'Progress', 
-    href: '/insights', 
-    icon: TrendingUp,
+    name: 'Coach', 
+    href: '/coach', 
+    icon: MessageCircle,
     requiresAuth: true,
     showInMenu: true,
     showInFooter: false
   },
   { 
-    name: 'Account', 
+    name: 'Settings', 
     href: '/settings', 
     icon: Settings,
     requiresAuth: true,

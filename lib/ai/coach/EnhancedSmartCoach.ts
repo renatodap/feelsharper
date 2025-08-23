@@ -104,7 +104,7 @@ export class EnhancedSmartCoach {
   async getUserContext(userId: string): Promise<UserContext> {
     // Fetch user profile
     const { data: profile } = await this.supabase
-      .from('user_profiles')
+      .from('profiles')
       .select('*')
       .eq('user_id', userId)
       .single();

@@ -10,7 +10,10 @@ const protectedRoutes = [
   '/insights',
   '/dashboard',
   '/settings',
-  '/onboarding'
+  '/onboarding',
+  '/profile',
+  '/coach',
+  '/log'
 ];
 
 // Public routes that don't require authentication
@@ -20,7 +23,9 @@ const publicRoutes = [
   '/sign-up',
   '/auth',
   '/about',
-  '/pricing'
+  '/pricing',
+  '/user',
+  '/font-showcase'
 ];
 
 export async function middleware(req: NextRequest) {
@@ -36,82 +41,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Allow public routes
-  if (publicRoutes.some(route => pathname.startsWith(route))) {
-    return NextResponse.next();
-  }
-
-  // Create Supabase client for middleware
-  let response = NextResponse.next({
-    request: {
-      headers: req.headers,
-    },
-  });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return req.cookies.get(name)?.value;
-        },
-        set(name: string, value: string, options: any) {
-          req.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: req.headers,
-            },
-          });
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          });
-        },
-        remove(name: string, options: any) {
-          req.cookies.set({
-            name,
-            value: '',
-            ...options,
-          });
-          response = NextResponse.next({
-            request: {
-              headers: req.headers,
-            },
-          });
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          });
-        },
-      },
-    }
-  );
-
-  // Check if user is authenticated
-  const { data: { user }, error } = await supabase.auth.getUser();
-
-  // If accessing protected route without authentication, redirect to sign-in
-  if (protectedRoutes.some(route => pathname.startsWith(route))) {
-    if (error || !user) {
-      const redirectUrl = new URL('/sign-in', req.url);
-      redirectUrl.searchParams.set('redirect', pathname);
-      return NextResponse.redirect(redirectUrl);
-    }
-  }
-
-  // If authenticated user tries to access auth pages, redirect to today
-  if (user && (pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up'))) {
-    return NextResponse.redirect(new URL('/today', req.url));
-  }
-
-  return response;
+  // Allow all routes for now (MVP demo mode)
+  return NextResponse.next();
 }
 
 export const config = {

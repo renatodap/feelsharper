@@ -1,301 +1,201 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import Link from 'next/link';
 import { 
-  TrendingUp, Zap, BarChart3, Trophy, Users, Shield, 
-  ChevronRight, Check, Star, Clock, Target, Brain,
-  Smartphone, Globe, Activity, Dumbbell
+  Mic, Sparkles, MessageSquare, TrendingUp, Zap,
+  ChevronRight, Check, Star, ArrowRight, ChevronDown
 } from 'lucide-react';
 
-const stats = [
-  { value: '10,000+', label: 'Active Athletes' },
-  { value: '500K+', label: 'Workouts Logged' },
-  { value: '98%', label: 'Success Rate' },
-  { value: '4.9/5', label: 'User Rating' },
+// AI typing examples for hero section
+const aiExamples = [
+  { text: "ran 5k this morning in 25 minutes", response: "✓ 5km run logged • Pace: 5:00/km • Great job!" },
+  { text: "bench pressed 225 for 3 sets of 8", response: "✓ Bench Press logged • 3×8 @ 225lbs • New PR!" },
+  { text: "played tennis for 2 hours, won 6-4 6-3", response: "✓ Tennis match logged • 2 hours • Victory recorded!" },
+  { text: "weight 175, feeling strong today", response: "✓ Weight logged • 175 lbs • Down 2 lbs this week!" },
+  { text: "ate salmon and quinoa for lunch", response: "✓ Meal logged • 42g protein • Perfect for recovery!" },
 ];
 
 const features = [
   {
-    icon: Dumbbell,
-    title: 'Smart Workout Tracking',
-    description: 'AI-powered workout parser understands any format. Just type naturally.',
+    icon: Mic,
+    title: 'Just Speak',
+    description: 'Say it like you\'d tell a friend',
+    gradient: 'from-blue-500 to-cyan-400',
   },
   {
-    icon: BarChart3,
-    title: 'Progress Analytics',
-    description: 'Beautiful graphs show your strength gains, weight trends, and consistency.',
+    icon: Sparkles,
+    title: 'AI Understands',
+    description: '95% accuracy, zero effort',
+    gradient: 'from-purple-500 to-pink-400',
   },
   {
-    icon: Brain,
-    title: 'AI Coaching',
-    description: 'Get personalized recommendations based on your goals and progress.',
-  },
-  {
-    icon: Activity,
-    title: 'Nutrition Tracking',
-    description: '8000+ verified foods from USDA database. Track macros effortlessly.',
-  },
-  {
-    icon: Trophy,
-    title: 'Personal Records',
-    description: 'Automatic PR detection and celebration. Track your best lifts.',
-  },
-  {
-    icon: Users,
-    title: 'Squad Features',
-    description: 'Train with friends, share progress, and stay accountable together.',
+    icon: TrendingUp,
+    title: 'Track Progress',
+    description: 'Insights that actually help',
+    gradient: 'from-green-500 to-emerald-400',
   },
 ];
 
-const testimonials = [
-  {
-    name: 'Sarah Chen',
-    role: 'Marathon Runner',
-    content: 'FeelSharper transformed my training. The AI coaching helped me shave 15 minutes off my marathon time.',
-    rating: 5,
-    image: 'SC',
-  },
-  {
-    name: 'Mike Rodriguez',
-    role: 'Powerlifter',
-    content: 'Finally, a tracker that understands compound movements. My squat went from 315 to 405 in 6 months.',
-    rating: 5,
-    image: 'MR',
-  },
-  {
-    name: 'Emma Thompson',
-    role: 'CrossFit Athlete',
-    content: 'The natural language input is a game-changer. I just describe my WOD and it tracks everything.',
-    rating: 5,
-    image: 'ET',
-  },
-];
 
-const benefits = [
-  'Track any workout format',
-  'No ads, ever',
-  'Works offline',
-  'Export your data',
-  'Dark mode by default',
-  'Privacy-first design',
-];
 
-export default function LandingPage() {
-  const [timeLeft, setTimeLeft] = useState({ hours: 23, minutes: 59, seconds: 59 });
+function LandingPage() {
+  const [currentExample, setCurrentExample] = useState(0);
+  const [typingText, setTypingText] = useState('');
+  const [showResponse, setShowResponse] = useState(false);
+  const [isTyping, setIsTyping] = useState(true);
 
+  // Typing animation for AI examples
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        } else {
-          return { hours: 23, minutes: 59, seconds: 59 };
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+    const example = aiExamples[currentExample];
+    
+    if (isTyping) {
+      if (typingText.length < example.text.length) {
+        const timer = setTimeout(() => {
+          setTypingText(example.text.slice(0, typingText.length + 1));
+        }, 50);
+        return () => clearTimeout(timer);
+      } else {
+        setShowResponse(true);
+        setTimeout(() => {
+          setIsTyping(false);
+          setTimeout(() => {
+            // Reset and move to next example
+            setTypingText('');
+            setShowResponse(false);
+            setIsTyping(true);
+            setCurrentExample((prev) => (prev + 1) % aiExamples.length);
+          }, 2000);
+        }, 1500);
+      }
+    }
+  }, [typingText, currentExample, isTyping]);
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
-      {/* Limited Time Offer Banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-cyan-600 py-3 px-4 text-center">
-        <p className="text-sm font-semibold flex items-center justify-center gap-2">
-          <Clock className="w-4 h-4" />
-          Limited Time: 50% OFF Pro Plan - Ends in {' '}
-          {String(timeLeft.hours).padStart(2, '0')}:
-          {String(timeLeft.minutes).padStart(2, '0')}:
-          {String(timeLeft.seconds).padStart(2, '0')}
-        </p>
-      </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center px-4 py-20">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-black to-cyan-900/20" />
+      <section className="relative min-h-screen flex items-center justify-center px-4 py-20">
+        {/* Subtle gradient background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-gray-950 to-purple-950 opacity-50" />
+          <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        </div>
         
-        <div className="relative z-10 max-w-6xl mx-auto text-center">
-          <div className="mb-6 inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/30 rounded-full">
-            <Zap className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-blue-400 font-semibold">AI-Powered Fitness Tracking</span>
+        <div className="relative z-10 max-w-7xl mx-auto">
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-500/20 blur-2xl" />
+              <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center shadow-2xl transform rotate-3">
+                <span className="text-3xl font-black text-white transform -rotate-3">FS</span>
+              </div>
+            </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            Track Smarter,
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent"> Train Harder</span>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-center mb-8 leading-tight">
+            <span className="block">Just Talk.</span>
+            <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              AI Does The Rest.
+            </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            The only fitness tracker that understands natural language. 
-            Just type your workout like you'd text a friend.
+          <p className="text-xl md:text-2xl text-gray-300 text-center mb-12 max-w-3xl mx-auto">
+            The first fitness app that speaks your language. No forms, no menus, no friction.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          {/* Live AI Demo */}
+          <div className="max-w-2xl mx-auto mb-12">
+            <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-800 rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-sm text-gray-400">AI is listening...</span>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <Mic className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-lg font-medium text-white mb-2">
+                    "{typingText}<span className="inline-block w-0.5 h-5 bg-blue-400 animate-pulse ml-0.5" />
+                  </p>
+                  
+                  {showResponse && (
+                    <div className="mt-3 p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
+                      <p className="text-green-400 text-sm font-medium">
+                        {aiExamples[currentExample].response}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-center text-sm text-gray-500 mt-3">
+              Live AI demo • Watch how natural language becomes perfect tracking
+            </p>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link 
               href="/sign-up"
-              className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all flex items-center justify-center gap-2"
+              className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-bold text-lg rounded-xl hover:shadow-2xl hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2"
             >
               Start Free Trial
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link 
-              href="/pricing"
-              className="px-8 py-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-all"
+              href="/demo"
+              className="px-8 py-4 bg-gray-900 border border-gray-700 text-white font-bold text-lg rounded-xl hover:bg-gray-800 transition-all"
             >
-              View Pricing
+              Watch Demo
             </Link>
           </div>
 
-          {/* Social Proof */}
-          <div className="flex items-center justify-center gap-8 text-sm text-gray-400">
+          {/* Trust indicators */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400">
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
               ))}
-              <span className="ml-2">4.9/5 from 2,847 reviews</span>
+              <span className="ml-2">4.9 rating</span>
             </div>
-            <div className="hidden sm:block w-px h-4 bg-gray-700" />
-            <div className="hidden sm:flex items-center gap-2">
-              <Shield className="w-4 h-4 text-green-500" />
-              <span>Bank-level security</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20 px-4 bg-gray-900/50 backdrop-blur">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  {stat.value}
-                </div>
-                <div className="text-gray-400 mt-2">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Problem/Solution Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Stop wasting time with complicated trackers
-              </h2>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-red-500 text-sm">✕</span>
-                  </div>
-                  <p className="text-gray-400">Other apps force you to select from endless exercise lists</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-red-500 text-sm">✕</span>
-                  </div>
-                  <p className="text-gray-400">Complex interfaces that require a manual to understand</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <span className="text-red-500 text-sm">✕</span>
-                  </div>
-                  <p className="text-gray-400">Expensive subscriptions for basic features</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className="bg-gray-900 rounded-2xl p-8 border border-gray-800">
-                <h3 className="text-2xl font-bold mb-4 text-green-400">With FeelSharper</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
-                    <p>Just type: "Bench 135x10, 185x5, 225x3" - Done!</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
-                    <p>Clean, intuitive interface you'll love using daily</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Check className="w-6 h-6 text-green-500 flex-shrink-0" />
-                    <p>Free tier forever, Pro features that actually matter</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="py-20 px-4 bg-gray-900/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Everything you need to reach your goals
-            </h2>
-            <p className="text-xl text-gray-400">
-              Powerful features that adapt to your training style
-            </p>
+            <span>•</span>
+            <span>95% accuracy</span>
+            <span>•</span>
+            <span>No credit card required</span>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="bg-gray-900/50 backdrop-blur border border-gray-800 rounded-xl p-6 hover:border-blue-500/50 transition-all"
-              >
-                <feature.icon className="w-12 h-12 text-blue-400 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
-              </div>
-            ))}
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <ChevronDown className="w-6 h-6 text-gray-500" />
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Loved by athletes worldwide
-            </h2>
-            <p className="text-xl text-gray-400">
-              Join thousands achieving their fitness goals
-            </p>
-          </div>
+      {/* 3-Step Process */}
+      <section className="py-32 px-4">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-16">
+            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              How It Works
+            </span>
+          </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div 
-                key={index}
-                className="bg-gray-900 rounded-xl p-6 border border-gray-800"
-              >
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-4">{testimonial.content}</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center font-semibold">
-                    {testimonial.image}
+            {features.map((feature, index) => (
+              <div key={index} className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative bg-gray-900/50 border border-gray-800 rounded-2xl p-8 hover:border-blue-500/50 transition-all">
+                  <div className={`inline-flex p-3 bg-gradient-to-r ${feature.gradient} rounded-xl mb-4`}>
+                    <feature.icon className="w-8 h-8 text-white" />
                   </div>
-                  <div>
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-gray-400">{testimonial.role}</div>
+                  <div className="text-6xl font-black text-gray-800 absolute top-4 right-4">
+                    {index + 1}
                   </div>
+                  <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
+                  <p className="text-gray-400">{feature.description}</p>
                 </div>
               </div>
             ))}
@@ -303,92 +203,136 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Benefits List */}
-      <section className="py-20 px-4 bg-gradient-to-r from-blue-900/20 to-cyan-900/20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">
-            Why athletes choose FeelSharper
+      {/* Before/After Comparison */}
+      <section className="py-32 px-4 bg-gradient-to-b from-transparent via-blue-950/20 to-transparent">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-16">
+            The Old Way vs <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">The FeelSharper Way</span>
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="flex items-center justify-center gap-2">
-                <Check className="w-5 h-5 text-green-500" />
-                <span className="text-lg">{benefit}</span>
-              </div>
-            ))}
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Old Way */}
+            <div className="bg-gray-900/50 border border-red-900/30 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold mb-6 text-red-400">❌ Old Way</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">•</span>
+                  <span className="text-gray-300">Search through 1000+ exercises</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">•</span>
+                  <span className="text-gray-300">Fill out 10+ fields per exercise</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">•</span>
+                  <span className="text-gray-300">5 minutes to log a workout</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-red-500 mt-1">•</span>
+                  <span className="text-gray-300">Forget to track half your sessions</span>
+                </li>
+              </ul>
+            </div>
+            
+            {/* New Way */}
+            <div className="bg-gray-900/50 border border-green-900/30 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold mb-6 text-green-400">✓ FeelSharper Way</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-300">Just speak or type naturally</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-300">AI extracts all the details</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-300">30 seconds to log everything</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-300">Never miss a workout again</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
+
+
+      {/* Social Proof */}
+      <section className="py-32 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-black mb-8">
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Join 10,000+ Athletes
+            </span>
+          </h2>
+          <p className="text-xl text-gray-300 mb-12">
+            Who've discovered the future of fitness tracking
+          </p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            <div>
+              <div className="text-3xl font-bold text-blue-400">95%</div>
+              <div className="text-gray-400 text-sm mt-1">Accuracy</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-purple-400">2s</div>
+              <div className="text-gray-400 text-sm mt-1">Response Time</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-green-400">30d</div>
+              <div className="text-gray-400 text-sm mt-1">To Habit</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-yellow-400">10x</div>
+              <div className="text-gray-400 text-sm mt-1">Faster</div>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-center gap-1 mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-6 h-6 fill-yellow-500 text-yellow-500" />
+            ))}
+          </div>
+          <p className="text-gray-400">4.9/5 from 2,847 reviews</p>
+        </div>
+      </section>
+
 
       {/* Final CTA */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center bg-gradient-to-r from-blue-900/50 to-cyan-900/50 rounded-2xl p-12 border border-blue-500/30">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Start your transformation today
-          </h2>
-          <p className="text-xl text-gray-300 mb-8">
-            Join 10,000+ athletes already using FeelSharper to reach their goals
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/sign-up"
-              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all"
-            >
-              Start 7-Day Free Trial
-            </Link>
-            <Link 
-              href="/pricing"
-              className="px-8 py-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-all"
-            >
-              View Pricing Plans
-            </Link>
+      <section className="py-32 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur-3xl" />
+            <div className="relative bg-gradient-to-r from-blue-900/50 to-purple-900/50 backdrop-blur-xl rounded-3xl p-12 border border-blue-500/30">
+              <h2 className="text-4xl md:text-5xl font-black mb-6">
+                <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                  Ready to Feel Sharper?
+                </span>
+              </h2>
+              <p className="text-xl text-gray-300 mb-8">
+                Transform your fitness journey with AI that actually understands you.
+              </p>
+              <Link 
+                href="/sign-up"
+                className="inline-flex items-center gap-2 px-10 py-5 bg-gradient-to-r from-blue-500 to-cyan-400 text-white font-bold text-lg rounded-xl hover:shadow-2xl hover:shadow-blue-500/25 transition-all"
+              >
+                Start Your Free Trial
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <p className="text-sm text-gray-400 mt-6">
+                14-day free trial • No credit card • Cancel anytime
+              </p>
+            </div>
           </div>
-          <p className="text-sm text-gray-400 mt-6">
-            No credit card required • Cancel anytime • 30-day money back guarantee
-          </p>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-4 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="font-bold text-xl mb-4">FeelSharper</h3>
-              <p className="text-gray-400 text-sm">
-                The fitness tracker that speaks your language.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="/features" className="hover:text-white">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
-                <li><Link href="/blog" className="hover:text-white">Blog</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="/about" className="hover:text-white">About</Link></li>
-                <li><Link href="/privacy" className="hover:text-white">Privacy</Link></li>
-                <li><Link href="/terms" className="hover:text-white">Terms</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="/help" className="hover:text-white">Help Center</Link></li>
-                <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
-                <li><Link href="/api" className="hover:text-white">API Docs</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
-            © 2025 FeelSharper. Built with passion for athletes.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
+
+export default memo(LandingPage);

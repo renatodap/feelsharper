@@ -1,0 +1,274 @@
+/* 🎯 SHARPENED DESIGN SYSTEM - OFFICIAL IMPLEMENTATION */
+/* Last Updated: 2025-08-22 */
+
+/* Import Official Sharpened Fonts - Following Brand Guide */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* OFFICIAL SHARPENED FONTS (From Brand Guide) */
+  --font-heading: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Fira Code', monospace;
+  
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  
+  /* Typography Scale (from Sharpened Brand Guide) */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  --text-5xl: 3rem;      /* 48px */
+  --text-6xl: 3.75rem;   /* 60px */
+  --text-7xl: 4.5rem;    /* 72px */
+  --text-8xl: 6rem;      /* 96px */
+  --text-9xl: 8rem;      /* 128px */
+  
+  /* Core Sharpened Colors */
+  --sharpened-black: #000000;
+  --sharpened-void: #0A0A0A;
+  --sharpened-dark: #111111;
+  --sharpened-coal: #1A1A1A;
+  --sharpened-charcoal: #2A2A2A;
+  --sharpened-gray: #666666;
+  --sharpened-light-gray: #999999;
+  --sharpened-white: #FFFFFF;
+  
+  /* FeelSharper Lightning Colors */
+  --feel-primary: #4169E1;    /* Royal Blue */
+  --feel-secondary: #00BFFF;  /* Deep Sky Blue */
+  --feel-accent: #87CEEB;     /* Sky Blue */
+  
+  /* Glass Morphism Values */
+  --glass-blur: 10px;
+  --glass-opacity: 0.1;
+  --glass-border: rgba(255, 255, 255, 0.1);
+  
+  /* Animation Curves */
+  --sharp-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --lightning-strike: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --electric-bounce: cubic-bezier(0.87, -0.41, 0.19, 1.44);
+}
+
+/* Global Font Application */
+body {
+  font-family: var(--font-body);
+  font-weight: var(--font-normal);
+  line-height: 1.6;
+  color: var(--sharpened-white);
+  background: var(--sharpened-black);
+}
+
+/* Heading Styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-bold);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: var(--text-7xl);
+  font-weight: 900;
+}
+
+h2 {
+  font-size: var(--text-5xl);
+  font-weight: 800;
+}
+
+h3 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+}
+
+h4 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+}
+
+/* Lightning Text Animation */
+.lightning-text {
+  background: linear-gradient(
+    135deg,
+    var(--feel-primary) 0%,
+    var(--feel-secondary) 25%,
+    var(--feel-accent) 50%,
+    var(--feel-primary) 75%,
+    var(--feel-secondary) 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: lightning-flow 8s ease infinite;
+}
+
+@keyframes lightning-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Sharp Container Styles */
+.sharp-container {
+  clip-path: polygon(
+    0 0, 
+    calc(100% - 30px) 0, 
+    100% 30px, 
+    100% 100%, 
+    30px 100%, 
+    0 calc(100% - 30px)
+  );
+  background: rgba(var(--sharpened-dark), 0.8);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.sharp-button {
+  font-family: var(--font-heading);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+  color: var(--sharpened-white);
+  border: none;
+  clip-path: polygon(
+    0 0, 
+    calc(100% - 12px) 0, 
+    100% 12px, 
+    100% 100%, 
+    12px 100%, 
+    0 calc(100% - 12px)
+  );
+  transition: all 0.3s var(--sharp-ease);
+  cursor: pointer;
+}
+
+.sharp-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2) drop-shadow(0 10px 20px rgba(65, 105, 225, 0.5));
+}
+
+/* Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, var(--glass-opacity));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 0;
+}
+
+/* Lightning Strike Effect */
+.lightning-strike {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--feel-primary),
+    var(--feel-secondary),
+    var(--feel-accent),
+    transparent
+  );
+  filter: blur(1px) brightness(2);
+  opacity: 0;
+  animation: strike 3s var(--lightning-strike) infinite;
+}
+
+@keyframes strike {
+  0%, 95% { 
+    opacity: 0; 
+    transform: translateY(-100%) scaleY(0);
+  }
+  96% { 
+    opacity: 1; 
+    transform: translateY(0) scaleY(1);
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(100%) scaleY(1);
+  }
+}
+
+/* Lightning Grid Background */
+.lightning-grid {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 100px,
+      rgba(65, 105, 225, 0.02) 100px,
+      rgba(65, 105, 225, 0.02) 101px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 100px,
+      rgba(0, 191, 255, 0.02) 100px,
+      rgba(0, 191, 255, 0.02) 101px
+    );
+  animation: grid-shift 60s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes grid-shift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+/* Utility Classes */
+.font-heading {
+  font-family: var(--font-heading) !important;
+}
+
+.font-body {
+  font-family: var(--font-body) !important;
+}
+
+.text-feel-primary {
+  color: var(--feel-primary);
+}
+
+.text-feel-secondary {
+  color: var(--feel-secondary);
+}
+
+.text-feel-accent {
+  color: var(--feel-accent);
+}
+
+.bg-sharpened-black {
+  background-color: var(--sharpened-black);
+}
+
+.bg-sharpened-dark {
+  background-color: var(--sharpened-dark);
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1 { font-size: var(--text-5xl); }
+  h2 { font-size: var(--text-3xl); }
+  h3 { font-size: var(--text-2xl); }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

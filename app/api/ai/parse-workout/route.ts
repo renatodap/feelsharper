@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
         .eq('user_id', user.id)
         .eq('pattern_type', 'exercise_alias'),
       supabase
-        .from('user_profiles')
+        .from('profiles')
         .select('*')
         .eq('user_id', user.id)
         .single()

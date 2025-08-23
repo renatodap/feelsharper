@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback, memo } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -64,7 +64,7 @@ const COMMON_EXERCISES = [
   'Mountain Climbers', 'Hanging Knee Raises'
 ];
 
-export default function WorkoutLogger() {
+function WorkoutLogger() {
   const [workout, setWorkout] = useState<WorkoutSession>({
     type: 'strength',
     started_at: new Date().toISOString(),
@@ -81,12 +81,17 @@ export default function WorkoutLogger() {
   const [filteredExercises, setFilteredExercises] = useState(COMMON_EXERCISES);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    const filtered = COMMON_EXERCISES.filter(exercise =>
+  // Memoize filtered exercises to prevent unnecessary filtering
+  const filteredExercisesResult = useMemo(() => 
+    COMMON_EXERCISES.filter(exercise =>
       exercise.toLowerCase().includes(exerciseSearch.toLowerCase())
-    );
-    setFilteredExercises(filtered);
-  }, [exerciseSearch]);
+    ),
+    [exerciseSearch]
+  );
+
+  useEffect(() => {
+    setFilteredExercises(filteredExercisesResult);
+  }, [filteredExercisesResult]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -178,7 +183,8 @@ export default function WorkoutLogger() {
     }
   };
 
-  const addExercise = (exerciseName: string) => {
+  // Memoize heavy functions
+  const addExercise = useCallback((exerciseName: string) => {
     if (!exerciseName.trim()) return;
 
     const newExercise: Exercise = {
@@ -195,7 +201,7 @@ export default function WorkoutLogger() {
     }));
     setCurrentExercise('');
     setExerciseSearch('');
-  };
+  }, []);
 
   const addSet = (exerciseIndex: number) => {
     const newSet: WorkoutSet = {
@@ -273,19 +279,19 @@ export default function WorkoutLogger() {
     setRestTimer(prev => ({ ...prev, isActive: false, timeLeft: 0 }));
   };
 
-  const formatTime = (seconds: number) => {
+  const formatTime = useCallback((seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+  }, []);
 
-  const getWorkoutDuration = () => {
+  const getWorkoutDuration = useCallback(() => {
     if (!isWorkoutActive) return '0:00';
     const start = new Date(workout.started_at);
     const now = new Date();
     const diffSeconds = Math.floor((now.getTime() - start.getTime()) / 1000);
     return formatTime(diffSeconds);
-  };
+  }, [isWorkoutActive, workout.started_at, formatTime]);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -553,3 +559,5 @@ export default function WorkoutLogger() {
     </div>
   );
 }
+
+export default memo(WorkoutLogger);

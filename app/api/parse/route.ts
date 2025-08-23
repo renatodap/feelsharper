@@ -27,20 +27,32 @@ export async function POST(request: NextRequest) {
     }
     
     // Parse the natural language input
-    const parsed = await parseNaturalLanguage(text);
+    const parsed = await parseNaturalLanguage(text, user.id);
     
-    // Store in database
+    // Store in database - using actual Supabase schema columns
+    // Ensure sport/exercise names are preserved in the data
+    const dataToStore = {
+      ...parsed.structuredData,
+      // Preserve sport_name or exercise_name if present
+      sport_name: parsed.structuredData?.sport_name,
+      exercise_name: parsed.structuredData?.exercise_name
+    };
+
     const { data: activityLog, error: dbError } = await supabase
       .from('activity_logs')
       .insert({
         user_id: user.id,
-        activity_type: parsed.type,
-        original_text: text,
-        confidence_level: parsed.confidence,
-        subjective_notes: parsed.subjectiveNotes,
-        source,
-        structured_data: parsed.structuredData,
-        activity_timestamp: parsed.timestamp || new Date()
+        type: parsed.type,  // Use correct type field
+        raw_text: text,     // Use correct raw_text field
+        confidence: parsed.confidence / 100,  // Convert to 0-1 range as per schema
+        data: dataToStore,  // Use correct data field with sport/exercise preserved
+        metadata: {
+          source,
+          subjective_notes: parsed.subjectiveNotes,
+          sport_name: parsed.structuredData?.sport_name,  // Also store in metadata for easy access
+          exercise_name: parsed.structuredData?.exercise_name
+        },
+        timestamp: parsed.timestamp || new Date()  // Use correct timestamp field
       })
       .select()
       .single();
@@ -77,14 +89,14 @@ export async function POST(request: NextRequest) {
  */
 async function updateCommonLogs(userId: string, text: string, supabase: any) {
   try {
-    // Get user profile
+    // Get user profile - using 'profiles' table (not user_profiles)
     const { data: profile } = await supabase
-      .from('user_profiles')
-      .select('common_logs')
-      .eq('user_id', userId)
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)  // profiles uses 'id' not 'user_id'
       .single();
     
-    const commonLogs = profile?.common_logs || [];
+    const commonLogs = profile?.secondary_goals?.common_logs || [];
     
     // Find if this log already exists
     const existingIndex = commonLogs.findIndex((log: any) => 
@@ -113,11 +125,17 @@ async function updateCommonLogs(userId: string, text: string, supabase: any) {
     // Keep only top 10
     const topLogs = commonLogs.slice(0, 10);
     
-    // Update profile
+    // Update profile - using 'profiles' table
+    const currentSecondaryGoals = profile?.secondary_goals || {};
     await supabase
-      .from('user_profiles')
-      .update({ common_logs: topLogs })
-      .eq('user_id', userId);
+      .from('profiles')
+      .update({ 
+        secondary_goals: { 
+          ...currentSecondaryGoals, 
+          common_logs: topLogs 
+        } 
+      })  // Store in secondary_goals JSONB field
+      .eq('id', userId);
       
   } catch (error) {
     console.error('Failed to update common logs:', error);
@@ -135,7 +153,14 @@ function generateConfirmationMessage(parsed: any): string {
   
   switch (parsed.type) {
     case 'cardio':
-      return `${confidenceText} ${parsed.structuredData.activity || 'Cardio'} logged.`;
+      const cardioName = parsed.structuredData.exercise_name || parsed.structuredData.activity || 'Cardio';
+      return `${confidenceText} ${cardioName} logged.`;
+    case 'strength':
+      const strengthName = parsed.structuredData.exercise_name || 'Strength training';
+      return `${confidenceText} ${strengthName} logged.`;
+    case 'sport':
+      const sportName = parsed.structuredData.sport_name || 'Sport activity';
+      return `${confidenceText} ${sportName} session logged.`;
     case 'nutrition':
       return `${confidenceText} ${parsed.structuredData.meal || 'Meal'} recorded.`;
     case 'weight':
