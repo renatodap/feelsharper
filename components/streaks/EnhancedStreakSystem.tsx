@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Progress } from '@/components/ui/Progress';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
+import { ActivityLog } from '@/lib/ai-coach/types';
 import {
   Flame,
   Snowflake,
@@ -55,7 +56,7 @@ interface StreakMilestone {
   icon?: string;
 }
 
-interface ActivityLog {
+interface LocalActivityLog {
   date: Date;
   type: 'workout' | 'meal' | 'weight' | 'combined';
   duration?: number; // For workouts
@@ -145,7 +146,7 @@ export function EnhancedStreakSystem() {
   };
 
   // Log activity with quality check (prevents hollow engagement)
-  const logActivity = (activity: Omit<ActivityLog, 'date'>) => {
+  const logActivity = (activity: Omit<LocalActivityLog, 'date'> & { date?: string | Date }) => {
     const now = new Date();
     
     // Check if activity meets minimum threshold
@@ -160,8 +161,13 @@ export function EnhancedStreakSystem() {
     }
 
     const newActivity: ActivityLog = {
-      ...activity,
-      date: now,
+      activity_type: activity.type,
+      raw_input: `Logged ${activity.type} activity`,
+      parsed_data: activity,
+      confidence_level: activity.quality === 'high' ? 0.9 : activity.quality === 'medium' ? 0.7 : 0.5,
+      source: 'manual' as const,
+      date: now.toISOString(),
+      created_at: now.toISOString(),
     };
 
     setTodayActivity(newActivity);
@@ -177,8 +183,9 @@ export function EnhancedStreakSystem() {
         newStreak = 1; // Reset but with encouragement
       }
 
-      // Calculate quality score
-      const qualityScore = calculateQualityScore(activity, prev);
+      // Calculate quality score - add date if missing
+      const activityWithDate = { ...activity, date: activity.date || now.toISOString() };
+      const qualityScore = calculateQualityScore({ ...activityWithDate, date: new Date(activityWithDate.date) } as LocalActivityLog, prev);
       
       return {
         ...prev,
@@ -208,7 +215,7 @@ export function EnhancedStreakSystem() {
   };
 
   // Calculate quality score based on activity
-  const calculateQualityScore = (activity: ActivityLog, prevData: EnhancedStreakData): number => {
+  const calculateQualityScore = (activity: LocalActivityLog, prevData: EnhancedStreakData): number => {
     let score = prevData.qualityScore;
     
     if (activity.quality === 'high') {

@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { PremiumGate, FeatureUsageIndicator } from '@/components/premium/PremiumGate';
 import { VoiceInputField } from '@/components/voice/VoiceInputButton';
 import { useWorkoutParser } from '@/hooks/useWorkoutParser';
-import type { Exercise, WorkoutTypeEnum } from '@/lib/types/database';
+import type { Exercise, WorkoutTypeEnum, ExerciseTypeEnum } from '@/lib/types/database';
 
 interface ParseResult {
   success: boolean;
@@ -76,14 +76,15 @@ export default function NaturalLanguageInput({
   const handleConfirm = () => {
     if (lastResult?.workout) {
       // Convert AI types to database types
-      const exercises: Exercise[] = lastResult.workout.exercises.map(ex => ({
+      const exercises: Exercise[] = lastResult.workout.exercises.map((ex: any) => ({
         name: ex.name,
+        type: 'reps' as ExerciseTypeEnum, // Default to reps, could be improved with AI inference
         sets: ex.sets ? [{
           reps: ex.reps || 0,
           weight_kg: ex.weight_kg,
           duration_seconds: ex.duration_minutes ? ex.duration_minutes * 60 : undefined,
-          distance_km: ex.distance_km,
-          rest_seconds: ex.rest_seconds
+          rest_seconds: ex.rest_seconds,
+          completed: true // Default to completed for parsed workouts
         }] : []
       }));
 
@@ -108,14 +109,14 @@ export default function NaturalLanguageInput({
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <PremiumGate feature="workout_parse">
+      <PremiumGate feature="workout_parsing">
         {/* Input Section */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium text-text-primary">
               Describe your workout
             </label>
-            <FeatureUsageIndicator feature="workout_parse" />
+            <FeatureUsageIndicator feature="workout_parsing" />
           </div>
         {useVoice ? (
           <div className="space-y-3">
@@ -187,10 +188,10 @@ export default function NaturalLanguageInput({
           {Object.entries(parseExamples).map(([key, example]) => (
             <button
               key={key}
-              onClick={() => fillExample(example)}
+              onClick={() => fillExample(String(example))}
               className="px-2 py-1 text-xs bg-surface hover:bg-surface-2 text-text-secondary rounded border border-border hover:border-border/60 transition-colors"
             >
-              {key}: {example.slice(0, 30)}...
+              {key}: {String(example).slice(0, 30)}...
             </button>
           ))}
         </div>
@@ -260,7 +261,7 @@ export default function NaturalLanguageInput({
             </div>
 
             <div className="space-y-2">
-              {lastResult.workout.exercises.map((exercise, index) => (
+              {lastResult.workout.exercises.map((exercise: any, index) => (
                 <div key={index} className="p-2 bg-bg border border-border rounded">
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium text-text-primary capitalize">{exercise.name}</h4>
@@ -269,9 +270,9 @@ export default function NaturalLanguageInput({
                     </span>
                   </div>
                   
-                  {exercise.sets && exercise.sets.length > 0 && (
+                  {exercise.sets && Array.isArray(exercise.sets) && exercise.sets.length > 0 && (
                     <div className="mt-2 space-y-1">
-                      {exercise.sets.map((set, setIndex) => (
+                      {exercise.sets.map((set: any, setIndex: number) => (
                         <div key={setIndex} className="text-sm text-text-secondary">
                           Set {setIndex + 1}: 
                           {set.reps && <span className="ml-1">{set.reps} reps</span>}

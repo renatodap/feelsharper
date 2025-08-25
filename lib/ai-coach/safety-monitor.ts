@@ -183,14 +183,14 @@ See a doctor if not improving in 48 hours.`,
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     
     const recentData = recentLogs.filter(
-      log => log.timestamp > sevenDaysAgo
+      log => new Date(log.created_at || log.logged_at || '') > sevenDaysAgo
     );
     
     // Check resting HR elevation (if available)
     const hrLogs = recentData.filter(log => log.data?.restingHR);
-    if (hrLogs.length > 0 && userProfile.health?.resting_hr) {
+    if (hrLogs.length > 0 && userProfile.preferences?.resting_hr) {
       const avgRestingHR = hrLogs.reduce((sum, log) => sum + log.data.restingHR, 0) / hrLogs.length;
-      const increase = avgRestingHR - userProfile.health.resting_hr;
+      const increase = avgRestingHR - userProfile.preferences.resting_hr;
       if (increase > OVERTRAINING_MARKERS.objective.restingHRIncrease) {
         score += 20;
         metrics.restingHR = increase;
@@ -201,7 +201,7 @@ See a doctor if not improving in 48 hours.`,
     const moodLogs = recentData.filter(log => log.type === 'mood');
     const negativeMoods = moodLogs.filter(log => 
       OVERTRAINING_MARKERS.subjective.mood.some(mood => 
-        log.originalText.toLowerCase().includes(mood)
+        log.originalText?.toLowerCase().includes(mood)
       )
     );
     if (negativeMoods.length > moodLogs.length * 0.5) {
@@ -214,7 +214,7 @@ See a doctor if not improving in 48 hours.`,
     const poorSleep = sleepLogs.filter(log => 
       log.data?.quality < 5 || 
       OVERTRAINING_MARKERS.subjective.sleep.some(pattern =>
-        log.originalText.toLowerCase().includes(pattern)
+        log.originalText?.toLowerCase().includes(pattern)
       )
     );
     if (poorSleep.length > sleepLogs.length * 0.5) {
@@ -224,7 +224,7 @@ See a doctor if not improving in 48 hours.`,
     
     // Check persistent soreness
     const sorenessmentions = recentData.filter(log =>
-      /sore|aching|pain|hurt/i.test(log.originalText)
+      /sore|aching|pain|hurt/i.test(log.originalText || log.raw_input || '')
     );
     if (sorenessmentions.length > 4) {
       score += 20;

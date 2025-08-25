@@ -368,7 +368,7 @@ export function StreakSystem() {
             </div>
             <Button
               size="sm"
-              variant={streakData.weekendSkipEnabled ? "default" : "outline"}
+              variant={streakData.weekendSkipEnabled ? "primary" : "outline"}
               onClick={toggleWeekendSkip}
             >
               {streakData.weekendSkipEnabled ? 'Enabled' : 'Disabled'}

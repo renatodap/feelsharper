@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - Referral Program</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --feel-accent: #87CEEB;
+            --referral-green: #00FF41;
+            --reward-gold: #FFD700;
+            --bonus-purple: #8B4FC3;
+        }
+
+        @page {
+            size: 1080px 1080px;
+            margin: 0;
+        }
+
+        body {
+            width: 1080px;
+            height: 1080px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, 
+                var(--referral-green) 0%, 
+                var(--feel-primary) 50%, 
+                var(--sharpened-black) 100%);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Money Rain Effect */
+        .money-rain {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .money-icon {
+            position: absolute;
+            font-size: 30px;
+            animation: money-fall 8s linear infinite;
+        }
+
+        @keyframes money-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(1200px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .money-icon:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .money-icon:nth-child(2) { left: 25%; animation-delay: 1.5s; }
+        .money-icon:nth-child(3) { left: 40%; animation-delay: 3s; }
+        .money-icon:nth-child(4) { left: 55%; animation-delay: 4.5s; }
+        .money-icon:nth-child(5) { left: 70%; animation-delay: 6s; }
+        .money-icon:nth-child(6) { left: 85%; animation-delay: 7.5s; }
+
+        /* Main Container */
+        .referral-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 60px;
+        }
+
+        /* Header */
+        .referral-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .referral-badge {
+            background: linear-gradient(135deg, var(--reward-gold), var(--referral-green));
+            color: var(--sharpened-black);
+            padding: 15px 35px;
+            border-radius: 40px;
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.4);
+            animation: badge-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes badge-glow {
+            0%, 100% {
+                box-shadow: 0 20px 40px rgba(255, 215, 0, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 25px 50px rgba(255, 215, 0, 0.6);
+                transform: scale(1.05);
+            }
+        }
+
+        .referral-title {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, 
+                var(--reward-gold) 0%, 
+                var(--referral-green) 50%, 
+                var(--feel-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .referral-subtitle {
+            font-size: 24px;
+            color: var(--sharpened-gray);
+            margin-bottom: 40px;
+        }
+
+        /* Reward Card */
+        .reward-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 3px solid var(--reward-gold);
+            border-radius: 30px;
+            padding: 50px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reward-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.2), 
+                transparent);
+            animation: gold-sweep 4s infinite;
+        }
+
+        @keyframes gold-sweep {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        /* Steps */
+        .referral-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 20px;
+            border-left: 4px solid var(--referral-green);
+            position: relative;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--referral-green), var(--feel-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--sharpened-black);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .step-reward {
+            font-size: 18px;
+            color: var(--reward-gold);
+            font-weight: 600;
+        }
+
+        /* Reward Showcase */
+        .reward-showcase {
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.1), 
+                rgba(0, 255, 65, 0.1));
+            border: 2px solid var(--reward-gold);
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .reward-amount {
+            font-size: 64px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--reward-gold), var(--referral-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .reward-description {
+            font-size: 20px;
+            color: var(--sharpened-gray);
+            margin-bottom: 20px;
+        }
+
+        .bonus-text {
+            font-size: 18px;
+            color: var(--bonus-purple);
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .referral-button {
+            background: linear-gradient(135deg, var(--referral-green), var(--feel-secondary));
+            color: var(--sharpened-black);
+            padding: 25px 50px;
+            border-radius: 35px;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            box-shadow: 0 20px 40px rgba(0, 255, 65, 0.3);
+            animation: button-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes button-pulse {
+            0%, 100% {
+                box-shadow: 0 20px 40px rgba(0, 255, 65, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 25px 50px rgba(0, 255, 65, 0.5);
+                transform: scale(1.02);
+            }
+        }
+
+        .referral-code {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 30px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .code-label {
+            font-size: 14px;
+            color: var(--sharpened-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .code-text {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--reward-gold);
+            letter-spacing: 2px;
+        }
+
+        /* Floating Elements */
+        .floating-gift {
+            position: absolute;
+            font-size: 40px;
+            animation: gift-float 6s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes gift-float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-30px) rotate(15deg);
+                opacity: 1;
+            }
+        }
+
+        .floating-gift:nth-child(7) { top: 20%; right: 10%; animation-delay: 0s; }
+        .floating-gift:nth-child(8) { bottom: 30%; left: 10%; animation-delay: 3s; }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1080px;
+                height: 1080px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Money Rain -->
+    <div class="money-rain">
+        <div class="money-icon">💰</div>
+        <div class="money-icon">💵</div>
+        <div class="money-icon">💰</div>
+        <div class="money-icon">💵</div>
+        <div class="money-icon">💰</div>
+        <div class="money-icon">💵</div>
+        <div class="floating-gift">🎁</div>
+        <div class="floating-gift">🎉</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="referral-container">
+        <!-- Header -->
+        <div class="referral-header">
+            <div class="referral-badge" contenteditable="true">Limited Time</div>
+            <h1 class="referral-title" contenteditable="true">Earn $30<br>Per Friend</h1>
+            <p class="referral-subtitle" contenteditable="true">Share the fitness revolution & get rewarded!</p>
+        </div>
+
+        <!-- Reward Card -->
+        <div class="reward-card">
+            <!-- Steps -->
+            <div class="referral-steps">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title" contenteditable="true">Share Your Code</div>
+                        <div class="step-reward" contenteditable="true">Get your unique referral link</div>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title" contenteditable="true">Friend Signs Up</div>
+                        <div class="step-reward" contenteditable="true">They get 30% off first month</div>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title" contenteditable="true">You Earn $30</div>
+                        <div class="step-reward" contenteditable="true">Instant credit to your account</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reward Showcase -->
+            <div class="reward-showcase">
+                <div class="reward-amount" contenteditable="true">$30</div>
+                <div class="reward-description" contenteditable="true">
+                    For every friend who joins FeelSharper
+                </div>
+                <div class="bonus-text" contenteditable="true">
+                    🔥 BONUS: Refer 5 friends, get 1 month FREE!
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="referral-button" contenteditable="true">Get My Referral Link</div>
+            <div class="referral-code">
+                <div class="code-label">Your Code</div>
+                <div class="code-text" contenteditable="true">SHARP30</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

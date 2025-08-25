@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - Weekly Fitness Digest Header</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --feel-accent: #87CEEB;
+            --energy-yellow: #FFD700;
+            --success-green: #00FF41;
+            --gradient-purple: #8B4FC3;
+        }
+
+        @page {
+            size: 1200px 400px;
+            margin: 0;
+        }
+
+        body {
+            width: 1200px;
+            height: 400px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, 
+                var(--sharpened-black) 0%, 
+                var(--sharpened-dark) 30%, 
+                var(--feel-primary) 70%, 
+                var(--feel-secondary) 100%);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .energy-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .energy-wave {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--energy-yellow), 
+                transparent);
+            animation: wave-flow 4s ease-in-out infinite;
+        }
+
+        .energy-wave:nth-child(1) {
+            top: 20%;
+            animation-delay: 0s;
+        }
+
+        .energy-wave:nth-child(2) {
+            top: 50%;
+            animation-delay: 1s;
+        }
+
+        .energy-wave:nth-child(3) {
+            top: 80%;
+            animation-delay: 2s;
+        }
+
+        @keyframes wave-flow {
+            0%, 100% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            50% {
+                transform: translateX(0%);
+                opacity: 1;
+            }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--feel-accent);
+            border-radius: 50%;
+            animation: float-particle 6s linear infinite;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 30%; animation-delay: 1s; }
+        .particle:nth-child(3) { left: 50%; animation-delay: 2s; }
+        .particle:nth-child(4) { left: 70%; animation-delay: 3s; }
+        .particle:nth-child(5) { left: 90%; animation-delay: 4s; }
+
+        /* Header Container */
+        .header-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            padding: 0 60px;
+        }
+
+        /* Left Section - Logo and Title */
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 20px 40px rgba(65, 105, 225, 0.4);
+            animation: logo-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 20px 40px rgba(65, 105, 225, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 25px 50px rgba(65, 105, 225, 0.6);
+            }
+        }
+
+        .lightning-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 24px;
+            animation: lightning-flash 2s ease-in-out infinite;
+        }
+
+        @keyframes lightning-flash {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+
+        .title-section {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .newsletter-title {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--energy-yellow), var(--feel-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .newsletter-subtitle {
+            font-size: 18px;
+            color: var(--sharpened-gray);
+            font-weight: 500;
+        }
+
+        /* Center Section - Week Info */
+        .week-section {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 25px;
+            padding: 25px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .week-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.1), 
+                transparent);
+            animation: shine-effect 3s infinite;
+        }
+
+        @keyframes shine-effect {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        .week-number {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--energy-yellow), var(--success-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .week-date {
+            font-size: 16px;
+            color: var(--sharpened-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Right Section - CTA */
+        .cta-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--success-green), var(--feel-secondary));
+            color: var(--sharpened-black);
+            padding: 18px 35px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 15px 30px rgba(0, 255, 65, 0.3);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--sharpened-white);
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--feel-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(65, 105, 225, 0.4);
+        }
+
+        /* Bottom Bar */
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                var(--feel-primary) 0%, 
+                var(--energy-yellow) 25%, 
+                var(--success-green) 50%, 
+                var(--feel-secondary) 75%, 
+                var(--gradient-purple) 100%);
+            animation: progress-flow 5s ease-in-out infinite;
+        }
+
+        @keyframes progress-flow {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Editable Elements */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1200px;
+                height: 400px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="energy-bg">
+        <div class="energy-wave"></div>
+        <div class="energy-wave"></div>
+        <div class="energy-wave"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Header Container -->
+    <div class="header-container">
+        <!-- Left Section -->
+        <div class="brand-section">
+            <div class="logo-container">
+                <span contenteditable="true">F</span>
+                <div class="lightning-icon">⚡</div>
+            </div>
+            <div class="title-section">
+                <h1 class="newsletter-title" contenteditable="true">Weekly Digest</h1>
+                <p class="newsletter-subtitle" contenteditable="true">Your dose of fitness motivation & insights</p>
+            </div>
+        </div>
+
+        <!-- Center Section -->
+        <div class="week-section">
+            <div class="week-number" contenteditable="true">Week 12</div>
+            <div class="week-date" contenteditable="true">March 18 - 24, 2024</div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="cta-section">
+            <div class="cta-button" contenteditable="true">
+                View Online
+            </div>
+            <div class="social-links">
+                <div class="social-icon">📧</div>
+                <div class="social-icon">📱</div>
+                <div class="social-icon">🌐</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Progress Bar -->
+    <div class="bottom-bar"></div>
+</body>
+</html>

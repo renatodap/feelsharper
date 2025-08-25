@@ -88,13 +88,19 @@ const SharpenedLanding = () => {
           
           {/* Animated Lightning Strikes */}
           <div className="absolute top-1/4 left-1/3 opacity-20">
-            <LightningLogo className="w-32 h-32 text-blue-400 animate-pulse" style={{ animationDuration: '3s' }} />
+            <div style={{ animationDuration: '3s' }}>
+              <LightningLogo className="w-32 h-32 text-blue-400 animate-pulse" />
+            </div>
           </div>
           <div className="absolute bottom-1/3 right-1/4 opacity-15">
-            <LightningLogo className="w-48 h-48 text-blue-500 animate-pulse transform rotate-45" style={{ animationDuration: '4s', animationDelay: '1s' }} />
+            <div style={{ animationDuration: '4s', animationDelay: '1s' }}>
+              <LightningLogo className="w-48 h-48 text-blue-500 animate-pulse transform rotate-45" />
+            </div>
           </div>
           <div className="absolute top-2/3 left-1/5 opacity-10">
-            <LightningLogo className="w-24 h-24 text-blue-300 animate-pulse transform -rotate-12" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
+            <div style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}>
+              <LightningLogo className="w-24 h-24 text-blue-300 animate-pulse transform -rotate-12" />
+            </div>
           </div>
           
           {/* Diagonal Lightning Strikes */}

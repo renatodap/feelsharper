@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - Limited Time Offer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --feel-accent: #87CEEB;
+            --offer-red: #FF0050;
+            --offer-yellow: #FFD700;
+            --success-green: #00FF41;
+        }
+
+        @page {
+            size: 1080px 1080px;
+            margin: 0;
+        }
+
+        body {
+            width: 1080px;
+            height: 1080px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--sharpened-black);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Urgency Background */
+        .urgency-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, 
+                rgba(255, 0, 80, 0.1) 0%, 
+                var(--sharpened-black) 50%);
+            z-index: 1;
+        }
+
+        /* Animated Border */
+        .animated-border {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            right: 30px;
+            bottom: 30px;
+            border: 3px solid transparent;
+            border-radius: 30px;
+            background: linear-gradient(45deg, 
+                var(--offer-red), 
+                var(--feel-primary), 
+                var(--feel-secondary), 
+                var(--offer-yellow)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: 2;
+            animation: border-rotate 4s linear infinite;
+        }
+
+        @keyframes border-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Flash Sale Badge */
+        .flash-badge {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            background: var(--offer-red);
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            transform: rotate(15deg);
+            box-shadow: 0 10px 30px rgba(255, 0, 80, 0.5);
+            z-index: 20;
+            animation: badge-pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes badge-pulse {
+            0%, 100% { transform: rotate(15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.05); }
+        }
+
+        /* Content Container */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 60px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            background: rgba(255, 0, 80, 0.1);
+            border: 2px solid var(--offer-red);
+            border-radius: 20px;
+            padding: 20px 40px;
+            margin-bottom: 40px;
+            animation: timer-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes timer-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 80, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 80, 0.6); }
+        }
+
+        .timer-label {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--offer-red);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .timer-display {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .time-unit {
+            text-align: center;
+        }
+
+        .time-value {
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .time-label {
+            font-size: 12px;
+            color: var(--sharpened-gray);
+            text-transform: uppercase;
+        }
+
+        /* Pricing Section */
+        .pricing-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .original-price {
+            font-size: 36px;
+            color: var(--sharpened-gray);
+            text-decoration: line-through;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+
+        .offer-price {
+            font-size: 96px;
+            font-weight: 900;
+            background: linear-gradient(135deg, 
+                var(--offer-yellow), 
+                var(--feel-primary), 
+                var(--feel-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            line-height: 1;
+            position: relative;
+        }
+
+        .price-currency {
+            font-size: 48px;
+        }
+
+        .price-period {
+            font-size: 24px;
+            color: var(--sharpened-gray);
+        }
+
+        .savings-badge {
+            display: inline-block;
+            background: var(--success-green);
+            color: var(--sharpened-black);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        /* Features List */
+        .features-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .features-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .check-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* CTA Button */
+        .cta-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .cta-glow {
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            right: -30px;
+            bottom: -30px;
+            background: radial-gradient(circle, 
+                rgba(255, 215, 0, 0.3) 0%, 
+                transparent 70%);
+            filter: blur(30px);
+            animation: cta-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes cta-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .cta-button {
+            position: relative;
+            background: linear-gradient(135deg, var(--offer-red), var(--feel-primary));
+            padding: 30px 80px;
+            border-radius: 60px;
+            font-size: 28px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            box-shadow: 0 20px 50px rgba(255, 0, 80, 0.4);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        /* Guarantee Badge */
+        .guarantee {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            color: var(--sharpened-gray);
+        }
+
+        .guarantee-icon {
+            font-size: 24px;
+        }
+
+        /* Lightning Decorations */
+        .lightning-deco {
+            position: absolute;
+            opacity: 0.2;
+            z-index: 3;
+        }
+
+        .lightning-deco.left {
+            left: 50px;
+            bottom: 100px;
+            transform: rotate(-15deg);
+        }
+
+        .lightning-deco.right {
+            right: 50px;
+            top: 200px;
+            transform: rotate(15deg);
+        }
+
+        .lightning-deco svg {
+            width: 100px;
+            height: 150px;
+            fill: var(--feel-primary);
+        }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(255, 0, 80, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1080px;
+                height: 1080px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Urgency Background -->
+    <div class="urgency-bg"></div>
+    
+    <!-- Animated Border -->
+    <div class="animated-border"></div>
+    
+    <!-- Flash Badge -->
+    <div class="flash-badge" contenteditable="true">FLASH SALE</div>
+    
+    <!-- Lightning Decorations -->
+    <div class="lightning-deco left">
+        <svg viewBox="0 0 100 150">
+            <path d="M50 0 L30 60 L45 60 L35 120 L70 40 L55 40 L65 0 Z"/>
+        </svg>
+    </div>
+    <div class="lightning-deco right">
+        <svg viewBox="0 0 100 150">
+            <path d="M50 0 L30 60 L45 60 L35 120 L70 40 L55 40 L65 0 Z"/>
+        </svg>
+    </div>
+    
+    <!-- Content -->
+    <div class="content">
+        <!-- Timer -->
+        <div class="timer-section">
+            <div class="timer-label" contenteditable="true">⏰ Offer Ends In</div>
+            <div class="timer-display">
+                <div class="time-unit">
+                    <div class="time-value" contenteditable="true">23</div>
+                    <div class="time-label">HOURS</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">:</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value" contenteditable="true">47</div>
+                    <div class="time-label">MINS</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value">:</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-value" contenteditable="true">32</div>
+                    <div class="time-label">SECS</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pricing -->
+        <div class="pricing-container">
+            <div class="original-price" contenteditable="true">$99/month</div>
+            <div class="offer-price">
+                <span class="price-currency">$</span><span contenteditable="true">29</span>
+            </div>
+            <div class="price-period" contenteditable="true">per month</div>
+            <div class="savings-badge" contenteditable="true">SAVE 70% TODAY</div>
+        </div>
+        
+        <!-- Features -->
+        <div class="features-container">
+            <h3 class="features-title" contenteditable="true">Everything Included</h3>
+            <div class="feature-item">
+                <div class="check-icon">✓</div>
+                <span contenteditable="true">Personalized AI Coach</span>
+            </div>
+            <div class="feature-item">
+                <div class="check-icon">✓</div>
+                <span contenteditable="true">1000+ Workout Plans</span>
+            </div>
+            <div class="feature-item">
+                <div class="check-icon">✓</div>
+                <span contenteditable="true">Nutrition Tracking</span>
+            </div>
+            <div class="feature-item">
+                <div class="check-icon">✓</div>
+                <span contenteditable="true">Progress Analytics</span>
+            </div>
+            <div class="feature-item">
+                <div class="check-icon">✓</div>
+                <span contenteditable="true">Community Access</span>
+            </div>
+        </div>
+        
+        <!-- CTA -->
+        <div class="cta-container">
+            <div class="cta-glow"></div>
+            <div class="cta-button" contenteditable="true">CLAIM OFFER NOW</div>
+        </div>
+        
+        <!-- Guarantee -->
+        <div class="guarantee">
+            <span class="guarantee-icon">🛡️</span>
+            <span contenteditable="true">30-Day Money Back Guarantee</span>
+        </div>
+    </div>
+</body>
+</html>

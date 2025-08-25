@@ -11,13 +11,6 @@ interface VoiceInputProps {
   className?: string;
 }
 
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
-
 const TOP_COMMANDS = [
   "I ran 5k today",
   "Weight 175 pounds", 
@@ -262,7 +255,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = React.memo(({
           <div className="flex items-center justify-center">
             <Button
               onClick={toggleListening}
-              variant={isListening ? 'destructive' : 'default'}
+              variant={isListening ? 'secondary' : 'primary'}
               size="lg"
               className="relative min-h-[60px] px-8 text-lg font-semibold touch-manipulation select-none"
             >

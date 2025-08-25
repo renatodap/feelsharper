@@ -277,7 +277,7 @@ export function SocialShareModal({
               </div>
 
               {/* Native Share (Mobile) */}
-              {navigator.share && (
+              {typeof navigator !== 'undefined' && 'share' in navigator && (
                 <Button
                   onClick={shareNative}
                   className="w-full"

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/client';
 import { AIContext, RecoveryPrediction, RecoveryFactor } from '@/lib/ai/types';
 
 export class RecoveryPredictor {

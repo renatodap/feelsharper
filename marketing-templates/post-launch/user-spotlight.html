@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - User Spotlight</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --feel-accent: #87CEEB;
+            --spotlight-gold: #FFD700;
+            --success-green: #00FF41;
+            --user-purple: #8B4FC3;
+        }
+
+        @page {
+            size: 1080px 1080px;
+            margin: 0;
+        }
+
+        body {
+            width: 1080px;
+            height: 1080px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: radial-gradient(circle at center, 
+                var(--user-purple) 0%, 
+                var(--sharpened-dark) 40%, 
+                var(--sharpened-black) 100%);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Spotlight Effect */
+        .spotlight {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, 
+                rgba(255, 215, 0, 0.2) 0%, 
+                transparent 70%);
+            animation: spotlight-rotate 10s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes spotlight-rotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Main Container */
+        .spotlight-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 60px;
+        }
+
+        /* Header */
+        .spotlight-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .ugc-badge {
+            background: linear-gradient(135deg, var(--spotlight-gold), var(--success-green));
+            color: var(--sharpened-black);
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .spotlight-title {
+            font-size: 48px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, 
+                var(--spotlight-gold) 0%, 
+                var(--user-purple) 50%, 
+                var(--feel-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* User Content Card */
+        .user-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 30px;
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.1), 
+                transparent);
+            animation: card-shimmer 4s infinite;
+        }
+
+        @keyframes card-shimmer {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        /* User Profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--user-purple), var(--feel-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 900;
+            color: white;
+            border: 4px solid var(--spotlight-gold);
+            box-shadow: 0 15px 30px rgba(139, 79, 195, 0.4);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 16px;
+            color: var(--sharpened-gray);
+        }
+
+        .user-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-icon {
+            color: var(--spotlight-gold);
+        }
+
+        /* Workout Image Placeholder */
+        .workout-image {
+            background: linear-gradient(135deg, 
+                rgba(139, 79, 195, 0.2), 
+                rgba(65, 105, 225, 0.2));
+            border: 2px solid var(--user-purple);
+            border-radius: 20px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .workout-image::after {
+            content: 'WORKOUT VIDEO';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* User Quote */
+        .user-quote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--spotlight-gold);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .quote-text {
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .quote-author {
+            font-size: 16px;
+            color: var(--sharpened-gray);
+            text-align: right;
+        }
+
+        /* Achievement Tags */
+        .achievement-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: auto;
+        }
+
+        .achievement-tag {
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 65, 0.1), 
+                rgba(65, 105, 225, 0.1));
+            border: 1px solid var(--success-green);
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Engagement Section */
+        .engagement-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .engagement-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .engagement-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+        }
+
+        .engagement-number {
+            font-weight: 700;
+            color: var(--spotlight-gold);
+        }
+
+        .share-button {
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            color: var(--sharpened-white);
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Floating Hearts */
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            animation: heart-float 6s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes heart-float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-30px) scale(1.2);
+                opacity: 0.6;
+            }
+        }
+
+        .floating-heart:nth-child(1) { top: 15%; right: 10%; animation-delay: 0s; }
+        .floating-heart:nth-child(2) { top: 70%; left: 10%; animation-delay: 2s; }
+        .floating-heart:nth-child(3) { bottom: 20%; right: 15%; animation-delay: 4s; }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(139, 79, 195, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1080px;
+                height: 1080px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="spotlight"></div>
+    <div class="floating-heart">❤️</div>
+    <div class="floating-heart">💪</div>
+    <div class="floating-heart">⭐</div>
+
+    <!-- Main Container -->
+    <div class="spotlight-container">
+        <!-- Header -->
+        <div class="spotlight-header">
+            <div class="ugc-badge" contenteditable="true">Community Spotlight</div>
+            <h1 class="spotlight-title" contenteditable="true">Real Results, Real People</h1>
+        </div>
+
+        <!-- User Card -->
+        <div class="user-card">
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="user-avatar" contenteditable="true">SM</div>
+                <div class="user-info">
+                    <h2 class="user-name" contenteditable="true">Sarah Martinez</h2>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <span class="stat-icon">📅</span>
+                            <span contenteditable="true">Member for 6 months</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="stat-icon">🔥</span>
+                            <span contenteditable="true">120 day streak</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workout Image -->
+            <div class="workout-image">
+                📹
+            </div>
+
+            <!-- User Quote -->
+            <div class="user-quote">
+                <p class="quote-text" contenteditable="true">
+                    "Just crushed my first pull-up thanks to FeelSharper's progressive training! The AI coach knew exactly how to build my strength step by step. Never thought I'd get here!"
+                </p>
+                <p class="quote-author" contenteditable="true">- @sarahmartinez</p>
+            </div>
+
+            <!-- Achievement Tags -->
+            <div class="achievement-tags">
+                <div class="achievement-tag">
+                    <span>🏆</span>
+                    <span contenteditable="true">First Pull-up</span>
+                </div>
+                <div class="achievement-tag">
+                    <span>💪</span>
+                    <span contenteditable="true">30lbs Lost</span>
+                </div>
+                <div class="achievement-tag">
+                    <span>⚡</span>
+                    <span contenteditable="true">120 Day Streak</span>
+                </div>
+            </div>
+
+            <!-- Engagement -->
+            <div class="engagement-section">
+                <div class="engagement-stats">
+                    <div class="engagement-item">
+                        <span>❤️</span>
+                        <span class="engagement-number" contenteditable="true">2.3K</span>
+                    </div>
+                    <div class="engagement-item">
+                        <span>💬</span>
+                        <span class="engagement-number" contenteditable="true">147</span>
+                    </div>
+                    <div class="engagement-item">
+                        <span>🔄</span>
+                        <span class="engagement-number" contenteditable="true">89</span>
+                    </div>
+                </div>
+                <div class="share-button" contenteditable="true">Share Your Story</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

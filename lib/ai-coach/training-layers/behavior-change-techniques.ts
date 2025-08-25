@@ -580,7 +580,7 @@ export class BehaviorChangeTechniqueEngine {
     // Calculate scores for each technique
     const scoredTechniques = techniques.map(technique => {
       const libraryData = this.techniqueLibrary.get(technique);
-      const userHistory = history?.find(h => h.technique === technique);
+      const userHistory = history?.find((h: any) => h.technique === technique);
       
       let score = libraryData?.effectivenessScore || 50;
       
@@ -632,7 +632,7 @@ export class BehaviorChangeTechniqueEngine {
       .select('*')
       .eq('user_id', userId);
 
-    return challenges?.map(c => c.barrier) || ['forgetting_to_log', 'time_constraints'];
+    return challenges?.map((c: any) => c.barrier) || ['forgetting_to_log', 'time_constraints'];
   }
 
   private async identifyMonitoringFacilitators(userId: string, behaviors: string[]): Promise<string[]> {

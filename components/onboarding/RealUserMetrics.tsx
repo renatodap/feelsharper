@@ -64,7 +64,7 @@ export function RealUserMetrics() {
   if (!metrics || metrics.totalUsers === 0) {
     // Show "join our community" message when no users yet
     return (
-      <div
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
@@ -88,7 +88,7 @@ export function RealUserMetrics() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
     );
   }
 

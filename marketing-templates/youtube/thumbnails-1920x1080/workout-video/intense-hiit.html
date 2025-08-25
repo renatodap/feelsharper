@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - YouTube Thumbnail: INTENSE HIIT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --feel-accent: #87CEEB;
+            --youtube-red: #FF0000;
+            --intense-orange: #FF4500;
+            --fire-yellow: #FFD700;
+        }
+
+        @page {
+            size: 1920px 1080px;
+            margin: 0;
+        }
+
+        body {
+            width: 1920px;
+            height: 1080px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--sharpened-black);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Explosive Background */
+        .explosive-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 40% 60%, 
+                rgba(255, 69, 0, 0.3) 0%, 
+                rgba(255, 215, 0, 0.2) 30%,
+                var(--sharpened-black) 70%);
+            z-index: 1;
+        }
+
+        /* Energy Waves */
+        .energy-wave {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 69, 0, 0.4);
+            animation: energy-pulse 3s ease-out infinite;
+        }
+
+        @keyframes energy-pulse {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 800px;
+                height: 800px;
+                opacity: 0;
+            }
+        }
+
+        .energy-wave:nth-child(1) { 
+            top: 50%; 
+            left: 40%; 
+            transform: translate(-50%, -50%);
+            animation-delay: 0s; 
+        }
+        .energy-wave:nth-child(2) { 
+            top: 50%; 
+            left: 40%; 
+            transform: translate(-50%, -50%);
+            animation-delay: 1s; 
+        }
+        .energy-wave:nth-child(3) { 
+            top: 50%; 
+            left: 40%; 
+            transform: translate(-50%, -50%);
+            animation-delay: 2s; 
+        }
+
+        /* Main Content Split */
+        .content-container {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+        }
+
+        /* Left Side - Text Content */
+        .text-section {
+            flex: 1;
+            padding: 80px 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Workout Type Badge */
+        .workout-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--youtube-red), var(--intense-orange));
+            padding: 20px 50px;
+            border-radius: 40px;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(255, 69, 0, 0.5);
+            animation: badge-glow 2s ease-in-out infinite;
+            width: fit-content;
+        }
+
+        @keyframes badge-glow {
+            0%, 100% {
+                box-shadow: 0 15px 40px rgba(255, 69, 0, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 20px 60px rgba(255, 69, 0, 0.8);
+                transform: scale(1.02);
+            }
+        }
+
+        /* Main Title */
+        .main-title {
+            font-size: 120px;
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 30px;
+            letter-spacing: -4px;
+            text-transform: uppercase;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .title-line-1 {
+            background: linear-gradient(135deg, var(--fire-yellow), var(--intense-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .title-line-2 {
+            background: linear-gradient(135deg, var(--youtube-red), var(--feel-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        /* Subtitle */
+        .subtitle {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--sharpened-white);
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Key Benefits */
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--intense-orange), var(--fire-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        /* Right Side - Visual Content */
+        .visual-section {
+            width: 700px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Character/Person Placeholder */
+        .character-container {
+            position: relative;
+            width: 500px;
+            height: 700px;
+        }
+
+        .character-silhouette {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(65, 105, 225, 0.2) 50%,
+                rgba(255, 69, 0, 0.2) 100%);
+            clip-path: polygon(
+                40% 0%, 60% 0%, 
+                65% 20%, 70% 25%, 
+                75% 30%, 80% 40%, 
+                85% 50%, 80% 60%, 
+                75% 70%, 70% 75%, 
+                65% 80%, 60% 100%, 
+                40% 100%, 35% 80%, 
+                30% 75%, 25% 70%, 
+                20% 60%, 15% 50%, 
+                20% 40%, 25% 30%, 
+                30% 25%, 35% 20%
+            );
+            position: relative;
+            animation: character-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes character-glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.6)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 69, 0, 1)); }
+        }
+
+        .character-emoji {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 200px;
+            animation: emoji-bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes emoji-bounce {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        /* Floating Fire Elements */
+        .fire-element {
+            position: absolute;
+            font-size: 40px;
+            animation: fire-float 4s ease-in-out infinite;
+        }
+
+        @keyframes fire-float {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateY(-30px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        .fire-element:nth-child(1) { 
+            top: 15%; 
+            right: 10%; 
+            animation-delay: 0s; 
+        }
+        .fire-element:nth-child(2) { 
+            top: 30%; 
+            right: 25%; 
+            animation-delay: 1s; 
+        }
+        .fire-element:nth-child(3) { 
+            bottom: 30%; 
+            right: 15%; 
+            animation-delay: 2s; 
+        }
+        .fire-element:nth-child(4) { 
+            bottom: 15%; 
+            right: 30%; 
+            animation-delay: 3s; 
+        }
+
+        /* Duration Badge */
+        .duration-badge {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border: 3px solid var(--fire-yellow);
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--fire-yellow);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            z-index: 20;
+        }
+
+        /* Play Button Overlay */
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            z-index: 15;
+        }
+
+        .play-button {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.5);
+            animation: play-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes play-pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 20px 60px rgba(255, 0, 0, 0.5);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 25px 80px rgba(255, 0, 0, 0.8);
+            }
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 50px solid white;
+            border-top: 30px solid transparent;
+            border-bottom: 30px solid transparent;
+            margin-left: 15px;
+        }
+
+        /* Corner Branding */
+        .brand-corner {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 20;
+        }
+
+        .brand-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 10px 30px rgba(65, 105, 225, 0.5);
+        }
+
+        .brand-text {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Difficulty Level */
+        .difficulty-indicator {
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .difficulty-label {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--fire-yellow);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .difficulty-bars {
+            display: flex;
+            gap: 8px;
+        }
+
+        .difficulty-bar {
+            width: 12px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+        }
+
+        .difficulty-bar.active {
+            background: linear-gradient(to top, var(--youtube-red), var(--fire-yellow));
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Sweat Drops */
+        .sweat-drop {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: rgba(0, 191, 255, 0.8);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: sweat-fall 2s ease-in infinite;
+        }
+
+        @keyframes sweat-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(200px) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        .sweat-drop:nth-child(1) { 
+            top: 20%; 
+            right: 40%; 
+            animation-delay: 0s; 
+        }
+        .sweat-drop:nth-child(2) { 
+            top: 25%; 
+            right: 45%; 
+            animation-delay: 0.5s; 
+        }
+        .sweat-drop:nth-child(3) { 
+            top: 30%; 
+            right: 50%; 
+            animation-delay: 1s; 
+        }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(255, 69, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1920px;
+                height: 1080px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Explosive Background -->
+    <div class="explosive-bg"></div>
+    
+    <!-- Energy Waves -->
+    <div class="energy-wave"></div>
+    <div class="energy-wave"></div>
+    <div class="energy-wave"></div>
+    
+    <!-- Duration Badge -->
+    <div class="duration-badge" contenteditable="true">15 MIN</div>
+    
+    <!-- Difficulty Indicator -->
+    <div class="difficulty-indicator">
+        <div class="difficulty-label" contenteditable="true">Intensity</div>
+        <div class="difficulty-bars">
+            <div class="difficulty-bar active"></div>
+            <div class="difficulty-bar active"></div>
+            <div class="difficulty-bar active"></div>
+            <div class="difficulty-bar active"></div>
+            <div class="difficulty-bar"></div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content-container">
+        <!-- Text Section -->
+        <div class="text-section">
+            <div class="workout-badge" contenteditable="true">🔥 HIIT WORKOUT</div>
+            
+            <h1 class="main-title">
+                <span class="title-line-1" contenteditable="true">INTENSE</span>
+                <span class="title-line-2" contenteditable="true">15 MIN</span>
+            </h1>
+            
+            <p class="subtitle" contenteditable="true">BURN FAT • BUILD MUSCLE • NO EQUIPMENT</p>
+            
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔥</div>
+                    <span contenteditable="true">Burns 300+ Calories</span>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💪</div>
+                    <span contenteditable="true">Full Body Workout</span>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <span contenteditable="true">Maximum Results</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Visual Section -->
+        <div class="visual-section">
+            <!-- Fire Elements -->
+            <div class="fire-element">🔥</div>
+            <div class="fire-element">💥</div>
+            <div class="fire-element">⚡</div>
+            <div class="fire-element">🔥</div>
+            
+            <!-- Sweat Drops -->
+            <div class="sweat-drop"></div>
+            <div class="sweat-drop"></div>
+            <div class="sweat-drop"></div>
+            
+            <!-- Character Container -->
+            <div class="character-container">
+                <div class="character-silhouette">
+                    <div class="character-emoji" contenteditable="true">💪</div>
+                </div>
+            </div>
+            
+            <!-- Play Button Overlay -->
+            <div class="play-overlay">
+                <div class="play-button">
+                    <div class="play-icon"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Brand Corner -->
+    <div class="brand-corner">
+        <div class="brand-logo" contenteditable="true">FS</div>
+        <div class="brand-text" contenteditable="true">FeelSharper</div>
+    </div>
+</body>
+</html>

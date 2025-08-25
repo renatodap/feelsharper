@@ -56,7 +56,7 @@ export default function TestAuth() {
       if (data?.session) {
         // Try to fetch user to verify session works
         const { data: userData, error: userError } = await supabase.auth.getUser();
-        setResult(prev => ({
+        setResult((prev: any) => ({
           ...prev,
           currentUser: userData?.user?.email || 'No user',
           userError: userError?.message

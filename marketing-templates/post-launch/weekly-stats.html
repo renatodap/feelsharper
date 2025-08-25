@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - Weekly Stats Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --stats-green: #00FF41;
+            --stats-red: #FF4444;
+            --stats-yellow: #FFD700;
+            --chart-purple: #8B4FC3;
+        }
+
+        @page {
+            size: 1080px 1080px;
+            margin: 0;
+        }
+
+        body {
+            width: 1080px;
+            height: 1080px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, 
+                var(--sharpened-black) 0%, 
+                var(--sharpened-dark) 50%, 
+                var(--feel-primary) 100%);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Data Grid Background */
+        .data-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.05;
+            background-image: 
+                linear-gradient(var(--feel-primary) 1px, transparent 1px),
+                linear-gradient(90deg, var(--feel-primary) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Main Container */
+        .stats-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 50px;
+        }
+
+        /* Header */
+        .stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .week-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .week-badge {
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .date-range {
+            font-size: 18px;
+            color: var(--sharpened-gray);
+        }
+
+        .stats-title {
+            font-size: 42px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, 
+                var(--stats-green) 0%, 
+                var(--feel-secondary) 50%, 
+                var(--chart-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Main Stats Grid */
+        .main-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--feel-primary), var(--feel-secondary));
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .stat-value.up {
+            color: var(--stats-green);
+        }
+
+        .stat-value.down {
+            color: var(--stats-red);
+        }
+
+        .stat-value.neutral {
+            background: linear-gradient(135deg, var(--stats-yellow), var(--feel-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--sharpened-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .stat-change {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .change-positive {
+            color: var(--stats-green);
+        }
+
+        .change-negative {
+            color: var(--stats-red);
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .chart-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* Bar Chart */
+        .bar-chart {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 20px 0;
+        }
+
+        .bar-day {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bar-column {
+            width: 100%;
+            background: linear-gradient(180deg, var(--feel-secondary), var(--feel-primary));
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            animation: bar-grow 1s ease-out;
+        }
+
+        @keyframes bar-grow {
+            0% { height: 0; }
+        }
+
+        .bar-column.monday { height: 120px; }
+        .bar-column.tuesday { height: 150px; }
+        .bar-column.wednesday { height: 90px; }
+        .bar-column.thursday { height: 180px; }
+        .bar-column.friday { height: 200px; }
+        .bar-column.saturday { height: 160px; }
+        .bar-column.sunday { height: 140px; }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--stats-green);
+        }
+
+        .bar-label {
+            font-size: 12px;
+            color: var(--sharpened-gray);
+            text-transform: uppercase;
+        }
+
+        /* Achievement Section */
+        .achievements {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .achievement {
+            text-align: center;
+        }
+
+        .achievement-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            animation: achievement-bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes achievement-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .achievement:nth-child(1) .achievement-icon { animation-delay: 0s; }
+        .achievement:nth-child(2) .achievement-icon { animation-delay: 0.3s; }
+        .achievement:nth-child(3) .achievement-icon { animation-delay: 0.6s; }
+        .achievement:nth-child(4) .achievement-icon { animation-delay: 0.9s; }
+
+        .achievement-text {
+            font-size: 14px;
+            color: var(--sharpened-gray);
+        }
+
+        /* Floating Data Points */
+        .data-point {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--feel-secondary);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: data-float 10s linear infinite;
+        }
+
+        @keyframes data-float {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        .data-point:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .data-point:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .data-point:nth-child(3) { left: 50%; animation-delay: 4s; }
+        .data-point:nth-child(4) { left: 70%; animation-delay: 6s; }
+        .data-point:nth-child(5) { left: 90%; animation-delay: 8s; }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(65, 105, 225, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1080px;
+                height: 1080px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="data-grid"></div>
+    <div class="data-point"></div>
+    <div class="data-point"></div>
+    <div class="data-point"></div>
+    <div class="data-point"></div>
+    <div class="data-point"></div>
+
+    <!-- Main Container -->
+    <div class="stats-container">
+        <!-- Header -->
+        <div class="stats-header">
+            <div class="week-info">
+                <div class="week-badge" contenteditable="true">Week 12</div>
+                <div class="date-range" contenteditable="true">Mar 18 - Mar 24</div>
+            </div>
+            <h1 class="stats-title" contenteditable="true">Your Progress</h1>
+        </div>
+
+        <!-- Main Stats -->
+        <div class="main-stats">
+            <div class="stat-card">
+                <div class="stat-value up" contenteditable="true">7/7</div>
+                <div class="stat-label">Days Active</div>
+                <div class="stat-change change-positive">
+                    <span>↑</span>
+                    <span contenteditable="true">Perfect Week!</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value neutral" contenteditable="true">2,845</div>
+                <div class="stat-label">Calories Burned</div>
+                <div class="stat-change change-positive">
+                    <span>↑</span>
+                    <span contenteditable="true">12% vs last week</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value up" contenteditable="true">385</div>
+                <div class="stat-label">Minutes Trained</div>
+                <div class="stat-change change-positive">
+                    <span>↑</span>
+                    <span contenteditable="true">New Record!</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2 class="chart-title" contenteditable="true">Daily Activity</h2>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-dot" style="background: var(--feel-secondary);"></div>
+                        <span>Minutes</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bar-chart">
+                <div class="bar-day">
+                    <div class="bar-column monday">
+                        <div class="bar-value" contenteditable="true">45</div>
+                    </div>
+                    <div class="bar-label">MON</div>
+                </div>
+                <div class="bar-day">
+                    <div class="bar-column tuesday">
+                        <div class="bar-value" contenteditable="true">60</div>
+                    </div>
+                    <div class="bar-label">TUE</div>
+                </div>
+                <div class="bar-day">
+                    <div class="bar-column wednesday">
+                        <div class="bar-value" contenteditable="true">30</div>
+                    </div>
+                    <div class="bar-label">WED</div>
+                </div>
+                <div class="bar-day">
+                    <div class="bar-column thursday">
+                        <div class="bar-value" contenteditable="true">75</div>
+                    </div>
+                    <div class="bar-label">THU</div>
+                </div>
+                <div class="bar-day">
+                    <div class="bar-column friday">
+                        <div class="bar-value" contenteditable="true">90</div>
+                    </div>
+                    <div class="bar-label">FRI</div>
+                </div>
+                <div class="bar-day">
+                    <div class="bar-column saturday">
+                        <div class="bar-value" contenteditable="true">65</div>
+                    </div>
+                    <div class="bar-label">SAT</div>
+                </div>
+                <div class="bar-day">
+                    <div class="bar-column sunday">
+                        <div class="bar-value" contenteditable="true">50</div>
+                    </div>
+                    <div class="bar-label">SUN</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements">
+            <div class="achievement">
+                <div class="achievement-icon">🔥</div>
+                <div class="achievement-text" contenteditable="true">Perfect Week</div>
+            </div>
+            <div class="achievement">
+                <div class="achievement-icon">💪</div>
+                <div class="achievement-text" contenteditable="true">Strength PR</div>
+            </div>
+            <div class="achievement">
+                <div class="achievement-icon">🏃</div>
+                <div class="achievement-text" contenteditable="true">5K Milestone</div>
+            </div>
+            <div class="achievement">
+                <div class="achievement-icon">⭐</div>
+                <div class="achievement-text" contenteditable="true">Top 10%</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

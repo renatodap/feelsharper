@@ -147,7 +147,7 @@ export function SmartCoachWidget({
                   <Trophy className="w-4 h-4 text-yellow-400" />
                   <span className="text-xs text-text-secondary capitalize">{streak.type}</span>
                 </div>
-                <div className="text-lg font-bold">{streak.current_days} days</div>
+                <div className="text-lg font-bold">{(streak as any).current_days || streak.count} days</div>
               </div>
             ))}
           </div>
@@ -162,7 +162,7 @@ export function SmartCoachWidget({
                     pattern.type === 'negative' ? 'bg-red-400' :
                     'bg-yellow-400'
                   }`} />
-                  <span className="text-text-secondary">{pattern.pattern}</span>
+                  <span className="text-text-secondary">{(pattern as any).pattern || pattern.description}</span>
                 </div>
               ))}
             </div>
@@ -185,8 +185,8 @@ export function SmartCoachWidget({
                 <div key={index} className="flex items-start gap-2 text-xs">
                   <ChevronRight className="w-3 h-3 text-primary mt-0.5" />
                   <div>
-                    <span className="font-medium">{rec.action}</span>
-                    <span className="text-text-secondary ml-1">- {rec.expected_impact}</span>
+                    <span className="font-medium">{(rec as any).action || rec.title}</span>
+                    <span className="text-text-secondary ml-1">- {(rec as any).expected_impact || rec.description}</span>
                   </div>
                 </div>
               ))}
@@ -273,7 +273,7 @@ export function SmartCoachWidget({
         <div className="p-4">
           <div className="flex items-center gap-2 text-sm text-red-400">
             <AlertCircle className="w-4 h-4" />
-            {error}
+            {error.toString()}
           </div>
         </div>
       )}
@@ -327,7 +327,7 @@ function CompactCoachWidget({
           {context.currentStreaks.map((streak, index) => (
             <div key={index} className="inline-flex items-center gap-1 px-2 py-1 bg-surface-2 rounded text-xs">
               <Trophy className="w-3 h-3 text-yellow-400" />
-              {streak.current_days}d {streak.type}
+              {(streak as any).current_days || streak.count}d {streak.type}
             </div>
           ))}
         </div>

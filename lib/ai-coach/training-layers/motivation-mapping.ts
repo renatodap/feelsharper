@@ -396,8 +396,8 @@ export class MotivationMappingEngine {
       // Calculate effectiveness metrics
       const effectiveness = {
         totalInterventions: interventionData.length,
-        successfulInterventions: interventionData.filter(i => i.success_rating > 3).length,
-        averageSuccessRating: interventionData.reduce((sum, i) => sum + i.success_rating, 0) / interventionData.length,
+        successfulInterventions: interventionData.filter((i: any) => i.success_rating > 3).length,
+        averageSuccessRating: interventionData.reduce((sum: any, i: any) => sum + i.success_rating, 0) / interventionData.length,
         mostEffectiveTypes: this.getMostEffectiveInterventionTypes(interventionData),
         leastEffectiveTypes: this.getLeastEffectiveInterventionTypes(interventionData),
         contextualPatterns: this.analyzeContextualEffectiveness(interventionData)

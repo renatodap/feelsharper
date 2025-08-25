@@ -1,9 +1,9 @@
 // Human Verification Queue for Low-Confidence Photo Logs
 // Based on MARKET_KNOWLEDGE.md - SnapCalorie pattern with human verifiers
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -342,7 +342,7 @@ export function HumanVerificationQueue() {
               <Badge variant="outline">
                 {verificationStats.verifiersOnline} verifiers online
               </Badge>
-              <Badge variant={metrics.highPriorityCount > 0 ? 'destructive' : 'secondary'}>
+              <Badge variant={metrics.highPriorityCount > 0 ? 'error' : 'secondary'}>
                 {metrics.pendingCount} pending
               </Badge>
             </div>
@@ -411,7 +411,7 @@ export function HumanVerificationQueue() {
                   <Clock className="h-3 w-3 mr-1" />
                   {Math.floor((Date.now() - selectedItem.timestamp.getTime()) / 60000)}m old
                 </Badge>
-                <Badge variant={selectedItem.aiParse.overallConfidence < 0.7 ? 'destructive' : 'secondary'}>
+                <Badge variant={selectedItem.aiParse.overallConfidence < 0.7 ? 'error' : 'secondary'}>
                   {(selectedItem.aiParse.overallConfidence * 100).toFixed(0)}% confidence
                 </Badge>
               </div>

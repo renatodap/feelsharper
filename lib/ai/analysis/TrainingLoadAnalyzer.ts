@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/client';
 import { AIContext, LoadAnalysis } from '@/lib/ai/types';
 
 export class TrainingLoadAnalyzer {

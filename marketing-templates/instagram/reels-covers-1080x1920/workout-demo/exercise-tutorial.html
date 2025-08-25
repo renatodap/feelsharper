@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - Exercise Tutorial Reel Cover</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --feel-accent: #87CEEB;
+            --reel-red: #FF0050;
+        }
+
+        @page {
+            size: 1080px 1920px;
+            margin: 0;
+        }
+
+        body {
+            width: 1080px;
+            height: 1920px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--sharpened-black);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Video Preview Area */
+        .video-preview {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.9) 100%);
+            z-index: 2;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center top, 
+                rgba(65, 105, 225, 0.3) 0%, 
+                var(--sharpened-black) 50%);
+            z-index: 1;
+        }
+
+        /* Energy Lines */
+        .energy-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .energy-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--feel-secondary), 
+                transparent);
+            animation: slide 3s linear infinite;
+        }
+
+        .energy-line:nth-child(1) { top: 20%; width: 300px; animation-delay: 0s; }
+        .energy-line:nth-child(2) { top: 40%; width: 400px; animation-delay: 1s; }
+        .energy-line:nth-child(3) { top: 60%; width: 350px; animation-delay: 2s; }
+        .energy-line:nth-child(4) { top: 80%; width: 450px; animation-delay: 1.5s; }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(calc(1080px + 100%)); opacity: 0; }
+        }
+
+        /* Play Button */
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            z-index: 10;
+        }
+
+        .play-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: play-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes play-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 54%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-left: 40px solid white;
+            border-top: 25px solid transparent;
+            border-bottom: 25px solid transparent;
+        }
+
+        /* Content Container */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 60px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: auto;
+        }
+
+        .reel-badge {
+            background: var(--reel-red);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .reel-icon {
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .reel-icon::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+        }
+
+        .duration {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Bottom Content */
+        .bottom-content {
+            margin-top: auto;
+        }
+
+        /* Exercise Title */
+        .exercise-section {
+            margin-bottom: 50px;
+        }
+
+        .exercise-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            padding: 15px 30px;
+            border-radius: 40px;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .exercise-title {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 20px;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+        }
+
+        .highlight-text {
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .exercise-subtitle {
+            font-size: 28px;
+            color: var(--sharpened-gray);
+            margin-bottom: 40px;
+        }
+
+        /* Exercise Details */
+        .exercise-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .detail-value {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--sharpened-white), var(--feel-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            font-size: 14px;
+            color: var(--sharpened-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+        }
+
+        .cta-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .arrow-icon {
+            font-size: 30px;
+            animation: bounce-horizontal 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce-horizontal {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        .username {
+            font-size: 20px;
+            color: var(--feel-accent);
+            font-weight: 500;
+        }
+
+        /* Corner Lightning */
+        .corner-lightning {
+            position: absolute;
+            width: 200px;
+            height: 300px;
+            opacity: 0.3;
+            z-index: 4;
+        }
+
+        .corner-lightning.top {
+            top: 100px;
+            right: -50px;
+            transform: rotate(25deg);
+        }
+
+        .corner-lightning.bottom {
+            bottom: 200px;
+            left: -50px;
+            transform: rotate(-25deg);
+        }
+
+        .corner-lightning svg {
+            width: 100%;
+            height: 100%;
+            fill: url(#lightning-gradient);
+        }
+
+        /* Music Note Animation */
+        .music-indicator {
+            position: absolute;
+            bottom: 350px;
+            right: 60px;
+            z-index: 15;
+        }
+
+        .music-note {
+            font-size: 24px;
+            animation: float-music 3s ease-in-out infinite;
+        }
+
+        @keyframes float-music {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(65, 105, 225, 0.1);
+            border-radius: 8px;
+            padding: 4px 8px;
+            margin: -4px -8px;
+        }
+
+        @media print {
+            body {
+                width: 1080px;
+                height: 1920px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Energy Lines -->
+    <div class="energy-lines">
+        <div class="energy-line"></div>
+        <div class="energy-line"></div>
+        <div class="energy-line"></div>
+        <div class="energy-line"></div>
+    </div>
+    
+    <!-- Video Preview Overlay -->
+    <div class="video-preview"></div>
+    
+    <!-- Corner Lightning -->
+    <div class="corner-lightning top">
+        <svg viewBox="0 0 200 300">
+            <defs>
+                <linearGradient id="lightning-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#4169E1;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#00BFFF;stop-opacity:0.3" />
+                </linearGradient>
+            </defs>
+            <path d="M100 0 L60 120 L80 120 L50 250 L140 100 L110 100 L130 0 Z"/>
+        </svg>
+    </div>
+    
+    <div class="corner-lightning bottom">
+        <svg viewBox="0 0 200 300">
+            <path d="M100 0 L60 120 L80 120 L50 250 L140 100 L110 100 L130 0 Z" fill="url(#lightning-gradient)"/>
+        </svg>
+    </div>
+    
+    <!-- Play Button -->
+    <div class="play-button">
+        <div class="play-bg"></div>
+        <div class="play-icon"></div>
+    </div>
+    
+    <!-- Music Indicator -->
+    <div class="music-indicator">
+        <span class="music-note">♪</span>
+    </div>
+    
+    <!-- Content -->
+    <div class="content">
+        <!-- Header -->
+        <div class="header">
+            <div class="reel-badge">
+                <div class="reel-icon"></div>
+                <span contenteditable="true">REEL</span>
+            </div>
+            <div class="duration" contenteditable="true">0:45</div>
+        </div>
+        
+        <!-- Bottom Content -->
+        <div class="bottom-content">
+            <!-- Exercise Section -->
+            <div class="exercise-section">
+                <div class="exercise-number" contenteditable="true">Exercise #1</div>
+                <h1 class="exercise-title">
+                    <span contenteditable="true">PERFECT</span><br>
+                    <span class="highlight-text" contenteditable="true">BURPEES</span><br>
+                    <span contenteditable="true">FORM</span>
+                </h1>
+                <p class="exercise-subtitle" contenteditable="true">Master the ultimate full-body exercise</p>
+            </div>
+            
+            <!-- Exercise Details -->
+            <div class="exercise-details">
+                <div class="detail-item">
+                    <div class="detail-value" contenteditable="true">3x15</div>
+                    <div class="detail-label">Sets & Reps</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-value" contenteditable="true">150</div>
+                    <div class="detail-label">Calories</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-value" contenteditable="true">HIIT</div>
+                    <div class="detail-label">Type</div>
+                </div>
+            </div>
+            
+            <!-- CTA -->
+            <div class="cta-section">
+                <div class="cta-text">
+                    <span contenteditable="true">Swipe for tutorial</span>
+                    <span class="arrow-icon">→</span>
+                </div>
+                <div class="username" contenteditable="true">@feelsharper</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

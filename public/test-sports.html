@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sport-Specific Parser Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .test-group {
+            margin-bottom: 30px;
+        }
+        .test-btn {
+            padding: 8px 15px;
+            margin: 5px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .test-btn:hover {
+            background: #5a67d8;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .parse-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .parse-btn:hover {
+            opacity: 0.9;
+        }
+        .parse-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+        }
+        .value {
+            color: #333;
+            font-family: monospace;
+        }
+        .sport-highlight {
+            background: #ffd700;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        .error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        .examples {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .examples h3 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+        .confidence-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #67d868);
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎾 Sport-Specific Parser Test</h1>
+        
+        <div class="examples">
+            <h3>Quick Tests - Click to Try:</h3>
+            <button class="test-btn" onclick="setInput('played tennis for 2 hours')">Tennis</button>
+            <button class="test-btn" onclick="setInput('basketball practice for 90 minutes')">Basketball</button>
+            <button class="test-btn" onclick="setInput('soccer game lasted 1 hour')">Soccer</button>
+            <button class="test-btn" onclick="setInput('golf 18 holes in 4 hours')">Golf</button>
+            <button class="test-btn" onclick="setInput('volleyball match for 45 minutes')">Volleyball</button>
+            <button class="test-btn" onclick="setInput('swimming laps for 30 minutes')">Swimming</button>
+            <button class="test-btn" onclick="setInput('cycling 20 miles in 1 hour')">Cycling</button>
+            <button class="test-btn" onclick="setInput('ran 5k in 25 minutes')">Running</button>
+            <button class="test-btn" onclick="setInput('bench pressed 225 lbs for 5 reps')">Bench Press</button>
+            <button class="test-btn" onclick="setInput('squats 315x5, 335x3, 355x1')">Squats</button>
+        </div>
+        
+        <input type="text" id="input" placeholder="Type something like: played tennis for 2 hours">
+        
+        <button class="parse-btn" id="parseBtn" onclick="testParser()">🔍 Test Parser</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function setInput(text) {
+            document.getElementById('input').value = text;
+            testParser();
+        }
+        
+        async function testParser() {
+            const input = document.getElementById('input').value;
+            const resultDiv = document.getElementById('result');
+            const button = document.getElementById('parseBtn');
+            
+            if (!input) {
+                resultDiv.innerHTML = '<div class="result error">Please enter some text</div>';
+                return;
+            }
+            
+            button.disabled = true;
+            button.textContent = '⏳ Parsing...';
+            resultDiv.innerHTML = '<div class="result">Analyzing your input...</div>';
+            
+            try {
+                const response = await fetch('/api/test/parse', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: input, context: 'fitness' })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.parse_result) {
+                    const result = data.parse_result;
+                    const structuredData = result.data?.structured_data || {};
+                    const confidence = result.confidence || 0;
+                    
+                    // Highlight sport name if present
+                    const sportName = structuredData.sport_name || structuredData.exercise_name || '';
+                    const activityType = structuredData.activity_type || result.data?.intent || 'unknown';
+                    
+                    let html = `
+                        <div class="result success">
+                            <h3>✅ Parser Result</h3>
+                            
+                            <div class="result-item">
+                                <span class="label">Intent:</span>
+                                <span class="value">${result.data?.intent || 'unknown'}</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <span class="label">Activity Type:</span>
+                                <span class="value">${activityType}</span>
+                            </div>
+                    `;
+                    
+                    if (sportName) {
+                        html += `
+                            <div class="result-item">
+                                <span class="label">Specific Activity:</span>
+                                <span class="value sport-highlight">${sportName}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `
+                            <div class="result-item">
+                                <span class="label">Confidence:</span>
+                                <span class="value">${confidence}%</span>
+                            </div>
+                            
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${confidence}%"></div>
+                            </div>
+                            
+                            <div class="result-item">
+                                <span class="label">Value:</span>
+                                <span class="value">${structuredData.value || 'N/A'} ${structuredData.unit || ''}</span>
+                            </div>
+                    `;
+                    
+                    if (structuredData.notes) {
+                        html += `
+                            <div class="result-item">
+                                <span class="label">Notes:</span>
+                                <span class="value">${structuredData.notes}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    if (result.data?.subjective_notes) {
+                        html += `
+                            <div class="result-item">
+                                <span class="label">Subjective:</span>
+                                <span class="value">${result.data.subjective_notes}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `
+                            <div class="result-item">
+                                <span class="label">Service:</span>
+                                <span class="value">${result.serviceUsed || 'unknown'}</span>
+                            </div>
+                            
+                            <details style="margin-top: 15px;">
+                                <summary style="cursor: pointer; color: #667eea;">View Full JSON</summary>
+                                <pre style="margin-top: 10px; background: white; padding: 10px; border-radius: 4px; overflow-x: auto;">${JSON.stringify(result, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                    
+                    resultDiv.innerHTML = html;
+                    
+                    // Check if sport was preserved
+                    if (activityType === 'sport' && !sportName) {
+                        resultDiv.innerHTML += `
+                            <div class="result error" style="margin-top: 10px;">
+                                ⚠️ Warning: Sport type was not preserved! The parser needs to be updated to include sport_name in the structured data.
+                            </div>
+                        `;
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <strong>❌ Parser Error</strong><br>
+                            ${data.error || 'Unknown error occurred'}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <strong>❌ Network Error</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            } finally {
+                button.disabled = false;
+                button.textContent = '🔍 Test Parser';
+            }
+        }
+        
+        // Test on Enter key
+        document.getElementById('input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testParser();
+            }
+        });
+        
+        // Load with tennis example
+        window.onload = function() {
+            document.getElementById('input').value = 'played tennis for 2 hours';
+        };
+    </script>
+</body>
+</html>

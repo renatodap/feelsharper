@@ -118,7 +118,7 @@ export function QuickLogSystem() {
       method,
       data,
       confidence,
-      needsVerification: confidence && confidence < 0.8,
+      needsVerification: Boolean(confidence && confidence < 0.8),
     };
 
     setRecentLogs([entry, ...recentLogs.slice(0, 4)]);
@@ -371,7 +371,11 @@ export function QuickLogSystem() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => repeatMeal(smartPrompt.template)}
+                  onClick={() => {
+                    if (smartPrompt.template && 'calories' in smartPrompt.template) {
+                      repeatMeal(smartPrompt.template as MealTemplate);
+                    }
+                  }}
                   className="bg-white"
                 >
                   <RotateCcw className="h-3 w-3 mr-1" />

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - AI Coach Feature</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --feel-accent: #87CEEB;
+        }
+
+        @page {
+            size: 1080px 1080px;
+            margin: 0;
+        }
+
+        body {
+            width: 1080px;
+            height: 1080px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--sharpened-black) 0%, var(--sharpened-dark) 100%);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Grid Pattern Background */
+        .grid-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(65, 105, 225, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(65, 105, 225, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .logo-small {
+            width: 60px;
+            height: 60px;
+        }
+
+        .logo-small svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(65, 105, 225, 0.6));
+        }
+
+        .feature-badge {
+            background: rgba(65, 105, 225, 0.2);
+            border: 2px solid var(--feel-primary);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--feel-secondary);
+        }
+
+        /* Feature Icon */
+        .feature-icon {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 50px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(65, 105, 225, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .icon-content {
+            font-size: 100px;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Feature Title */
+        .feature-title {
+            font-size: 64px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Feature Description */
+        .feature-desc {
+            font-size: 24px;
+            font-weight: 300;
+            text-align: center;
+            color: var(--sharpened-gray);
+            line-height: 1.6;
+            margin-bottom: 50px;
+        }
+
+        /* Feature Points */
+        .feature-points {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .point {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .point:last-child {
+            margin-bottom: 0;
+        }
+
+        .point-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .point-text {
+            font-size: 22px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .cta-text {
+            font-size: 20px;
+            color: var(--sharpened-gray);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 22px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(65, 105, 225, 0.5);
+        }
+
+        /* Lightning Accent */
+        .lightning-accent {
+            position: absolute;
+            top: 50%;
+            right: -50px;
+            width: 200px;
+            height: 400px;
+            opacity: 0.1;
+            transform: translateY(-50%) rotate(-15deg);
+            z-index: 2;
+        }
+
+        .lightning-accent svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--feel-primary);
+        }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(65, 105, 225, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1080px;
+                height: 1080px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+    
+    <!-- Lightning Accent -->
+    <div class="lightning-accent">
+        <svg viewBox="0 0 100 200">
+            <path d="M50 0 L30 80 L45 80 L35 150 L70 60 L55 60 L65 0 Z"/>
+        </svg>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-small">
+                <svg viewBox="0 0 100 100">
+                    <path d="M50 10 L30 45 L45 45 L35 75 L70 35 L55 35 L65 10 Z" 
+                          fill="url(#grad)" stroke="white" stroke-width="2"/>
+                    <defs>
+                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4169E1" />
+                            <stop offset="100%" style="stop-color:#00BFFF" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="feature-badge" contenteditable="true">NEW FEATURE</div>
+        </div>
+        
+        <!-- Feature Icon -->
+        <div class="feature-icon">
+            <div class="icon-bg"></div>
+            <div class="icon-content" contenteditable="true">🤖</div>
+        </div>
+        
+        <!-- Feature Title -->
+        <h1 class="feature-title">
+            <span contenteditable="true">Meet Your</span><br>
+            <span class="highlight" contenteditable="true">AI Coach</span>
+        </h1>
+        
+        <!-- Feature Description -->
+        <p class="feature-desc" contenteditable="true">
+            Personalized training powered by advanced AI that adapts to your goals
+        </p>
+        
+        <!-- Feature Points -->
+        <div class="feature-points">
+            <div class="point">
+                <div class="point-icon">✓</div>
+                <div class="point-text" contenteditable="true">Real-time form correction</div>
+            </div>
+            <div class="point">
+                <div class="point-icon">✓</div>
+                <div class="point-text" contenteditable="true">Adaptive workout plans</div>
+            </div>
+            <div class="point">
+                <div class="point-icon">✓</div>
+                <div class="point-text" contenteditable="true">24/7 motivation & support</div>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <p class="cta-text" contenteditable="true">Experience the future</p>
+            <div class="cta-button" contenteditable="true">Try It Free</div>
+        </div>
+    </div>
+</body>
+</html>

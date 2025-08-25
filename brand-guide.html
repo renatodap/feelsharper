@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharpened Visual Brand Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Core Brand Colors */
+            --sharpened-black: #000000;
+            --sharpened-void: #0A0A0A;
+            --sharpened-dark: #111111;
+            --sharpened-coal: #1A1A1A;
+            --sharpened-charcoal: #2A2A2A;
+            --sharpened-gray: #666666;
+            --sharpened-light-gray: #999999;
+            --sharpened-white: #FFFFFF;
+            
+            /* Product Lightning Colors */
+            --feel-primary: #4169E1;  /* Royal Blue */
+            --feel-secondary: #00BFFF; /* Deep Sky Blue */
+            --feel-accent: #87CEEB;   /* Sky Blue */
+            
+            --study-primary: #8B4FC3;  /* Purple */
+            --study-secondary: #B794F4; /* Light Purple */
+            --study-accent: #E9D8FD;   /* Lavender */
+            
+            --work-primary: #FF6B35;   /* Orange */
+            --work-secondary: #FFA500; /* Pure Orange */
+            --work-accent: #FFD700;    /* Gold */
+            
+            --mind-primary: #FF1493;   /* Deep Pink */
+            --mind-secondary: #FF69B4; /* Hot Pink */
+            --mind-accent: #FFB6C1;    /* Light Pink */
+            
+            --code-primary: #00FF41;   /* Matrix Green */
+            --code-secondary: #39FF14; /* Neon Green */
+            --code-accent: #7FFF00;    /* Chartreuse */
+            
+            /* Glass Morphism Values */
+            --glass-blur: 10px;
+            --glass-opacity: 0.1;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* Typography Scale */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+            --text-6xl: 3.75rem;
+            --text-7xl: 4.5rem;
+            --text-8xl: 6rem;
+            --text-9xl: 8rem;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--sharpened-black);
+            color: var(--sharpened-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Lightning Background System */
+        .lightning-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.03;
+        }
+
+        /* Massive Tilted Lightning */
+        .giant-lightning {
+            position: fixed;
+            top: -20%;
+            right: -10%;
+            width: 800px;
+            height: 800px;
+            transform: rotate(-25deg);
+            opacity: 0.02;
+            z-index: 0;
+            animation: giant-pulse 15s ease-in-out infinite;
+        }
+
+        .giant-lightning svg {
+            width: 100%;
+            height: 100%;
+            filter: blur(2px);
+        }
+
+        @keyframes giant-pulse {
+            0%, 100% { opacity: 0.02; transform: rotate(-25deg) scale(1); }
+            50% { opacity: 0.04; transform: rotate(-25deg) scale(1.05); }
+        }
+
+        /* Text Lightning Mask */
+        .lightning-text {
+            background: linear-gradient(
+                135deg,
+                #4169E1 0%,
+                #00BFFF 25%,
+                #87CEEB 50%,
+                #4169E1 75%,
+                #00BFFF 100%
+            );
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: lightning-text-flow 8s ease infinite;
+        }
+
+        @keyframes lightning-text-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .lightning-strike {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                transparent,
+                rgba(65, 105, 225, 0.8),
+                rgba(0, 191, 255, 1),
+                rgba(135, 206, 235, 0.8),
+                transparent
+            );
+            filter: blur(1px) brightness(2);
+            animation: lightning-flash 8s ease-in-out infinite;
+        }
+
+        .lightning-strike::before,
+        .lightning-strike::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: inherit;
+        }
+
+        .lightning-strike::before {
+            left: -3px;
+            opacity: 0.3;
+        }
+
+        .lightning-strike::after {
+            right: -3px;
+            opacity: 0.3;
+        }
+
+        @keyframes lightning-flash {
+            0%, 90% { opacity: 0; transform: scaleY(0); }
+            92% { opacity: 0.5; transform: scaleY(1); }
+            100% { opacity: 0; transform: scaleY(0); }
+        }
+
+        /* Removed branch animation - too busy */
+
+        /* Large Template Lightning Background */
+        .template-lightning {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .template-lightning svg {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            opacity: 0.015;
+            animation: subtle-pulse 20s ease-in-out infinite;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.015; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.025; }
+        }
+
+        /* Lightning Grid Pattern */
+        .lightning-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(65, 105, 225, 0.02) 100px,
+                    rgba(65, 105, 225, 0.02) 101px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(0, 191, 255, 0.02) 100px,
+                    rgba(0, 191, 255, 0.02) 101px
+                );
+            animation: grid-shift 60s linear infinite;
+        }
+
+        @keyframes grid-shift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Main content above lightning */
+        .main-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-header svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav a {
+            color: var(--sharpened-light-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+            font-size: var(--text-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav a:hover {
+            color: var(--sharpened-white);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        /* Cover Section */
+        .cover {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle at center, var(--sharpened-dark) 0%, var(--sharpened-black) 100%);
+            overflow: hidden;
+        }
+
+        /* Hero Lightning Animation */
+        .hero-lightning {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .hero-bolt {
+            position: absolute;
+            top: -100px;
+            width: 3px;
+            height: 0;
+            background: linear-gradient(to bottom,
+                rgba(65, 105, 225, 0),
+                rgba(65, 105, 225, 1),
+                rgba(0, 191, 255, 1),
+                rgba(135, 206, 235, 0)
+            );
+            filter: blur(2px) brightness(3);
+            box-shadow: 
+                0 0 10px rgba(65, 105, 225, 0.8),
+                0 0 20px rgba(0, 191, 255, 0.6),
+                0 0 30px rgba(135, 206, 235, 0.4);
+            animation: hero-strike 10s ease-in-out infinite;
+        }
+
+        .hero-bolt:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .hero-bolt:nth-child(2) { left: 50%; animation-delay: 3.3s; }
+        .hero-bolt:nth-child(3) { left: 80%; animation-delay: 6.6s; }
+
+        @keyframes hero-strike {
+            0%, 95% { height: 0; opacity: 0; }
+            96% { height: 120%; opacity: 0.3; }
+            100% { height: 120%; opacity: 0; }
+        }
+
+        .cover-logo {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 3rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        .cover h1 {
+            font-size: var(--text-8xl);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .cover h1 .letter {
+            display: inline-block;
+            background: linear-gradient(
+                135deg,
+                #FFFFFF 0%,
+                #4169E1 50%,
+                #00BFFF 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cover .subtitle {
+            font-size: var(--text-2xl);
+            color: var(--sharpened-gray);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .cover .version {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            font-size: var(--text-sm);
+            color: var(--sharpened-gray);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: var(--text-5xl);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                #4169E1 20%,
+                #00BFFF 50%,
+                #4169E1 80%,
+                transparent
+            );
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        /* Simplified underline - appears on hover instead */
+        .section-title:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Subtle Accent Text */
+        .accent-text {
+            position: relative;
+            display: inline-block;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--sharpened-light-gray);
+        }
+
+        .section-subtitle {
+            font-size: var(--text-xl);
+            color: var(--sharpened-gray);
+            margin-bottom: 4rem;
+            font-weight: 300;
+        }
+
+        /* Diagonal Section Dividers */
+        .diagonal-section {
+            position: relative;
+            transform: skewY(-3deg);
+            margin: 6rem 0;
+            padding: 4rem 0;
+        }
+
+        .diagonal-section > * {
+            transform: skewY(3deg);
+        }
+
+        .diagonal-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                transparent 49%,
+                rgba(65, 105, 225, 0.03) 50%,
+                rgba(65, 105, 225, 0.03) 51%,
+                transparent 52%
+            );
+            pointer-events: none;
+        }
+
+        /* Logo Section with Blueprint Grid */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .logo-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(65, 105, 225, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(65, 105, 225, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            animation: grid-fade 10s ease-in-out infinite;
+        }
+
+        @keyframes grid-fade {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.1; }
+        }
+
+        .logo-item {
+            background: var(--sharpened-dark);
+            border-radius: 16px;
+            padding: 3rem;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-display {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .logo-display svg {
+            width: 100px;
+            height: 100px;
+        }
+
+        .logo-item h3 {
+            font-size: var(--text-2xl);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-item h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #4169E1, transparent);
+            transition: width 0.3s ease;
+        }
+
+        .logo-item:hover h3::before {
+            width: 100%;
+        }
+
+        .logo-item p {
+            color: var(--sharpened-gray);
+            font-size: var(--text-base);
+            line-height: 1.6;
+        }
+
+        .logo-specs {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: var(--text-sm);
+        }
+
+        .spec-label {
+            color: var(--sharpened-gray);
+        }
+
+        .spec-value {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            color: var(--sharpened-light-gray);
+        }
+
+        /* Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .color-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--sharpened-dark);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s ease;
+        }
+
+        .color-card:hover {
+            transform: scale(1.05);
+        }
+
+        .color-swatch {
+            height: 120px;
+            position: relative;
+        }
+
+        .color-info {
+            padding: 1.5rem;
+        }
+
+        .color-name {
+            font-weight: 600;
+            font-size: var(--text-base);
+            margin-bottom: 0.5rem;
+        }
+
+        .color-value {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            font-size: var(--text-sm);
+            color: var(--sharpened-gray);
+        }
+
+        /* Typography Section */
+        .type-specimen {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--sharpened-dark);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .type-sample {
+            margin-bottom: 2rem;
+        }
+
+        .type-label {
+            font-size: var(--text-sm);
+            color: var(--sharpened-gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .type-example {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Icon System */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .icon-item {
+            aspect-ratio: 1;
+            background: var(--sharpened-dark);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .icon-item:hover {
+            background: var(--sharpened-coal);
+            transform: scale(1.1);
+        }
+
+        .icon-item svg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 0.5rem;
+        }
+
+        .icon-label {
+            font-size: var(--text-xs);
+            color: var(--sharpened-gray);
+        }
+
+        /* Application Examples with Dynamic Lightning */
+        .app-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        /* Interactive Lightning on Hover */
+        .app-example:hover .app-preview::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                transparent,
+                currentColor,
+                transparent
+            );
+            filter: blur(1px);
+            animation: quick-strike 0.3s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes quick-strike {
+            0% { transform: translateX(-50%) scaleY(0); opacity: 0; }
+            50% { transform: translateX(-50%) scaleY(1); opacity: 1; }
+            100% { transform: translateX(-50%) scaleY(1); opacity: 0; }
+        }
+
+        .app-example {
+            background: var(--sharpened-dark);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .app-preview {
+            height: 250px;
+            background: var(--sharpened-void);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .app-info {
+            padding: 2rem;
+        }
+
+        .app-info h4 {
+            font-size: var(--text-xl);
+            margin-bottom: 0.5rem;
+        }
+
+        .app-info p {
+            color: var(--sharpened-gray);
+            font-size: var(--text-sm);
+        }
+
+        /* Glass Card Style with Lightning */
+        .glass-card {
+            background: rgba(255, 255, 255, var(--glass-opacity));
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-conic-gradient(
+                from 0deg at 50% 50%,
+                transparent 0deg,
+                rgba(65, 105, 225, 0.03) 1deg,
+                transparent 2deg,
+                transparent 10deg
+            );
+            animation: rotate-slow 120s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Motion Guidelines */
+        .motion-demo {
+            background: var(--sharpened-dark);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .motion-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .ease-out-demo {
+            animation: slideIn 2s ease-out infinite;
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Do's and Don'ts */
+        .dos-donts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .do, .dont {
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid;
+        }
+
+        .do {
+            background: rgba(0, 255, 65, 0.05);
+            border-color: rgba(0, 255, 65, 0.3);
+        }
+
+        .dont {
+            background: rgba(255, 20, 147, 0.05);
+            border-color: rgba(255, 20, 147, 0.3);
+        }
+
+        .do h4, .dont h4 {
+            font-size: var(--text-lg);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .do h4::before {
+            content: "✓";
+            color: #00FF41;
+            font-weight: bold;
+        }
+
+        .dont h4::before {
+            content: "✗";
+            color: #FF1493;
+            font-weight: bold;
+        }
+
+        /* Code Examples with Matrix Lightning */
+        .code-block {
+            background: var(--sharpened-void);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            font-size: var(--text-sm);
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(0, 255, 65, 0.01) 20px,
+                    rgba(0, 255, 65, 0.01) 21px
+                );
+            pointer-events: none;
+        }
+
+        /* Removed scan lines animation - too distracting */
+
+        .code-block pre {
+            margin: 0;
+            color: var(--sharpened-light-gray);
+        }
+
+        /* Social Media Templates */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-template {
+            background: var(--sharpened-dark);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .social-preview {
+            aspect-ratio: 1;
+            background: var(--sharpened-void);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .social-info {
+            padding: 1.5rem;
+        }
+
+        .social-info h4 {
+            font-size: var(--text-base);
+            margin-bottom: 0.5rem;
+        }
+
+        .social-specs {
+            font-size: var(--text-sm);
+            color: var(--sharpened-gray);
+        }
+
+        /* Download Section */
+        .download-section {
+            background: var(--sharpened-dark);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 4rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(65, 105, 225, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 6rem;
+        }
+
+        .footer p {
+            color: var(--sharpened-gray);
+            font-size: var(--text-sm);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cover h1 {
+                font-size: var(--text-5xl);
+            }
+            
+            .section-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .logo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dos-donts {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-examples {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .header {
+                position: relative;
+                background: white;
+                border-bottom: 2px solid black;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .cover {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Giant Tilted Lightning Background -->
+    <div class="giant-lightning">
+        <svg viewBox="0 0 2000 2000" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="giant-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#4169E1; stop-opacity:1"/>
+                    <stop offset="50%" style="stop-color:#00BFFF; stop-opacity:0.8"/>
+                    <stop offset="100%" style="stop-color:#87CEEB; stop-opacity:0.6"/>
+                </linearGradient>
+                <filter id="giant-glow">
+                    <feGaussianBlur stdDeviation="20" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <path fill="url(#giant-gradient)" filter="url(#giant-glow)" d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+        </svg>
+    </div>
+
+    <!-- Second Giant Lightning (Left Side) -->
+    <div class="giant-lightning" style="left: -15%; right: auto; transform: rotate(35deg) scaleX(-1); animation-delay: 7s;">
+        <svg viewBox="0 0 2000 2000" xmlns="http://www.w3.org/2000/svg">
+            <path fill="url(#giant-gradient)" filter="url(#giant-glow)" opacity="0.5" d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+        </svg>
+    </div>
+
+    <!-- Lightning Background Effects -->
+    <div class="lightning-bg">
+        <div class="lightning-strike" style="left: 10%; height: 100%; animation-delay: 0s;"></div>
+        <div class="lightning-strike" style="left: 25%; height: 80%; top: 10%; animation-delay: 2s;"></div>
+        <div class="lightning-strike" style="left: 40%; height: 90%; top: 5%; animation-delay: 4s;"></div>
+        <div class="lightning-strike" style="left: 55%; height: 85%; top: 8%; animation-delay: 6s;"></div>
+        <div class="lightning-strike" style="left: 70%; height: 95%; top: 3%; animation-delay: 8s;"></div>
+        <div class="lightning-strike" style="left: 85%; height: 88%; top: 7%; animation-delay: 10s;"></div>
+        <div class="lightning-strike" style="left: 95%; height: 92%; top: 4%; animation-delay: 12s;"></div>
+    </div>
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-header">
+                <svg viewBox="0 0 2000 2000" fill="currentColor">
+                    <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                </svg>
+                <span style="font-weight: 800; font-size: 1.25rem;">SHARPENED</span>
+            </div>
+            <nav>
+                <ul class="nav">
+                    <li><a href="#logo">Logo System</a></li>
+                    <li><a href="#colors">Colors</a></li>
+                    <li><a href="#typography">Typography</a></li>
+                    <li><a href="#icons">Icons</a></li>
+                    <li><a href="#applications">Applications</a></li>
+                    <li><a href="#guidelines">Guidelines</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Cover Page -->
+        <section class="cover">
+            <!-- Hero Lightning Animation -->
+            <div class="hero-lightning">
+                <div class="hero-bolt"></div>
+                <div class="hero-bolt"></div>
+                <div class="hero-bolt"></div>
+            </div>
+            
+            <!-- Large Template Lightning Background -->
+            <div class="template-lightning">
+                <svg viewBox="0 0 2000 2000" fill="currentColor">
+                    <defs>
+                        <linearGradient id="lightning-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4169E1; stop-opacity:0.5"/>
+                            <stop offset="50%" style="stop-color:#00BFFF; stop-opacity:0.7"/>
+                            <stop offset="100%" style="stop-color:#87CEEB; stop-opacity:0.5"/>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#lightning-gradient)" d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                </svg>
+            </div>
+            <div class="lightning-grid"></div>
+            <div class="cover-logo">
+                <svg viewBox="0 0 2000 2000" fill="white">
+                    <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                </svg>
+            </div>
+            <h1>
+                <span class="letter" style="--letter-index: 0;">S</span><span class="letter" style="--letter-index: 1;">H</span><span class="letter" style="--letter-index: 2;">A</span><span class="letter" style="--letter-index: 3;">R</span><span class="letter" style="--letter-index: 4;">P</span><span class="letter" style="--letter-index: 5;">E</span><span class="letter" style="--letter-index: 6;">N</span><span class="letter" style="--letter-index: 7;">E</span><span class="letter" style="--letter-index: 8;">D</span>
+            </h1>
+            <p class="subtitle">Visual Brand Guidelines</p>
+            <p class="version">Version 1.0 • 2024</p>
+        </section>
+
+        <!-- Brand Philosophy -->
+        <section class="section diagonal-section">
+            <!-- Blueprint Grid Background -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; opacity: 0.03;">
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="blueprint-grid" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="100" y2="0" stroke="#4169E1" stroke-width="0.5"/>
+                            <line x1="0" y1="0" x2="0" y2="100" stroke="#4169E1" stroke-width="0.5"/>
+                            <line x1="50" y1="0" x2="50" y2="100" stroke="#4169E1" stroke-width="0.25" opacity="0.5"/>
+                            <line x1="0" y1="50" x2="100" y2="50" stroke="#4169E1" stroke-width="0.25" opacity="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#blueprint-grid)"/>
+                </svg>
+            </div>
+            <h2 class="section-title">Brand Philosophy</h2>
+            <p class="section-subtitle">Iron Sharpens Iron. AI Sharpens Humans. Humans Sharpen AI.</p>
+            
+            <div class="glass-card">
+                <h3 style="font-size: var(--text-2xl); margin-bottom: 1rem;">The Lightning Principle</h3>
+                <div style="position: absolute; top: 10px; right: 10px; opacity: 0.1;">
+                    <svg width="100" height="100" viewBox="0 0 2000 2000" fill="currentColor">
+                        <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                    </svg>
+                </div>
+                <p style="line-height: 1.8; color: var(--sharpened-light-gray); position: relative;">
+                    The <span class="lightning-text">lightning bolt</span> represents sudden transformation—the moment when potential becomes <span class="lightning-text">kinetic</span>. 
+                    It's nature's most dramatic display of <span class="lightning-text">power transfer</span>, mirroring how Sharpened transforms human potential 
+                    into realized achievement. The bolt forms an <span style="color: #4169E1; font-weight: bold;">S</span>, not just for Sharpened, but for the <span class="lightning-text">Sudden</span>, 
+                    <span class="lightning-text">Strike-like</span> nature of breakthrough moments in personal evolution.
+                </p>
+            </div>
+        </section>
+
+        <!-- Logo System -->
+        <section class="section" id="logo" style="position: relative;">
+            <!-- Massive Background Lightning -->
+            <div style="position: absolute; top: -200px; right: -300px; width: 1000px; height: 1000px; opacity: 0.015; transform: rotate(-45deg); pointer-events: none;">
+                <svg viewBox="0 0 2000 2000" fill="#4169E1">
+                    <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                </svg>
+            </div>
+            <h2 class="section-title">Logo System</h2>
+            <p class="section-subtitle">One <span class="lightning-text">mark</span>, infinite <span class="lightning-text">applications</span></p>
+
+            <div class="logo-grid">
+                <!-- Master Logo -->
+                <div class="logo-item">
+                    <div class="logo-display" style="background: var(--sharpened-black);">
+                        <svg viewBox="0 0 2000 2000" fill="white" style="width: 120px; height: 120px;">
+                            <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                        </svg>
+                    </div>
+                    <h3>Master Brand</h3>
+                    <p>The core Sharpened lightning bolt. Pure, powerful, unmistakable.</p>
+                    <div class="logo-specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Primary Use:</span>
+                            <span class="spec-value">Corporate</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Min Size:</span>
+                            <span class="spec-value">24px</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Clear Space:</span>
+                            <span class="spec-value">0.5x height</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FeelSharper -->
+                <div class="logo-item">
+                    <div class="logo-display" style="background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));">
+                        <svg viewBox="0 0 2000 2000" fill="white" style="width: 120px; height: 120px;">
+                            <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                        </svg>
+                    </div>
+                    <h3>FeelSharper</h3>
+                    <p>Blue lightning for body optimization. The electricity of physical transformation.</p>
+                    <div class="logo-specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Color:</span>
+                            <span class="spec-value">#4169E1</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Gradient:</span>
+                            <span class="spec-value">135° Blue</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Domain:</span>
+                            <span class="spec-value">Fitness</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- StudySharper -->
+                <div class="logo-item">
+                    <div class="logo-display" style="background: linear-gradient(135deg, var(--study-primary), var(--study-secondary));">
+                        <svg viewBox="0 0 2000 2000" fill="white" style="width: 120px; height: 120px;">
+                            <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                        </svg>
+                    </div>
+                    <h3>StudySharper</h3>
+                    <p>Purple lightning for neural firing. The spark of understanding.</p>
+                    <div class="logo-specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Color:</span>
+                            <span class="spec-value">#8B4FC3</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Gradient:</span>
+                            <span class="spec-value">135° Purple</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Domain:</span>
+                            <span class="spec-value">Learning</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WorkSharper -->
+                <div class="logo-item">
+                    <div class="logo-display" style="background: linear-gradient(135deg, var(--work-primary), var(--work-secondary));">
+                        <svg viewBox="0 0 2000 2000" fill="white" style="width: 120px; height: 120px;">
+                            <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                        </svg>
+                    </div>
+                    <h3>WorkSharper</h3>
+                    <p>Orange lightning for creative spark. The energy of innovation.</p>
+                    <div class="logo-specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Color:</span>
+                            <span class="spec-value">#FF6B35</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Gradient:</span>
+                            <span class="spec-value">135° Orange</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Domain:</span>
+                            <span class="spec-value">Career</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MindSharper -->
+                <div class="logo-item">
+                    <div class="logo-display" style="background: linear-gradient(135deg, var(--mind-primary), var(--mind-secondary));">
+                        <svg viewBox="0 0 2000 2000" fill="white" style="width: 120px; height: 120px;">
+                            <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                        </svg>
+                    </div>
+                    <h3>MindSharper</h3>
+                    <p>Pink lightning for emotional energy. The warmth of self-care.</p>
+                    <div class="logo-specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Color:</span>
+                            <span class="spec-value">#FF1493</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Gradient:</span>
+                            <span class="spec-value">135° Pink</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Domain:</span>
+                            <span class="spec-value">Mental Health</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CodeSharper -->
+                <div class="logo-item">
+                    <div class="logo-display" style="background: linear-gradient(135deg, var(--code-primary), var(--code-secondary));">
+                        <svg viewBox="0 0 2000 2000" fill="black" style="width: 120px; height: 120px;">
+                            <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                        </svg>
+                    </div>
+                    <h3>CodeSharper</h3>
+                    <p>Matrix green lightning for digital mastery. The current of code.</p>
+                    <div class="logo-specs">
+                        <div class="spec-row">
+                            <span class="spec-label">Color:</span>
+                            <span class="spec-value">#00FF41</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Gradient:</span>
+                            <span class="spec-value">135° Green</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Domain:</span>
+                            <span class="spec-value">Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo Usage Rules -->
+            <div class="glass-card">
+                <h3 style="font-size: var(--text-2xl); margin-bottom: 2rem;">Logo Usage Guidelines</h3>
+                <div class="dos-donts">
+                    <div class="do">
+                        <h4>Do</h4>
+                        <ul style="color: var(--sharpened-light-gray); line-height: 2;">
+                            <li>Maintain clear space equal to half the logo height</li>
+                            <li>Use official color gradients for product logos</li>
+                            <li>Apply subtle animation on hover (scale or glow)</li>
+                            <li>Ensure high contrast with background</li>
+                            <li>Use vector formats for scalability</li>
+                        </ul>
+                    </div>
+                    <div class="dont">
+                        <h4>Don't</h4>
+                        <ul style="color: var(--sharpened-light-gray); line-height: 2;">
+                            <li>Rotate or skew the lightning bolt</li>
+                            <li>Add drop shadows or effects</li>
+                            <li>Change the bolt's proportions</li>
+                            <li>Use low contrast combinations</li>
+                            <li>Place over busy backgrounds</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Color System -->
+        <section class="section diagonal-section" id="colors" style="background: linear-gradient(180deg, transparent, rgba(65, 105, 225, 0.01), transparent);">
+            <h2 class="section-title">Color System</h2>
+            <p class="section-subtitle">Premium <span class="accent-text" style="color: #666;">darkness</span> with strategic <span class="lightning-text">brilliance</span></p>
+
+            <h3 style="font-size: var(--text-3xl); margin: 3rem 0 2rem;">Core Palette</h3>
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-black);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Absolute Black</div>
+                        <div class="color-value">#000000</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-void);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Void</div>
+                        <div class="color-value">#0A0A0A</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-dark);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Dark</div>
+                        <div class="color-value">#111111</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-coal);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Coal</div>
+                        <div class="color-value">#1A1A1A</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-charcoal);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Charcoal</div>
+                        <div class="color-value">#2A2A2A</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-gray);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Gray</div>
+                        <div class="color-value">#666666</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-light-gray);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Light Gray</div>
+                        <div class="color-value">#999999</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--sharpened-white);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Pure White</div>
+                        <div class="color-value">#FFFFFF</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: var(--text-3xl); margin: 3rem 0 2rem;">Product Lightning Colors</h3>
+            <div class="color-grid">
+                <!-- FeelSharper Colors -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));"></div>
+                    <div class="color-info">
+                        <div class="color-name">Feel Primary</div>
+                        <div class="color-value">#4169E1</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--feel-secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Feel Secondary</div>
+                        <div class="color-value">#00BFFF</div>
+                    </div>
+                </div>
+                
+                <!-- StudySharper Colors -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: linear-gradient(135deg, var(--study-primary), var(--study-secondary));"></div>
+                    <div class="color-info">
+                        <div class="color-name">Study Primary</div>
+                        <div class="color-value">#8B4FC3</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--study-secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Study Secondary</div>
+                        <div class="color-value">#B794F4</div>
+                    </div>
+                </div>
+                
+                <!-- WorkSharper Colors -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: linear-gradient(135deg, var(--work-primary), var(--work-secondary));"></div>
+                    <div class="color-info">
+                        <div class="color-name">Work Primary</div>
+                        <div class="color-value">#FF6B35</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--work-secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Work Secondary</div>
+                        <div class="color-value">#FFA500</div>
+                    </div>
+                </div>
+                
+                <!-- MindSharper Colors -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: linear-gradient(135deg, var(--mind-primary), var(--mind-secondary));"></div>
+                    <div class="color-info">
+                        <div class="color-name">Mind Primary</div>
+                        <div class="color-value">#FF1493</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--mind-secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Mind Secondary</div>
+                        <div class="color-value">#FF69B4</div>
+                    </div>
+                </div>
+                
+                <!-- CodeSharper Colors -->
+                <div class="color-card">
+                    <div class="color-swatch" style="background: linear-gradient(135deg, var(--code-primary), var(--code-secondary));"></div>
+                    <div class="color-info">
+                        <div class="color-name">Code Primary</div>
+                        <div class="color-value">#00FF41</div>
+                    </div>
+                </div>
+                <div class="color-card">
+                    <div class="color-swatch" style="background: var(--code-secondary);"></div>
+                    <div class="color-info">
+                        <div class="color-name">Code Secondary</div>
+                        <div class="color-value">#39FF14</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="section" id="typography" style="position: relative; overflow: hidden;">
+            <!-- Floating Lightning Typography Background -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 300px; font-weight: 900; opacity: 0.01; color: #4169E1; z-index: 0; white-space: nowrap; pointer-events: none;">
+                SHARP
+            </div>
+            <h2 class="section-title">Typography</h2>
+            <p class="section-subtitle">Clean, <span class="lightning-text">confident</span>, cutting-edge</p>
+
+            <div class="type-specimen">
+                <div class="type-sample">
+                    <div class="type-label">Primary Typeface</div>
+                    <h3 style="font-size: var(--text-3xl); font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">
+                        SF Pro Display
+                    </h3>
+                    <p style="margin-top: 1rem; color: var(--sharpened-gray);">
+                        Used for headlines, marketing materials, and display text. Falls back to system fonts for optimal performance.
+                    </p>
+                </div>
+            </div>
+
+            <div class="type-specimen">
+                <div class="type-sample">
+                    <div class="type-label">Body Typeface</div>
+                    <p style="font-size: var(--text-lg); line-height: 1.8;">
+                        System font stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif.
+                        This ensures optimal readability and performance across all platforms while maintaining a premium feel.
+                    </p>
+                </div>
+            </div>
+
+            <div class="type-specimen">
+                <div class="type-sample">
+                    <div class="type-label">Monospace / Code</div>
+                    <pre style="font-family: 'SF Mono', Monaco, 'Fira Code', monospace; font-size: var(--text-base);">
+const sharpen = (human) => {
+    return human + AI + community;
+}</pre>
+                </div>
+            </div>
+
+            <!-- Type Scale -->
+            <div class="glass-card">
+                <h3 style="font-size: var(--text-2xl); margin-bottom: 2rem;">Type Scale</h3>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="font-size: var(--text-9xl); font-weight: 900; line-height: 1;">Display 9xl</div>
+                    <div style="font-size: var(--text-7xl); font-weight: 800; line-height: 1;">Display 7xl</div>
+                    <div style="font-size: var(--text-5xl); font-weight: 700; line-height: 1.1;">Heading 5xl</div>
+                    <div style="font-size: var(--text-3xl); font-weight: 600; line-height: 1.2;">Heading 3xl</div>
+                    <div style="font-size: var(--text-xl); font-weight: 500; line-height: 1.4;">Heading xl</div>
+                    <div style="font-size: var(--text-base); line-height: 1.6;">Body text base</div>
+                    <div style="font-size: var(--text-sm); color: var(--sharpened-gray); line-height: 1.5;">Small text</div>
+                    <div style="font-size: var(--text-xs); color: var(--sharpened-gray); line-height: 1.4;">Extra small</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Icon System -->
+        <section class="section" id="icons">
+            <h2 class="section-title">Icon System</h2>
+            <p class="section-subtitle">Functional, minimal, meaningful</p>
+
+            <div class="icon-grid">
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                    </svg>
+                    <span class="icon-label">Lightning</span>
+                </div>
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                    <span class="icon-label">Activity</span>
+                </div>
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    <span class="icon-label">Document</span>
+                </div>
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    <span class="icon-label">Pulse</span>
+                </div>
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span class="icon-label">Clock</span>
+                </div>
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    <span class="icon-label">Stats</span>
+                </div>
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <span class="icon-label">Star</span>
+                </div>
+                <div class="icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span class="icon-label">Squad</span>
+                </div>
+            </div>
+
+            <div class="glass-card" style="margin-top: 3rem;">
+                <h3 style="font-size: var(--text-2xl); margin-bottom: 1rem;">Icon Guidelines</h3>
+                <ul style="color: var(--sharpened-light-gray); line-height: 2;">
+                    <li>Use 2px stroke weight for consistency</li>
+                    <li>Maintain 24x24 viewbox for all icons</li>
+                    <li>Apply product colors for active states</li>
+                    <li>Use outline style, not filled</li>
+                    <li>Ensure icons are pixel-perfect at common sizes</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Application Examples -->
+        <section class="section" id="applications">
+            <h2 class="section-title">Brand Applications</h2>
+            <p class="section-subtitle">Consistency across touchpoints</p>
+
+            <div class="app-examples">
+                <!-- Mobile App -->
+                <div class="app-example">
+                    <div class="app-preview" style="background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));">
+                        <div style="width: 200px; height: 400px; background: var(--sharpened-black); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center;">
+                            <svg viewBox="0 0 2000 2000" fill="white" style="width: 60px; height: 60px; margin-bottom: 20px;">
+                                <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                            </svg>
+                            <div style="width: 100%; height: 20px; background: var(--sharpened-dark); border-radius: 10px; margin-bottom: 10px;"></div>
+                            <div style="width: 80%; height: 20px; background: var(--sharpened-dark); border-radius: 10px; margin-bottom: 10px;"></div>
+                            <div style="width: 90%; height: 20px; background: var(--sharpened-dark); border-radius: 10px;"></div>
+                        </div>
+                    </div>
+                    <div class="app-info">
+                        <h4>Mobile App</h4>
+                        <p>Dark interface with product color accents. Glass morphism for depth.</p>
+                    </div>
+                </div>
+
+                <!-- Business Card -->
+                <div class="app-example">
+                    <div class="app-preview" style="background: var(--sharpened-void);">
+                        <div style="width: 350px; height: 200px; background: var(--sharpened-black); border-radius: 12px; padding: 30px; display: flex; justify-content: space-between;">
+                            <div>
+                                <svg viewBox="0 0 2000 2000" fill="white" style="width: 40px; height: 40px; margin-bottom: 20px;">
+                                    <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                                </svg>
+                                <div style="font-size: 18px; font-weight: 700;">SHARPENED</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: var(--sharpened-gray); font-size: 12px;">John Doe</div>
+                                <div style="color: var(--sharpened-gray); font-size: 10px; margin-top: 5px;">Product Designer</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-info">
+                        <h4>Business Card</h4>
+                        <p>Minimalist black with spot UV on lightning. Premium matte finish.</p>
+                    </div>
+                </div>
+
+                <!-- Presentation Slide -->
+                <div class="app-example">
+                    <div class="app-preview">
+                        <div style="width: 100%; height: 100%; background: var(--sharpened-black); padding: 40px; display: flex; flex-direction: column; justify-content: center;">
+                            <h3 style="font-size: 24px; margin-bottom: 20px;">Quarterly Performance</h3>
+                            <div style="display: flex; gap: 10px;">
+                                <div style="flex: 1; height: 80px; background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary)); border-radius: 8px;"></div>
+                                <div style="flex: 1; height: 80px; background: linear-gradient(135deg, var(--study-primary), var(--study-secondary)); border-radius: 8px;"></div>
+                                <div style="flex: 1; height: 80px; background: linear-gradient(135deg, var(--work-primary), var(--work-secondary)); border-radius: 8px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-info">
+                        <h4>Presentation Template</h4>
+                        <p>Dark theme with product color coding. Clean data visualization.</p>
+                    </div>
+                </div>
+
+                <!-- Social Media Post -->
+                <div class="app-example">
+                    <div class="app-preview">
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--sharpened-black), var(--sharpened-dark)); display: flex; justify-content: center; align-items: center;">
+                            <svg viewBox="0 0 2000 2000" fill="url(#gradient)" style="width: 120px; height: 120px;">
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#4169E1"/>
+                                        <stop offset="100%" style="stop-color:#00BFFF"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="app-info">
+                        <h4>Social Media</h4>
+                        <p>Bold lightning on dark. Product gradients for category identification.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media Templates -->
+            <h3 style="font-size: var(--text-3xl); margin: 4rem 0 2rem;">Social Media Specifications</h3>
+            <div class="social-grid">
+                <div class="social-template">
+                    <div class="social-preview" style="aspect-ratio: 1;">
+                        <div style="background: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary)); width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                            <svg viewBox="0 0 2000 2000" fill="white" style="width: 80px; height: 80px;">
+                                <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="social-info">
+                        <h4>Instagram Post</h4>
+                        <div class="social-specs">1080 × 1080px • Square • RGB</div>
+                    </div>
+                </div>
+
+                <div class="social-template">
+                    <div class="social-preview" style="aspect-ratio: 9/16;">
+                        <div style="background: linear-gradient(135deg, var(--study-primary), var(--study-secondary)); width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                            <svg viewBox="0 0 2000 2000" fill="white" style="width: 60px; height: 60px;">
+                                <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="social-info">
+                        <h4>Instagram Story</h4>
+                        <div class="social-specs">1080 × 1920px • 9:16 • RGB</div>
+                    </div>
+                </div>
+
+                <div class="social-template">
+                    <div class="social-preview" style="aspect-ratio: 16/9;">
+                        <div style="background: linear-gradient(135deg, var(--work-primary), var(--work-secondary)); width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                            <svg viewBox="0 0 2000 2000" fill="white" style="width: 60px; height: 60px;">
+                                <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="social-info">
+                        <h4>Twitter Header</h4>
+                        <div class="social-specs">1500 × 500px • 3:1 • RGB</div>
+                    </div>
+                </div>
+
+                <div class="social-template">
+                    <div class="social-preview" style="aspect-ratio: 2/1;">
+                        <div style="background: linear-gradient(135deg, var(--mind-primary), var(--mind-secondary)); width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                            <svg viewBox="0 0 2000 2000" fill="white" style="width: 60px; height: 60px;">
+                                <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="social-info">
+                        <h4>LinkedIn Banner</h4>
+                        <div class="social-specs">1584 × 396px • 4:1 • RGB</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Motion & Interaction -->
+        <section class="section diagonal-section" id="guidelines" style="background: linear-gradient(180deg, rgba(65, 105, 225, 0.01), transparent);">
+            <h2 class="section-title">Motion & <span class="lightning-text">Interaction</span></h2>
+            <p class="section-subtitle">Purposeful animation that <span class="accent-text" style="color: #999;">respects</span> user time</p>
+
+            <div class="motion-demo">
+                <h3 style="font-size: var(--text-2xl); margin-bottom: 1rem;">Animation Principles</h3>
+                <div class="motion-box ease-out-demo"></div>
+                <p style="color: var(--sharpened-gray); margin-top: 1rem;">
+                    All animations use ease-out timing for snappy, responsive feel. Duration: 200-300ms for micro-interactions, 400-600ms for page transitions.
+                </p>
+            </div>
+
+            <div class="code-block">
+                <pre>/* CSS Animation Standards */
+.lightning-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lightning-hover:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px currentColor);
+}
+
+/* Glass Morphism Effect */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}</pre>
+            </div>
+        </section>
+
+        <!-- Voice & Tone -->
+        <section class="section" style="position: relative;">
+            <!-- Vertical Lightning Strike -->
+            <div style="position: absolute; left: 10%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, transparent, rgba(65, 105, 225, 0.1), transparent); pointer-events: none;"></div>
+            <div style="position: absolute; right: 15%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, transparent, rgba(0, 191, 255, 0.1), transparent); pointer-events: none;"></div>
+            <h2 class="section-title">Voice & Tone</h2>
+            <p class="section-subtitle">
+                <span class="accent-text" style="color: #FFF;">Direct</span>. 
+                <span class="lightning-text">Respectful</span>. 
+                <span class="accent-text" style="color: #FFF;">Precise</span>.
+            </p>
+
+            <div class="glass-card">
+                <h3 style="font-size: var(--text-2xl); margin-bottom: 2rem;">Copy Examples</h3>
+                
+                <div class="dos-donts">
+                    <div class="do">
+                        <h4><span class="lightning-text">Sharpened Voice</span></h4>
+                        <div style="margin-top: 1rem;">
+                            <p style="margin-bottom: 1rem; padding: 1rem; background: var(--sharpened-void); border-radius: 8px;">
+                                "Workout logged. 12% stronger than six weeks ago."
+                            </p>
+                            <p style="margin-bottom: 1rem; padding: 1rem; background: var(--sharpened-void); border-radius: 8px;">
+                                "Rest tomorrow. Thursday tests your new capacity."
+                            </p>
+                            <p style="padding: 1rem; background: var(--sharpened-void); border-radius: 8px;">
+                                "137g protein today. Based on this morning's workout."
+                            </p>
+                        </div>
+                    </div>
+                    <div class="dont">
+                        <h4>Generic Voice</h4>
+                        <div style="margin-top: 1rem;">
+                            <p style="margin-bottom: 1rem; padding: 1rem; background: var(--sharpened-void); border-radius: 8px;">
+                                "Great job! You're crushing it! 🎉"
+                            </p>
+                            <p style="margin-bottom: 1rem; padding: 1rem; background: var(--sharpened-void); border-radius: 8px;">
+                                "Don't forget to rest! Your body needs it!"
+                            </p>
+                            <p style="padding: 1rem; background: var(--sharpened-void); border-radius: 8px;">
+                                "Try to eat more protein today!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Guidelines -->
+        <section class="section" style="position: relative;">
+            <!-- Code Lightning Pattern -->
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.02; pointer-events: none; overflow: hidden;">
+                <div style="position: absolute; top: -50%; left: 60%; width: 600px; height: 200%; transform: rotate(20deg);">
+                    <svg viewBox="0 0 2000 2000" fill="#00FF41">
+                        <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                    </svg>
+                </div>
+            </div>
+            <h2 class="section-title">Implementation <span class="lightning-text">Guidelines</span></h2>
+            <p class="section-subtitle">Technical specifications for <span class="accent-text" style="color: #00FF41;">developers</span></p>
+
+            <div class="code-block">
+                <pre>/* CSS Variables for Theming */
+:root {
+  /* Core Colors */
+  --sharpened-black: #000000;
+  --sharpened-white: #FFFFFF;
+  
+  /* Product Theme (dynamically set) */
+  --product-primary: var(--feel-primary);
+  --product-secondary: var(--feel-secondary);
+  --product-gradient: linear-gradient(135deg, 
+    var(--product-primary), 
+    var(--product-secondary)
+  );
+  
+  /* Spacing Scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+}</pre>
+            </div>
+
+            <div class="code-block">
+                <pre>// React Component Example
+import { Lightning } from '@sharpened/icons';
+
+const ProductLogo = ({ product, size = 40 }) => {
+  const gradients = {
+    feel: ['#4169E1', '#00BFFF'],
+    study: ['#8B4FC3', '#B794F4'],
+    work: ['#FF6B35', '#FFA500'],
+    mind: ['#FF1493', '#FF69B4'],
+    code: ['#00FF41', '#39FF14']
+  };
+  
+  return (
+    &lt;div 
+      className="logo-container"
+      style={{
+        background: `linear-gradient(135deg, 
+          ${gradients[product][0]}, 
+          ${gradients[product][1]}
+        )`,
+        borderRadius: 'var(--radius-lg)'
+      }}
+    &gt;
+      &lt;Lightning size={size} color="white" /&gt;
+    &lt;/div&gt;
+  );
+};</pre>
+            </div>
+        </section>
+
+        <!-- Template Export Formats -->
+        <section class="section">
+            <h2 class="section-title">Lightning Template System</h2>
+            <p class="section-subtitle">Export-ready backgrounds for all media</p>
+            
+            <div class="glass-card">
+                <h3 style="font-size: var(--text-2xl); margin-bottom: 2rem;">Template Applications</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div style="padding: 1.5rem; background: var(--sharpened-dark); border-radius: 12px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1;">
+                            <div class="lightning-grid"></div>
+                        </div>
+                        <h4 style="position: relative; z-index: 2; margin-bottom: 0.5rem;">Web Pages</h4>
+                        <p style="position: relative; z-index: 2; color: var(--sharpened-gray); font-size: var(--text-sm);">Lightning grid backgrounds with CSS animations</p>
+                    </div>
+                    <div style="padding: 1.5rem; background: var(--sharpened-dark); border-radius: 12px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1;">
+                            <div class="template-lightning">
+                                <svg viewBox="0 0 2000 2000" fill="#8B4FC3">
+                                    <path d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <h4 style="position: relative; z-index: 2; margin-bottom: 0.5rem;">Instagram Posts</h4>
+                        <p style="position: relative; z-index: 2; color: var(--sharpened-gray); font-size: var(--text-sm);">Subtle lightning overlays for social media</p>
+                    </div>
+                    <div style="padding: 1.5rem; background: var(--sharpened-dark); border-radius: 12px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1;">
+                            <svg width="100%" height="100%">
+                                <defs>
+                                    <pattern id="video-grid" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+                                        <circle cx="25" cy="25" r="1" fill="#FF6B35" opacity="0.5"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="100%" height="100%" fill="url(#video-grid)"/>
+                            </svg>
+                        </div>
+                        <h4 style="position: relative; z-index: 2; margin-bottom: 0.5rem;">Video Overlays</h4>
+                        <p style="position: relative; z-index: 2; color: var(--sharpened-gray); font-size: var(--text-sm);">Animated lightning for video production</p>
+                    </div>
+                    <div style="padding: 1.5rem; background: var(--sharpened-dark); border-radius: 12px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1;">
+                            <div style="background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 255, 65, 0.1) 10px, rgba(0, 255, 65, 0.1) 11px); width: 100%; height: 100%;"></div>
+                        </div>
+                        <h4 style="position: relative; z-index: 2; margin-bottom: 0.5rem;">Presentations</h4>
+                        <p style="position: relative; z-index: 2; color: var(--sharpened-gray); font-size: var(--text-sm);">Professional slide backgrounds</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="code-block">
+                <pre>/* Lightning Background Template CSS */
+.sharpened-lightning-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.sharpened-lightning-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('lightning-pattern.svg');
+    opacity: 0.03;
+    animation: lightning-pulse 10s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Instagram Post Template */
+.instagram-post {
+    width: 1080px;
+    height: 1080px;
+    background: #000;
+    position: relative;
+}
+
+.instagram-post .lightning-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at center,
+        transparent 30%,
+        rgba(65, 105, 225, 0.1) 70%
+    );
+    mix-blend-mode: screen;
+}
+
+/* Video Overlay Template */
+@keyframes video-lightning {
+    0%, 95% { opacity: 0; }
+    96%, 98% { opacity: 0.3; }
+    97% { opacity: 0.1; }
+    100% { opacity: 0; }
+}</pre>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section class="section">
+            <div class="download-section" style="position: relative; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.05;">
+                    <svg width="100%" height="100%" viewBox="0 0 2000 2000" preserveAspectRatio="xMidYMid slice">
+                        <path fill="#4169E1" d="M1316.51,114.18l-179.59,539.46c119.07,100.86,266.86,187.13,380.91,292.16,16.83,15.5,52.29,42.07,46.89,65.3l-881.44,874.73,179.44-546.25-393.53-298.18c-12.77-15.4-41.59-28.37-32.85-51.14L1316.51,114.18Z" transform="scale(3) translate(-300, -300) rotate(15)"/>
+                    </svg>
+                </div>
+                <h2 style="font-size: var(--text-3xl); margin-bottom: 1rem;">Download Brand Assets</h2>
+                <p style="color: var(--sharpened-gray); margin-bottom: 2rem;">
+                    Get all logos, templates, and guidelines in one package
+                </p>
+                <div>
+                    <a href="#" class="download-btn">Download Brand Kit</a>
+                    <a href="#" class="download-btn" style="background: var(--sharpened-dark); border: 1px solid var(--sharpened-gray);">View on Figma</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Sharpened. Where humanity gets its edge back.</p>
+    </footer>
+
+    <script>
+        // Add smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add parallax effect to cover
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const cover = document.querySelector('.cover');
+            if (cover) {
+                cover.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Print functionality
+        window.print = function() {
+            window.print();
+        };
+    </script>
+</body>
+</html>

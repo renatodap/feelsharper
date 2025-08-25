@@ -220,7 +220,7 @@ export function ReferralProgram() {
           ].map(tab => (
             <Button
               key={tab.id}
-              variant={activeTab === tab.id ? 'default' : 'ghost'}
+              variant={activeTab === tab.id ? 'primary' : 'ghost'}
               size="sm"
               onClick={() => setActiveTab(tab.id as any)}
               className="flex items-center gap-2"
@@ -296,7 +296,7 @@ export function ReferralProgram() {
                 <Button onClick={copyReferralLink} variant="outline">
                   {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                 </Button>
-                {navigator.share && (
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <Button onClick={shareReferralLink} variant="outline">
                     <Share2 className="h-4 w-4" />
                   </Button>

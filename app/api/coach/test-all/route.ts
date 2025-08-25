@@ -66,13 +66,13 @@ export async function POST(request: NextRequest) {
           passed: true,
           confidence: coachingResponse.confidence,
           hasMessage: !!coachingResponse.message,
-          features: {},
-          issues: []
+          features: {} as Record<string, boolean>,
+          issues: [] as string[]
         };
 
         // Check each expected feature
         for (const feature of test.expectedFeatures) {
-          const hasFeature = !!coachingResponse[feature];
+          const hasFeature = !!(coachingResponse as any)[feature];
           testResult.features[feature] = hasFeature;
           totalTests++;
           
@@ -91,14 +91,14 @@ export async function POST(request: NextRequest) {
         }
 
         // Check for BJ Fogg behavior model integration
-        if (test.scenario.includes("Habit Formation") && !coachingResponse.tinyHabit) {
+        if (test.scenario.includes("Habit Formation") && !(coachingResponse as any).tinyHabit) {
           testResult.issues.push("Missing tiny habit for habit formation scenario");
           testResult.passed = false;
         }
 
         // Check for identity-based messaging
-        if (coachingResponse.identityReinforcement && 
-            !coachingResponse.identityReinforcement.includes("someone who")) {
+        if ((coachingResponse as any).identityReinforcement && 
+            !(coachingResponse as any).identityReinforcement.includes("someone who")) {
           testResult.issues.push("Identity reinforcement should use 'someone who' pattern");
         }
 
@@ -132,12 +132,12 @@ export async function POST(request: NextRequest) {
     successRate: `${successRate}% (${passedTests}/${totalTests})`,
     testResults: results,
     coreFeatures: {
-      "BJ Fogg Behavior Model": results.some(r => r.features?.behaviorAnalysis),
-      "Habit Formation Framework": results.some(r => r.features?.tinyHabit),
-      "Identity-Based Habits": results.some(r => r.features?.identityReinforcement),
-      "Confidence-Based Responses": results.every(r => r.confidence),
-      "Motivational Design": results.some(r => r.features?.motivationalDesign),
-      "Contextual Coaching": results.some(r => r.features?.actionItems)
+      "BJ Fogg Behavior Model": results.some(r => (r as any).features?.behaviorAnalysis),
+      "Habit Formation Framework": results.some(r => (r as any).features?.tinyHabit),
+      "Identity-Based Habits": results.some(r => (r as any).features?.identityReinforcement),
+      "Confidence-Based Responses": results.every(r => (r as any).confidence),
+      "Motivational Design": results.some(r => (r as any).features?.motivationalDesign),
+      "Contextual Coaching": results.some(r => (r as any).features?.actionItems)
     },
     recommendations: allTestsPassed ? [
       "Phase 5.1 is fully implemented and working!",

@@ -79,7 +79,7 @@ export function LiveUserCounter() {
   if (!isVisible) return null;
 
   return (
-    <div
+    <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       className="mb-6"
@@ -129,7 +129,7 @@ export function LiveUserCounter() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
 }
 
@@ -371,7 +371,7 @@ export function SocialProofSection({ variant = 'full', className = '' }: SocialP
         </>
       )}
       
-      {(variant === 'testimonials-only' || variant === 'full') && variant !== 'compact' && (
+      {variant === 'testimonials-only' && (
         <TestimonialCarousel />
       )}
       

@@ -1,0 +1,46 @@
+
+> feelsharper@1.0.0 typecheck
+> tsc --noEmit
+
+components/admin/SchemaEvolutionDashboard.tsx(328,25): error TS2322: Type '"default"' is not assignable to type '"primary" | "secondary" | "outline" | "ghost" | undefined'.
+components/admin/SchemaEvolutionDashboard.tsx(336,25): error TS2322: Type '"destructive"' is not assignable to type '"primary" | "secondary" | "outline" | "ghost" | undefined'.
+components/admin/SchemaEvolutionDashboard.tsx(349,23): error TS2322: Type '"default"' is not assignable to type '"primary" | "secondary" | "outline" | "ghost" | undefined'.
+components/streaks/EnhancedStreakSystem.tsx(163,11): error TS2739: Type '{ date: string; created_at: string; type: "workout" | "meal" | "weight" | "combined"; duration?: number | undefined; calories?: number | undefined; quality: "low" | "medium" | "high"; }' is missing the following properties from type 'ActivityLog': activity_type, raw_input, parsed_data, confidence_level, source
+components/voice/VoiceInput.tsx(16,5): error TS2717: Subsequent property declarations must have the same type.  Property 'SpeechRecognition' must be of type 'new () => SpeechRecognition', but here has type 'any'.
+components/voice/VoiceInput.tsx(17,5): error TS2717: Subsequent property declarations must have the same type.  Property 'webkitSpeechRecognition' must be of type 'new () => SpeechRecognition', but here has type 'any'.
+hooks/useFeatureGate.ts(94,5): error TS2322: Type 'boolean | null' is not assignable to type 'boolean'.
+  Type 'null' is not assignable to type 'boolean'.
+lib/ab-testing/core.ts(201,46): error TS2339: Property 'variant_key' does not exist on type '{ variant_key: any; config: any; }[]'.
+lib/ab-testing/core.ts(202,42): error TS2339: Property 'config' does not exist on type '{ variant_key: any; config: any; }[]'.
+lib/ai-coach/adaptive-interventions.ts(437,5): error TS2739: Type '{ id: string; templateId: string; type: "motivation" | "reminder" | "celebration" | "suggestion"; message: string; actionPrompt: string; intensity: "low" | "medium" | "high"; personalizedFor: UserPersonaType; ... 4 more ...; currentUses: number; }' is missing the following properties from type 'AdaptiveIntervention': content, effectiveness
+lib/ai-coach/knowledge-renovation/perplexity-updater.ts(194,20): error TS2339: Property 'from' does not exist on type 'Promise<SupabaseClient<Database, "public", any>>'.
+lib/ai-coach/knowledge-renovation/perplexity-updater.ts(308,6): error TS2339: Property 'from' does not exist on type 'Promise<SupabaseClient<Database, "public", any>>'.
+lib/ai-coach/training-layers/behavior-change-techniques.ts(583,41): error TS7006: Parameter 'h' implicitly has an 'any' type.
+lib/ai-coach/training-layers/behavior-change-techniques.ts(635,28): error TS7006: Parameter 'c' implicitly has an 'any' type.
+lib/ai-coach/training-layers/habit-formation-data.ts(272,39): error TS7006: Parameter 'habit' implicitly has an 'any' type.
+lib/ai-coach/training-layers/motivation-mapping.ts(399,58): error TS7006: Parameter 'i' implicitly has an 'any' type.
+lib/ai-coach/training-layers/motivation-mapping.ts(400,56): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+lib/ai-coach/training-layers/motivation-mapping.ts(400,61): error TS7006: Parameter 'i' implicitly has an 'any' type.
+lib/ai-coach/user-type-detector.ts(389,23): error TS7006: Parameter 'keyword' implicitly has an 'any' type.
+lib/ai/analysis/RecoveryPredictor.ts(67,37): error TS2339: Property 'intensity_score' does not exist on type 'Workout'.
+lib/ai/analysis/RecoveryPredictor.ts(125,40): error TS2339: Property 'total_volume' does not exist on type 'Workout'.
+lib/ai/analysis/RecoveryPredictor.ts(125,68): error TS2339: Property 'total_volume' does not exist on type 'Workout'.
+lib/ai/analysis/RecoveryPredictor.ts(189,34): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
+lib/ai/coach/SmartCoach.ts(373,40): error TS2339: Property 'avg_daily_calories' does not exist on type 'UserProfile'.
+lib/ai/coach/SmartCoach.ts(398,9): error TS18048: 'response.references' is possibly 'undefined'.
+lib/ai/coach/SmartCoach.ts(399,9): error TS18048: 'response.action_items' is possibly 'undefined'.
+lib/ai/core/AIOrchestrator.ts(21,11): error TS2564: Property 'handlers' has no initializer and is not definitely assigned in the constructor.
+lib/ai/parsers/EnhancedFoodParser.ts(132,52): error TS7006: Parameter 'food' implicitly has an 'any' type.
+lib/analytics/PostHogAnalytics.ts(394,9): error TS7053: Element implicitly has an 'any' type because expression of type '`experiment_${string}`' can't be used to index type '{ timestamp: string; session_id: string; user_id: string | null; device_type: "mobile" | "desktop" | "tablet"; platform: "web" | "ios" | "android"; screen_width: number; screen_height: number; ... 4 more ...; user_agent: string; }'.
+lib/analytics/WorkoutAnalytics.ts(320,37): error TS7006: Parameter 'muscle' implicitly has an 'any' type.
+lib/analytics/WorkoutAnalytics.ts(666,44): error TS7006: Parameter 'ex' implicitly has an 'any' type.
+lib/calendar/calendar-integration.ts(104,46): error TS7006: Parameter 'd' implicitly has an 'any' type.
+lib/freemium/FeatureGate.ts(110,16): error TS2339: Property 'pro' does not exist on type 'never'.
+lib/freemium/FeatureGate.ts(110,39): error TS2339: Property 'pro' does not exist on type 'never'.
+lib/notifications/PushNotificationManager.ts(151,9): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'string | BufferSource | null | undefined'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/realtime/RealtimeManager.ts(340,38): error TS2352: Conversion of type '{ presence_ref: string; }[]' to type 'UserPresence[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type '{ presence_ref: string; }' is missing the following properties from type 'UserPresence': userId, status, lastSeen, deviceInfo

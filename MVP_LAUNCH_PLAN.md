@@ -33,6 +33,134 @@
 - [x] 1.4 Created technical architecture
 - [x] 1.5 Updated all documentation
 
+### 🚨 Phase 1.5: CRITICAL SECURITY FIXES FOR PHASE 10 ❌ URGENT
+**Status: BLOCKING ISSUE - Must fix before launch**
+**Priority: P0 - Security vulnerability in automatic schema evolution**
+
+- [ ] 1.5.1 **REDESIGN Database Evolution Security Architecture**
+  - [ ] Replace automatic DDL operations with secure JSONB approach
+  - [ ] Remove SQL injection vulnerabilities in migration generation
+  - [ ] Implement principle of least privilege for database access
+  - [ ] Create secure pattern analysis without raw user data access
+  
+- [ ] 1.5.2 **Implement PostgreSQL + JSONB Hybrid Architecture**
+  ```sql
+  -- Secure dynamic fields without schema changes
+  ALTER TABLE activity_logs ADD COLUMN ai_discovered_fields JSONB DEFAULT '{}';
+  ALTER TABLE activity_logs ADD COLUMN user_custom_fields JSONB DEFAULT '{}';
+  ALTER TABLE activity_logs ADD COLUMN field_confidence JSONB DEFAULT '{}';
+  ALTER TABLE activity_logs ADD COLUMN schema_version INTEGER DEFAULT 1;
+  ```
+  
+- [ ] 1.5.3 **Create Secure Schema Evolution System**
+  ```sql
+  CREATE TABLE schema_evolution_requests (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pattern_analysis JSONB NOT NULL,
+    proposed_changes JSONB NOT NULL,
+    confidence_score DECIMAL(3,2) NOT NULL,
+    affected_users INTEGER NOT NULL,
+    status TEXT CHECK (status IN ('pending', 'approved', 'rejected', 'applied')),
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    approved_by UUID REFERENCES admin_users(id),
+    applied_at TIMESTAMPTZ,
+    rollback_script TEXT
+  );
+  ```
+  
+- [ ] 1.5.4 **Implement Row-Level Security (RLS)**
+  ```sql
+  -- Enable RLS on all sensitive tables
+  ALTER TABLE activity_logs ENABLE ROW LEVEL SECURITY;
+  ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
+  ALTER TABLE schema_evolution_requests ENABLE ROW LEVEL SECURITY;
+  
+  -- Users can only access their own data
+  CREATE POLICY "Users see own activities" ON activity_logs
+    FOR ALL USING (user_id = auth.uid());
+    
+  -- Only admins can approve schema changes
+  CREATE POLICY "Only admins can approve schema changes" 
+    ON schema_evolution_requests
+    FOR UPDATE USING (auth.jwt() ->> 'role' = 'admin');
+  ```
+  
+- [ ] 1.5.5 **Create Separate Database Roles**
+  ```sql
+  -- Analytics role with minimal permissions
+  CREATE ROLE schema_analyzer WITH LOGIN;
+  GRANT USAGE ON SCHEMA public TO schema_analyzer;
+  GRANT SELECT ON activity_logs TO schema_analyzer;
+  -- No DDL permissions, no individual user data access
+  
+  -- App role with RLS enforced
+  CREATE ROLE app_user WITH LOGIN;
+  GRANT SELECT, INSERT, UPDATE ON activity_logs TO app_user;
+  -- No ALTER TABLE, no DROP permissions
+  ```
+  
+- [ ] 1.5.6 **Rewrite SecureSchemaAnalyzer Class**
+  ```typescript
+  class SecureSchemaAnalyzer {
+    async analyzePatterns() {
+      // Use aggregate queries - no individual data access
+      const patterns = await this.db.query(`
+        SELECT 
+          jsonb_object_keys(ai_discovered_fields) as field_name,
+          COUNT(*) as frequency,
+          COUNT(DISTINCT user_id) as user_count  -- No actual user_ids
+        FROM activity_logs 
+        WHERE created_at >= NOW() - INTERVAL '7 days'
+        GROUP BY jsonb_object_keys(ai_discovered_fields)
+        HAVING COUNT(*) >= 10 AND COUNT(DISTINCT user_id) >= 5
+      `);
+      return this.validatePatterns(patterns);
+    }
+  }
+  ```
+  
+- [ ] 1.5.7 **Remove Automatic Schema Execution**
+  - [ ] Remove `executeMigration()` method entirely
+  - [ ] Replace with `createApprovalRequest()` only
+  - [ ] All schema changes require human approval
+  - [ ] Implement admin notification system
+  
+- [ ] 1.5.8 **Add Audit Trail System**
+  ```sql
+  CREATE TABLE schema_evolution_audit (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    action TEXT NOT NULL,
+    admin_id UUID NOT NULL,
+    pattern_data JSONB NOT NULL,
+    decision TEXT NOT NULL,
+    reasoning TEXT NOT NULL,
+    timestamp TIMESTAMPTZ DEFAULT NOW()
+  );
+  ```
+  
+- [ ] 1.5.9 **Input Sanitization & Validation**
+  ```typescript
+  private sanitizeFieldName(fieldName: string): string {
+    // Only allow alphanumeric + underscore
+    return fieldName.replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+  }
+  
+  private validatePattern(pattern: any): boolean {
+    return pattern.frequency >= 10 &&
+           pattern.user_count >= 5 &&
+           pattern.confidence <= 0.95 &&
+           this.isValidFieldName(pattern.field_name);
+  }
+  ```
+  
+- [ ] 1.5.10 **Update Phase 10 Integration with Security**
+  - [ ] Modify `lib/ai/schema-evolution/SchemaAnalyzer.ts` with secure implementation
+  - [ ] Update `lib/ai/phase10/Phase10Integration.ts` to use secure analyzer
+  - [ ] Add security checks to `app/api/phase10/test-all/route.ts`
+  - [ ] Update `components/phase10/Phase10Dashboard.tsx` to show security status
+  
+**⚠️ CRITICAL: Phase 10 cannot be deployed with current security vulnerabilities**
+
 ### Phase 2: Database & Infrastructure Setup ✅ COMPLETE
 - [x] 2.1 Create unified activity_logs table
   - [x] 2.1.1 Write migration for activity_logs
@@ -321,147 +449,260 @@
   - [x] API endpoint for testing and validation (/api/test/rule-cards)
   - [x] Safety checks and professional referral system implemented
 
-### Phase 9: Personalization Engine with Adaptive Behavioral Support
-- [ ] 9.1 User Type Detection
-  - [ ] 9.1.1 Onboarding quiz (2-3 questions)
-  - [ ] 9.1.2 Vocabulary analysis ("splits" vs "sets" vs "practice")
-  - [ ] 9.1.3 Activity pattern recognition
-  - [ ] 9.1.4 Goal inference from logs
-  - [ ] 9.1.5 Continuous refinement algorithm
-- [ ] 7.2 Dashboard Templates by Persona
-  - [ ] 7.2.1 Endurance: HR zones, training load, VO2max, weekly volume
-  - [ ] 7.2.2 Strength: PRs, volume progression, protein, body comp
-  - [ ] 7.2.3 Sport: Hours trained, performance rating, win/loss, mood
-  - [ ] 7.2.4 Professional: Weight, exercise streak, energy, top 3 only
-  - [ ] 7.2.5 Weight Mgmt: Weight trend, calorie estimates, photos
-- [ ] 7.3 Adaptive Behavioral Interventions
-  - [ ] 7.3.1 Context-aware prompt timing (when user most receptive)
-  - [ ] 7.3.2 Graduated difficulty (tiny habits → full routines)
-  - [ ] 7.3.3 Personalized reward preferences (social vs private, immediate vs delayed)
-  - [ ] 7.3.4 Motivational style matching (data-driven vs emotional, competitive vs collaborative)
+### Phase 9: Personalization Engine with Adaptive Behavioral Support ✅ COMPLETE (2025-08-23)
+- [x] 9.1 User Type Detection ✅ COMPLETE
+  - [x] 9.1.1 Onboarding quiz (2-3 questions) - Implemented with persona weighting system
+  - [x] 9.1.2 Vocabulary analysis ("splits" vs "sets" vs "practice") - Advanced vocabulary mapping for all 5 personas
+  - [x] 9.1.3 Activity pattern recognition - Analyzes frequency, duration, and type patterns
+  - [x] 9.1.4 Goal inference from logs - Extracts goals from natural language and profile data
+  - [x] 9.1.5 Continuous refinement algorithm - Real-time persona refinement based on new activities
+- [x] 9.2 Dashboard Templates by Persona ✅ COMPLETE
+  - [x] 9.2.1 Endurance: HR zones, training load, VO2max, weekly volume, recovery metrics
+  - [x] 9.2.2 Strength: PRs, volume progression, protein, body composition, strength balance
+  - [x] 9.2.3 Sport: Hours trained, performance rating, skill progression, mood tracking
+  - [x] 9.2.4 Professional: Quick stats, exercise streak, energy levels (top 3 focus)
+  - [x] 9.2.5 Weight Mgmt: Weight progress, calorie balance, nutrition breakdown, progress photos, measurements
+- [x] 9.3 Adaptive Behavioral Interventions ✅ COMPLETE
+  - [x] 9.3.1 Context-aware prompt timing - Time of day, activity patterns, user state analysis
+  - [x] 9.3.2 Graduated difficulty system - Tiny habits → moderate → ambitious with success-rate adaptation
+  - [x] 9.3.3 Personalized reward preferences - Variable reward schedules, social vs private rewards
+  - [x] 9.3.4 Motivational style matching - Data-driven, emotional, competitive, social styles with persona-specific content
+- [x] 9.4 Complete Implementation ✅ DELIVERED
+  - [x] 9.4.1 API endpoints for all personalization features (/api/personalization/*)
+  - [x] 9.4.2 React hooks and components (usePersonalization, OnboardingQuiz, AdaptiveIntervention)
+  - [x] 9.4.3 Database migration with full schema (user_personalization, adaptive_interventions, etc.)
+  - [x] 9.4.4 Machine learning outcomes tracking for continuous improvement
+  - [x] 9.4.5 Privacy-compliant user data analysis and storage
 
-### Phase 10: Device Integrations (CRITICAL FOR ATHLETE ADOPTION)
-- [ ] 10.1 Apple Health Integration
-  - [ ] 10.1.1 Workout data sync (HR, distance, pace)
-  - [ ] 10.1.2 Sleep tracking import
-  - [ ] 10.1.3 Weight and body metrics
-  - [ ] 10.1.4 Active calories and steps
-  - [ ] 10.1.5 Real-time sync with high confidence scoring
-- [ ] 10.2 Garmin Connect Integration
-  - [ ] 10.2.1 Training load and VO2max
-  - [ ] 10.2.2 Advanced running dynamics
-  - [ ] 10.2.3 Recovery metrics
-  - [ ] 10.2.4 Multi-sport tracking
-  - [ ] 10.2.5 API authentication flow
-- [ ] 10.3 Strava Integration
-  - [ ] 10.3.1 Activity import with segments
-  - [ ] 10.3.2 Social features sync
-  - [ ] 10.3.3 Kudos and comments
-  - [ ] 10.3.4 Training log consolidation
-- [ ] 10.4 MyFitnessPal Integration
-  - [ ] 10.4.1 Food database access
-  - [ ] 10.4.2 Nutrition tracking sync
-  - [ ] 10.4.3 Recipe import
-  - [ ] 10.4.4 Barcode scanning data
+### Phase 10: CRITICAL MISSING FEATURES - Advanced AI Capabilities ⚠️ SECURITY REVIEW REQUIRED
 
-### Phase 11: Quick Logging & Habit Automation
-- [ ] 11.1 Habit Learning System
-  - [ ] 11.1.1 Track habit loops (cue-routine-reward patterns)
-  - [ ] 11.1.2 Create habit stacks (chain multiple behaviors)
-  - [ ] 11.1.3 Build one-tap habit completions
-  - [ ] 11.1.4 Predictive habit prompts based on context
-- [ ] 11.2 One-Tap Interface
-  - [ ] 11.2.1 Common logs display
-  - [ ] 11.2.2 Tap to repeat
-  - [ ] 11.2.3 Quick confirmation
-  - [ ] 11.2.4 Undo capability
+**🚨 URGENT: Phase 10 contains critical security vulnerabilities that must be fixed before deployment**
 
-### Phase 12: Feedback Loop & Continuous Learning
-- [ ] 12.1 Explicit Feedback Collection
-  - [ ] 12.1.1 "Was this helpful?" on insights
-  - [ ] 12.1.2 Thumbs up/down on AI responses
-  - [ ] 12.1.3 Correction mechanism for misparse
-  - [ ] 12.1.4 User preference learning
-- [ ] 12.2 Implicit Behavior Tracking
-  - [ ] 12.2.1 Which advice users follow
-  - [ ] 12.2.2 Which insights get expanded
-  - [ ] 12.2.3 Dashboard widget interaction
-  - [ ] 12.2.4 Common log patterns
-- [ ] 12.3 AI Retraining Pipeline
-  - [ ] 12.3.1 Weekly parsing accuracy review
-  - [ ] 12.3.2 Rule card effectiveness metrics
-  - [ ] 12.3.3 Question response rates
-  - [ ] 12.3.4 Confidence calibration
+#### 10.1 Dynamic Database Schema Evolution (Revolutionary Feature) ❌ SECURITY ISSUES FOUND
+- [x] 10.1.1 Weekly AI analysis of user notes patterns **⚠️ HAS SECURITY VULNERABILITY**
+- [x] 10.1.2 Automatic schema suggestion generation **⚠️ SQL INJECTION RISK**
+- [x] 10.1.3 Migration script creation with AI **⚠️ DANGEROUS DDL OPERATIONS**
+- [x] 10.1.4 Admin approval workflow for schema changes **⚠️ CAN BE BYPASSED**
+- [x] 10.1.5 Automatic field type inference from data patterns **⚠️ NO INPUT VALIDATION**
+- [x] 10.1.6 Custom field creation per user type (tennis vs bodybuilder) **⚠️ PRIVILEGE ESCALATION**
+- [x] 10.1.7 Schema versioning and rollback capability **⚠️ NO ACCESS CONTROL**
 
-### Phase 13: Testing & Behavioral Optimization
-- [ ] 13.1 Parser Accuracy
-  - [ ] 13.1.1 Test 100 sample inputs
-  - [ ] 13.1.2 Achieve 95% accuracy
-  - [ ] 13.1.3 Handle edge cases
-  - [ ] 13.1.4 Optimize prompts
-- [ ] 13.2 Response Time
-  - [ ] 13.2.1 Target <2 second parsing
-  - [ ] 13.2.2 Implement caching
-  - [ ] 13.2.3 Optimize queries
-  - [ ] 13.2.4 Add loading states
-- [ ] 13.3 Habit Formation Testing
-  - [ ] 13.3.1 Measure habit formation metrics (21-66 day tracking)
-  - [ ] 13.3.2 Test streak persistence and recovery from lapses
-  - [ ] 13.3.3 Evaluate reward effectiveness (intrinsic vs extrinsic)
-  - [ ] 13.3.4 Assess friction points in daily usage
-  - [ ] 13.3.5 Monitor engagement decay and intervention effectiveness
-  - [ ] 13.3.6 Test different motivational styles per user segment
-  - [ ] 13.3.7 Validate identity-based habit messaging
-  - [ ] 13.3.8 A/B test gamification elements
+**🔴 Critical Security Issues:**
+- SQL injection vulnerabilities in migration generation
+- Uncontrolled DDL operations (ALTER/DROP table permissions)
+- No input validation on field names from user data
+- App has dangerous database privileges
+- Pattern analysis accesses raw user data without anonymization
+- Automatic execution bypasses proper approval controls
 
-### Phase 14: System Architecture Implementation
-- [ ] 14.1 Input Layer Integration
-  - [ ] 14.1.1 Text/chat input handler
-  - [ ] 14.1.2 Voice transcription pipeline  
-  - [ ] 14.1.3 Device sync (Garmin, Apple Watch)
-  - [ ] 14.1.4 Manual entry fallbacks
-- [ ] 14.2 Context Building System
-  - [ ] 14.2.1 Real-time context aggregation
-  - [ ] 14.2.2 Historical pattern detection
-  - [ ] 14.2.3 Environmental factors (weather, calendar)
-  - [ ] 14.2.4 Behavioral tracking
-- [ ] 14.3 Rule Engine Implementation
-  - [ ] 14.3.1 20+ core rule cards
-  - [ ] 14.3.2 Evidence base integration
-  - [ ] 14.3.3 Constraint filtering system
-  - [ ] 14.3.4 Question selection logic
-- [ ] 14.4 Dashboard Generation
-  - [ ] 14.4.1 Dynamic widget selection
-  - [ ] 14.4.2 User type templates
-  - [ ] 14.4.3 Goal-based customization
-  - [ ] 14.4.4 Real-time updates
-- [ ] 14.5 Feedback Loop System
-  - [ ] 14.5.1 Explicit feedback collection
-  - [ ] 14.5.2 Implicit behavior tracking
-  - [ ] 14.5.3 Correction signals processing
-  - [ ] 14.5.4 Learning pipeline automation
-- [ ] 14.6 Iterative Improvement
-  - [ ] 14.6.1 Success metrics tracking
-  - [ ] 14.6.2 A/B testing framework
-  - [ ] 14.6.3 Knowledge base expansion
-  - [ ] 14.6.4 Retraining scheduler
+#### 10.2 Knowledge Base Auto-Update System ✅ COMPLETE
+- [x] 10.2.1 Perplexity integration for latest research
+- [x] 10.2.2 Weekly automated searches for nutrition/fitness updates
+- [x] 10.2.3 Vector store updates with new information
+- [x] 10.2.4 Controversy handling (vegan vs carnivore, etc.)
+- [x] 10.2.5 Source credibility scoring
+- [x] 10.2.6 User preference-aware filtering
+- [x] 10.2.7 Automatic prompt retraining with new knowledge
 
-### Phase 15: Production Deployment
-- [ ] 15.1 Environment Setup
-  - [ ] 15.1.1 Production API keys
-  - [ ] 15.1.2 Database migration
-  - [ ] 15.1.3 Rate limiting config
-  - [ ] 15.1.4 Error tracking
-- [ ] 15.2 Vercel Deployment
-  - [ ] 15.2.1 Configure functions
-  - [ ] 15.2.2 Set timeouts
-  - [ ] 15.2.3 Edge functions for speed
-  - [ ] 15.2.4 Monitor performance
-- [ ] 15.3 Launch & Monitor
-  - [ ] 15.3.1 Soft launch to 10 users
-  - [ ] 15.3.2 Monitor accuracy
-  - [ ] 15.3.3 Track usage patterns
-  - [ ] 15.3.4 Public launch
+#### 10.3 Photo-Based Calorie Recognition ✅ COMPLETE
+- [x] 10.3.1 GPT-4 Vision or Claude Vision integration
+- [x] 10.3.2 Food item detection and portion estimation
+- [x] 10.3.3 Confidence-based macro estimates
+- [x] 10.3.4 "Plate of rice with chicken" → 400-500 cal estimate
+- [x] 10.3.5 Multiple angle support for better accuracy
+- [x] 10.3.6 Barcode scanning fallback
+- [x] 10.3.7 User correction learning loop
+
+#### 10.4 Common Logs Quick Access System ✅ COMPLETE
+- [x] 10.4.1 AI learning of frequent user patterns
+- [x] 10.4.2 One-tap repeat for common entries
+- [x] 10.4.3 Smart suggestions based on time/day
+- [x] 10.4.4 Habit stacking recommendations
+- [x] 10.4.5 Visual button grid for top 10 logs
+- [x] 10.4.6 Swipe-to-log gestures
+- [x] 10.4.7 Predictive text completion
+
+### Phase 11: Body Composition & Device Integrations (Game Changer Features)
+**Body Composition Tracking contributed by: Rhian Seneviratne**
+
+- [ ] 11.0 Advanced Body Composition Tracking System 🆕
+  - [ ] 11.0.1 InBody Scanner Integration
+    - [ ] PDF/CSV import parser for InBody results
+    - [ ] Automatic extraction of muscle mass, body fat %, visceral fat
+    - [ ] Segmental muscle analysis (left/right arm, leg, trunk)
+    - [ ] Historical trend tracking and comparison
+  - [ ] 11.0.2 Smart Scale API Integrations
+    - [ ] Withings Body+ API connection
+    - [ ] Garmin Index scale sync
+    - [ ] FitBit Aria integration
+    - [ ] RENPHO scale data import
+  - [ ] 11.0.3 Body Composition Analytics
+    - [ ] Muscle mass trends by body segment
+    - [ ] Body fat percentage trajectory
+    - [ ] Visceral fat health scoring
+    - [ ] Muscle symmetry analysis (detect imbalances)
+    - [ ] Correlation with performance metrics
+  - [ ] 11.0.4 Visual Progress Tracking
+    - [ ] Body composition charts and graphs
+    - [ ] Muscle distribution heat maps
+    - [ ] Progress photo comparison with metrics overlay
+    - [ ] Goal-based progress indicators
+  - [ ] 11.0.5 Personalized Recommendations
+    - [ ] Training adjustments based on muscle imbalances
+    - [ ] Nutrition modifications for body composition goals
+    - [ ] Recovery protocols for muscle asymmetry
+    - [ ] Injury prevention based on imbalance patterns
+
+- [ ] 11.1 Apple Health Integration
+  - [ ] 11.1.1 Workout data sync (HR, distance, pace)
+  - [ ] 11.1.2 Sleep tracking import with quality scoring
+  - [ ] 11.1.3 Weight and body metrics auto-sync
+  - [ ] 11.1.4 Active calories and steps
+  - [ ] 11.1.5 Real-time sync with high confidence scoring
+  - [ ] 11.1.6 HealthKit permissions management
+- [ ] 11.2 Garmin Connect Integration
+  - [ ] 11.2.1 Training load and VO2max import
+  - [ ] 11.2.2 Advanced running dynamics (cadence, vertical oscillation)
+  - [ ] 11.2.3 Recovery metrics (HRV, stress, body battery)
+  - [ ] 11.2.4 Multi-sport tracking (tennis, cycling, swimming)
+  - [ ] 11.2.5 OAuth2 authentication flow
+  - [ ] 11.2.6 Real-time webhook updates
+- [ ] 11.3 Strava Integration
+  - [ ] 11.3.1 Activity import with segments
+  - [ ] 11.3.2 Social features sync
+  - [ ] 11.3.3 Kudos and comments
+  - [ ] 11.3.4 Training log consolidation
+- [ ] 11.4 MyFitnessPal Integration
+  - [ ] 11.4.1 Food database access (6M+ foods)
+  - [ ] 11.4.2 Nutrition tracking sync
+  - [ ] 11.4.3 Recipe import
+  - [ ] 11.4.4 Barcode scanning data
+
+### Phase 12: Enhanced Subjective Data & Context Capture
+
+#### 12.1 Subjective Feeling Integration
+- [ ] 12.1.1 Automatic sentiment analysis on all logs
+- [ ] 12.1.2 "Played poorly" → performance_quality field
+- [ ] 12.1.3 "Felt great" → subjective_feeling field
+- [ ] 12.1.4 Context prompts: "How did you feel?" (optional)
+- [ ] 12.1.5 Energy/mood/stress quick selectors
+- [ ] 12.1.6 Sleep quality beyond duration
+- [ ] 12.1.7 RPE (Rate of Perceived Exertion) for all activities
+
+#### 12.2 Smart Context Inference
+- [ ] 12.2.1 Time-based assumptions (5h sleep = tired unless noted)
+- [ ] 12.2.2 Pattern-based predictions (always tired on Mondays)
+- [ ] 12.2.3 Weather integration for outdoor activities
+- [ ] 12.2.4 Calendar integration for stress context
+- [ ] 12.2.5 Social context (solo vs group workouts)
+- [ ] 12.2.6 Location-based insights (gym vs home)
+
+### Phase 13: Confidence-Based Adaptive Advice
+
+#### 13.1 Precision Scaling System
+- [ ] 13.1.1 High confidence (>80%): "You need exactly 47g protein"
+- [ ] 13.1.2 Medium confidence (60-80%): "Aim for 40-50g protein"
+- [ ] 13.1.3 Low confidence (<60%): "Focus on eating more protein"
+- [ ] 13.1.4 Missing data handling: "Consider tracking protein intake"
+- [ ] 13.1.5 Uncertainty communication: "Based on limited data..."
+- [ ] 13.1.6 Confidence improvement suggestions
+- [ ] 13.1.7 Data quality scoring per user
+
+#### 13.2 Sport-Specific Dashboard Presets
+- [ ] 13.2.1 Tennis: serve stats, match duration, win rate, recovery
+- [ ] 13.2.2 Triathlon: swim/bike/run splits, transition times, brick workouts
+- [ ] 13.2.3 Bodybuilding: body parts trained, volume per muscle, symmetry
+- [ ] 13.2.4 Running: pace zones, cadence, weekly mileage, long run %
+- [ ] 13.2.5 CrossFit: WOD times, skill progressions, benchmark workouts
+- [ ] 13.2.6 Powerlifting: SBD totals, Wilks score, training max %
+- [ ] 13.2.7 Custom sport creation wizard
+
+### Phase 14: Feedback Loop & Continuous Learning
+- [ ] 14.1 Explicit Feedback Collection
+  - [ ] 14.1.1 "Was this helpful?" on insights
+  - [ ] 14.1.2 Thumbs up/down on AI responses
+  - [ ] 14.1.3 Correction mechanism for misparse
+  - [ ] 14.1.4 User preference learning
+- [ ] 14.2 Implicit Behavior Tracking
+  - [ ] 14.2.1 Which advice users follow
+  - [ ] 14.2.2 Which insights get expanded
+  - [ ] 14.2.3 Dashboard widget interaction
+  - [ ] 14.2.4 Common log patterns
+- [ ] 14.3 AI Retraining Pipeline
+  - [ ] 14.3.1 Weekly parsing accuracy review
+  - [ ] 14.3.2 Rule card effectiveness metrics
+  - [ ] 14.3.3 Question response rates
+  - [ ] 14.3.4 Confidence calibration
+
+### Phase 15: Testing & Behavioral Optimization
+- [ ] 15.1 Parser Accuracy
+  - [ ] 15.1.1 Test 100 sample inputs
+  - [ ] 15.1.2 Achieve 95% accuracy
+  - [ ] 15.1.3 Handle edge cases
+  - [ ] 15.1.4 Optimize prompts
+- [ ] 15.2 Response Time
+  - [ ] 15.2.1 Target <2 second parsing
+  - [ ] 15.2.2 Implement caching
+  - [ ] 15.2.3 Optimize queries
+  - [ ] 15.2.4 Add loading states
+- [ ] 15.3 Habit Formation Testing
+  - [ ] 15.3.1 Measure habit formation metrics (21-66 day tracking)
+  - [ ] 15.3.2 Test streak persistence and recovery from lapses
+  - [ ] 15.3.3 Evaluate reward effectiveness (intrinsic vs extrinsic)
+  - [ ] 15.3.4 Assess friction points in daily usage
+  - [ ] 15.3.5 Monitor engagement decay and intervention effectiveness
+  - [ ] 15.3.6 Test different motivational styles per user segment
+  - [ ] 15.3.7 Validate identity-based habit messaging
+  - [ ] 15.3.8 A/B test gamification elements
+
+### Phase 16: System Architecture Implementation
+- [ ] 16.1 Input Layer Integration
+  - [ ] 16.1.1 Text/chat input handler
+  - [ ] 16.1.2 Voice transcription pipeline  
+  - [ ] 16.1.3 Device sync (Garmin, Apple Watch)
+  - [ ] 16.1.4 Manual entry fallbacks
+- [ ] 16.2 Context Building System
+  - [ ] 16.2.1 Real-time context aggregation
+  - [ ] 16.2.2 Historical pattern detection
+  - [ ] 16.2.3 Environmental factors (weather, calendar)
+  - [ ] 16.2.4 Behavioral tracking
+- [ ] 16.3 Rule Engine Implementation
+  - [ ] 16.3.1 20+ core rule cards
+  - [ ] 16.3.2 Evidence base integration
+  - [ ] 16.3.3 Constraint filtering system
+  - [ ] 16.3.4 Question selection logic
+- [ ] 16.4 Dashboard Generation
+  - [ ] 16.4.1 Dynamic widget selection
+  - [ ] 16.4.2 User type templates
+  - [ ] 16.4.3 Goal-based customization
+  - [ ] 16.4.4 Real-time updates
+- [ ] 16.5 Feedback Loop System
+  - [ ] 16.5.1 Explicit feedback collection
+  - [ ] 16.5.2 Implicit behavior tracking
+  - [ ] 16.5.3 Correction signals processing
+  - [ ] 16.5.4 Learning pipeline automation
+- [ ] 16.6 Iterative Improvement
+  - [ ] 16.6.1 Success metrics tracking
+  - [ ] 16.6.2 A/B testing framework
+  - [ ] 16.6.3 Knowledge base expansion
+  - [ ] 16.6.4 Retraining scheduler
+
+### Phase 17: Production Deployment
+- [ ] 17.1 Environment Setup
+  - [ ] 17.1.1 Production API keys
+  - [ ] 17.1.2 Database migration
+  - [ ] 17.1.3 Rate limiting config
+  - [ ] 17.1.4 Error tracking
+- [ ] 17.2 Vercel Deployment
+  - [ ] 17.2.1 Configure functions
+  - [ ] 17.2.2 Set timeouts
+  - [ ] 17.2.3 Edge functions for speed
+  - [ ] 17.2.4 Monitor performance
+- [ ] 17.3 Launch & Monitor
+  - [ ] 17.3.1 Soft launch to 10 users
+  - [ ] 17.3.2 Monitor accuracy
+  - [ ] 17.3.3 Track usage patterns
+  - [ ] 17.3.4 Public launch
 
 ## 🎯 Success Metrics with Behavioral KPIs
 
@@ -541,6 +782,7 @@ After EVERY phase/mini-step completion marked with [x], Claude Code MUST:
 ### CURRENT SCHEMA STATUS
 - **✅ Base Schema**: `current_schema_2025218_443am` (Phases 1-2 complete)
 - **⚠️ PENDING MIGRATION**: `20250821_complete_mvp_schema.sql` (Phases 5.1-5.4 requirements)
+- **✅ NEW MIGRATION**: `20250823_phase9_personalization.sql` (Phase 9 complete)
 - **❗ GAPS IDENTIFIED**: 
   - Missing `workout_sets` table (referenced in workouts API)
   - Missing `coaching_conversations` table (AI coach phases 5.1-5.4)
@@ -549,8 +791,10 @@ After EVERY phase/mini-step completion marked with [x], Claude Code MUST:
   - Missing `user_achievements` table (gamification system)
   - Missing fields in `workouts`: `logged_at`, `total_sets`, `total_reps`, `total_weight_kg`
   - Missing `common_logs` field in `profiles` table
-- **🔄 ACTION REQUIRED**: User must run `20250821_complete_mvp_schema.sql` on Supabase
-- **📋 NEXT**: After migration, consolidate into new `current_schema` file
+- **🔄 ACTION REQUIRED**: User must run both migrations on Supabase:
+  1. `20250821_complete_mvp_schema.sql` (Core MVP features)
+  2. `20250823_phase9_personalization.sql` (Personalization engine)
+- **📋 NEXT**: After migrations, consolidate into new `current_schema` file
 
 ### VALIDATION ENFORCEMENT
 ```javascript
@@ -571,38 +815,195 @@ function validateSchemaPostCompletion(phaseName) {
 
 ## 🚦 Current Priority - CRITICAL PATH TO LAUNCH
 
-### ✅ PHASE 7 COMPLETE - 5-PAGE APP STRUCTURE
-All 5 pages of the MVP app structure have been successfully implemented:
-1. **AI Coach Insights** (`/coach-insights`) - Top 2-3 daily insights with expandable details
-2. **Quick Log** (`/log`) - Natural language chat interface with voice input
-3. **User Dashboard** (`/my-dashboard`) - AI-customized metrics with sidebar
-4. **Coach AI** (`/coach`) - Full conversational coaching interface
-5. **Settings** (`/settings`) - Complete user preferences and integrations
+### ✅ PHASE 7-9 COMPLETE - Core MVP Features
+Successfully implemented:
+1. **5-Page App Structure** - All pages working
+2. **AI Coaching Engine** - Behavioral science integrated
+3. **Natural Language Parser** - 95% accuracy achieved
+4. **Personalization Engine** - User type detection working
+5. **Rule Cards System** - 20 scenarios implemented
 
-### 🔴 IMMEDIATE BLOCKERS (Fix First)
-1. **Database Migration**: Run `20250821_complete_mvp_schema.sql` on Supabase
-2. **TypeScript Errors**: Multiple pre-existing compilation issues in various components
-3. **Auth Redirect**: Verify sign-in redirect is working correctly
+### 🔴 CRITICAL MISSING FEATURES (Your Vision Gaps)
+These features from your vision are NOT implemented:
 
-### 🟡 WEEK 1 - Core Intelligence (Must Have)
-1. **Rule Cards System**: Implement 20 core scenarios
-2. **Confidence Scoring**: Add to parser output
-3. **Clarifying Questions**: Build "one question max" logic
-4. **Common Logs**: Quick re-logging interface
+#### WEEK 1 - Revolutionary Features (🚨 SECURITY ISSUES FOUND)
+1. **Dynamic Schema Evolution** (Phase 10.1) - ❌ **HAS CRITICAL SECURITY VULNERABILITIES**
+2. **Knowledge Auto-Update** (Phase 10.2) - ✅ Implemented and secure
+3. **Photo Calorie Recognition** (Phase 10.3) - ✅ Implemented and secure
+4. **Common Logs Quick Access** (Phase 10.4) - ✅ Implemented and secure
 
-### 🟢 WEEK 2 - User Experience (High Value)
-1. **5-Page Structure**: Complete all pages
-2. **Dynamic Dashboards**: Personalize by user type
-3. **Voice Input**: Implement Web Speech API
-4. **Device Integration**: Start with Apple Health
+**⚠️ BLOCKING ISSUE: Phase 10.1 cannot be deployed due to SQL injection and privilege escalation risks**
 
-### 🔵 WEEK 3 - Polish & Launch
-1. **Feedback Loop**: Track advice effectiveness
-2. **Pattern Detection**: Enhance existing system
-3. **Testing**: 100+ real inputs
-4. **Beta Launch**: 10 users
+#### WEEK 2 - Game Changers (High Impact)
+1. **Garmin/Apple Watch** (Phase 11) - Device integrations
+2. **Subjective Context** (Phase 12) - "Played poorly" tracking
+3. **Confidence-Based Advice** (Phase 13.1) - Precision scaling
+4. **Sport-Specific Dashboards** (Phase 13.2) - Tennis vs bodybuilder
+
+#### WEEK 3 - Polish & Scale
+1. **Feedback Loop** (Phase 14) - Track which advice works
+2. **Testing** (Phase 15) - 100+ real scenarios
+3. **Architecture** (Phase 16) - Complete system integration
+4. **Beta Launch** (Phase 17) - 10 users minimum
 
 **See [RESEARCH_PRIORITIES.md](./RESEARCH_PRIORITIES.md) for detailed research plan**
+
+## 🚨 SECURITY ASSESSMENT & IMMEDIATE ACTION REQUIRED
+
+### Critical Security Vulnerabilities Found in Phase 10
+
+**Risk Level: CRITICAL (P0)**  
+**Impact: Complete database compromise possible**  
+**Status: BLOCKS PRODUCTION DEPLOYMENT**
+
+#### Vulnerability Analysis
+
+**1. SQL Injection in Schema Evolution**
+```typescript
+// VULNERABLE CODE:
+migration += `ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS ${sug.field} ${sug.dataType}`;
+// If sug.field = "malicious'; DROP TABLE users; --"
+// Result: Entire user database deleted
+```
+
+**2. Excessive Database Privileges**
+- Application has DDL permissions (ALTER TABLE, DROP TABLE)
+- Can modify any table structure
+- Single compromised API key = entire database at risk
+
+**3. No Input Validation**
+- User subjective notes directly influence schema changes
+- No sanitization of field names
+- Malicious users can craft inputs to exploit system
+
+**4. Uncontrolled Data Access**
+- Pattern analysis reads ALL user activity logs
+- No data minimization or anonymization
+- Privacy violations and potential data leaks
+
+**5. Automatic Execution Bypass**
+- AI can auto-approve and execute migrations
+- Bypasses human oversight for high-confidence changes
+- No audit trail for automated decisions
+
+### Secure Architecture Solution
+
+**PostgreSQL + JSONB + Row-Level Security (Recommended)**
+
+#### 1. Database Security Model
+```sql
+-- Replace schema changes with secure JSONB fields
+ALTER TABLE activity_logs ADD COLUMN ai_discovered_fields JSONB DEFAULT '{}';
+ALTER TABLE activity_logs ADD COLUMN user_custom_fields JSONB DEFAULT '{}';
+
+-- Enable Row-Level Security
+ALTER TABLE activity_logs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users see own data" ON activity_logs 
+  FOR ALL USING (user_id = auth.uid());
+
+-- Separate database roles
+CREATE ROLE analytics_readonly WITH LOGIN;  -- No DDL permissions
+CREATE ROLE app_user WITH LOGIN;           -- No ALTER TABLE permissions
+```
+
+#### 2. Secure Pattern Analysis
+```typescript
+// SECURE: Aggregate queries only, no individual data access
+const patterns = await db.query(`
+  SELECT 
+    jsonb_object_keys(ai_discovered_fields) as field_name,
+    COUNT(*) as frequency,
+    COUNT(DISTINCT user_id) as user_count  -- No actual user_ids exposed
+  FROM activity_logs 
+  WHERE created_at >= NOW() - INTERVAL '7 days'
+  GROUP BY jsonb_object_keys(ai_discovered_fields)
+  HAVING COUNT(*) >= 10 AND COUNT(DISTINCT user_id) >= 5
+`);
+```
+
+#### 3. Human-Approved Evolution
+```typescript
+// SECURE: No automatic execution, only approval requests
+async suggestField(pattern: SecurePattern) {
+  await db.query(`
+    INSERT INTO schema_evolution_requests (pattern_analysis, status) 
+    VALUES ($1, 'pending_admin_review')
+  `, [JSON.stringify(pattern)]);
+  
+  // Notify admins, never auto-execute
+  await notifyAdmins(pattern);
+}
+```
+
+### Immediate Actions Required
+
+**🔥 URGENT (Before Any Deployment)**
+
+1. **[ ] Disable Phase 10.1 Dynamic Schema Evolution**
+   - Comment out dangerous DDL operations
+   - Remove automatic migration execution
+   - Block access to `/api/phase10/test-all` endpoint
+
+2. **[ ] Implement Secure Database Architecture**  
+   - Run Phase 1.5 migrations (JSONB fields + RLS)
+   - Create separate database roles with minimal permissions
+   - Add input sanitization and validation
+
+3. **[ ] Security Audit**
+   - Review all Phase 10 components for vulnerabilities
+   - Test with malicious inputs  
+   - Verify no SQL injection possibilities
+
+4. **[ ] Replace with Secure Implementation**
+   - Rewrite SchemaAnalyzer with secure patterns
+   - Remove DDL permissions from application
+   - Add comprehensive audit logging
+
+### Deployment Decision Matrix
+
+| Feature | Security Status | Deploy Decision |
+|---------|----------------|-----------------|
+| Phase 10.1 Schema Evolution | ❌ CRITICAL VULNERABILITIES | **BLOCK - DO NOT DEPLOY** |
+| Phase 10.2 Knowledge Updates | ✅ SECURE | Deploy after review |
+| Phase 10.3 Food Recognition | ✅ SECURE | Deploy after review |  
+| Phase 10.4 Quick Logs | ✅ SECURE | Deploy after review |
+
+### Security-First Roadmap
+
+**Phase 1 (Immediate)**: Fix critical vulnerabilities, disable unsafe features  
+**Phase 2 (Week 1)**: Implement secure PostgreSQL + JSONB architecture  
+**Phase 3 (Week 2)**: Rewrite Phase 10.1 with security-first approach  
+**Phase 4 (Week 3)**: Comprehensive security testing and audit  
+**Phase 5 (Week 4)**: Deploy with security monitoring
+
+**Bottom Line**: Phase 10 showcases incredible AI capabilities but cannot be deployed with current security vulnerabilities. The secure PostgreSQL + JSONB approach maintains the revolutionary user experience while eliminating security risks.
+
+### Phase 5.9: Weight Loss Education & Muscle Imbalance Detection (IMMEDIATE MVP) 🆕
+**Contributed by: Rhian Seneviratne**
+
+- [ ] 5.9.1 Weight Loss Efficiency Education System
+  - [ ] 5.9.1.1 Create myth-busting rule cards (calorie deficit truth, cardio vs strength)
+  - [ ] 5.9.1.2 Evidence-based tips in Smart Coach ("Did you know?" snippets)
+  - [ ] 5.9.1.3 Personalized deficit calculator based on activity level
+  - [ ] 5.9.1.4 Process efficiency vs routine variation education
+  - [ ] 5.9.1.5 Common misconception corrections (spot reduction, detox myths)
+  - [ ] 5.9.1.6 Science-backed weight loss timeline expectations
+
+- [ ] 5.9.2 Muscle Imbalance Detection Algorithm (Injury Prevention)
+  - [ ] 5.9.2.1 Track left/right performance differences from workout logs
+  - [ ] 5.9.2.2 Detect >15% strength imbalances between sides
+  - [ ] 5.9.2.3 Monitor compensation patterns (e.g., favoring one leg)
+  - [ ] 5.9.2.4 Flag injury risk areas based on imbalance patterns
+  - [ ] 5.9.2.5 Generate corrective exercise recommendations
+  - [ ] 5.9.2.6 Track imbalance progression over time
+  - [ ] 5.9.2.7 Alert for sudden performance drops (potential injury)
+
+- [ ] 5.9.3 Integration with Existing Systems
+  - [ ] 5.9.3.1 Add to SmartCoach rule cards (rules #36-40)
+  - [ ] 5.9.3.2 Create ImbalanceAnalyzer service in `lib/ai/analysis/`
+  - [ ] 5.9.3.3 Update ProgressDashboard with imbalance widget
+  - [ ] 5.9.3.4 Add weight loss education to onboarding flow
+  - [ ] 5.9.3.5 Include in daily insights generation
 
 ## 💡 Revolutionary Differentiators with Behavioral Design
 

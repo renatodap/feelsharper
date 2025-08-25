@@ -36,7 +36,7 @@ export function useFeatureGate(featureName: string): FeatureGateData {
         if (response.ok) {
           const data = await response.json();
           setIsEnabled(data.enabled);
-          setHasAccess(data.hasAccess);
+          setHasAccess(Boolean(data.hasAccess));
           setUsageLimit(data.usageLimit);
           setTierRequired(data.tierRequired || 'free');
         } else {
@@ -82,7 +82,7 @@ export function useFeatureGate(featureName: string): FeatureGateData {
   };
   
   const canUse = hasAccess && (!usageLimit || usageLimit.current_usage < usageLimit.monthly_limit);
-  const upgradeRequired = !hasAccess || (usageLimit && usageLimit.current_usage >= usageLimit.monthly_limit);
+  const upgradeRequired = Boolean(!hasAccess || (usageLimit && usageLimit.current_usage >= usageLimit.monthly_limit));
   const upgradeUrl = `/pricing?feature=${featureName}&tier=${tierRequired}`;
   
   return {

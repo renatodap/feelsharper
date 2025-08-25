@@ -1,0 +1,351 @@
+/**
+ * Sharpened Design Tokens
+ * Version: 1.0.0
+ * 
+ * Import this file into your project to use Sharpened brand colors,
+ * typography, spacing, and other design tokens.
+ * 
+ * Usage: @import 'sharpened-design-tokens.css';
+ */
+
+:root {
+  /* ===========================
+     Core Brand Colors
+     =========================== */
+  --sharpened-black: #000000;
+  --sharpened-void: #0A0A0A;
+  --sharpened-dark: #111111;
+  --sharpened-coal: #1A1A1A;
+  --sharpened-charcoal: #2A2A2A;
+  --sharpened-gray-dark: #3A3A3A;
+  --sharpened-gray: #666666;
+  --sharpened-gray-light: #999999;
+  --sharpened-gray-lighter: #CCCCCC;
+  --sharpened-white: #FFFFFF;
+
+  /* ===========================
+     Product Lightning Colors
+     =========================== */
+  
+  /* FeelSharper - Body Optimization */
+  --feel-primary: #4169E1;      /* Royal Blue */
+  --feel-secondary: #00BFFF;    /* Deep Sky Blue */
+  --feel-accent: #87CEEB;       /* Sky Blue */
+  --feel-light: #E6F2FF;        /* Light Blue Background */
+  --feel-gradient: linear-gradient(135deg, var(--feel-primary), var(--feel-secondary));
+  
+  /* StudySharper - Learning & Mind */
+  --study-primary: #8B4FC3;     /* Purple */
+  --study-secondary: #B794F4;   /* Light Purple */
+  --study-accent: #E9D8FD;      /* Lavender */
+  --study-light: #F6EDFF;       /* Light Purple Background */
+  --study-gradient: linear-gradient(135deg, var(--study-primary), var(--study-secondary));
+  
+  /* WorkSharper - Career & Professional */
+  --work-primary: #FF6B35;      /* Burnt Orange */
+  --work-secondary: #FFA500;    /* Pure Orange */
+  --work-accent: #FFD700;       /* Gold */
+  --work-light: #FFF4E6;        /* Light Orange Background */
+  --work-gradient: linear-gradient(135deg, var(--work-primary), var(--work-secondary));
+  
+  /* MindSharper - Mental Health */
+  --mind-primary: #FF1493;      /* Deep Pink */
+  --mind-secondary: #FF69B4;    /* Hot Pink */
+  --mind-accent: #FFB6C1;       /* Light Pink */
+  --mind-light: #FFE6F1;        /* Light Pink Background */
+  --mind-gradient: linear-gradient(135deg, var(--mind-primary), var(--mind-secondary));
+  
+  /* CodeSharper - Development */
+  --code-primary: #00FF41;      /* Matrix Green */
+  --code-secondary: #39FF14;    /* Neon Green */
+  --code-accent: #7FFF00;       /* Chartreuse */
+  --code-light: #E6FFE6;        /* Light Green Background */
+  --code-gradient: linear-gradient(135deg, var(--code-primary), var(--code-secondary));
+
+  /* ===========================
+     Glass Morphism Effects
+     =========================== */
+  --glass-blur: 10px;
+  --glass-blur-heavy: 20px;
+  --glass-opacity: 0.1;
+  --glass-opacity-heavy: 0.2;
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-heavy: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* ===========================
+     Typography Scale
+     =========================== */
+  --font-primary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Fira Code', 'Inconsolata', 'Courier New', monospace;
+  
+  /* Font Sizes */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;     /* 18px */
+  --text-xl: 1.25rem;      /* 20px */
+  --text-2xl: 1.5rem;      /* 24px */
+  --text-3xl: 1.875rem;    /* 30px */
+  --text-4xl: 2.25rem;     /* 36px */
+  --text-5xl: 3rem;        /* 48px */
+  --text-6xl: 3.75rem;     /* 60px */
+  --text-7xl: 4.5rem;      /* 72px */
+  --text-8xl: 6rem;        /* 96px */
+  --text-9xl: 8rem;        /* 128px */
+
+  /* Font Weights */
+  --font-thin: 100;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* ===========================
+     Spacing Scale
+     =========================== */
+  --space-0: 0;
+  --space-px: 1px;
+  --space-0-5: 0.125rem;   /* 2px */
+  --space-1: 0.25rem;      /* 4px */
+  --space-1-5: 0.375rem;   /* 6px */
+  --space-2: 0.5rem;       /* 8px */
+  --space-2-5: 0.625rem;   /* 10px */
+  --space-3: 0.75rem;      /* 12px */
+  --space-3-5: 0.875rem;   /* 14px */
+  --space-4: 1rem;         /* 16px */
+  --space-5: 1.25rem;      /* 20px */
+  --space-6: 1.5rem;       /* 24px */
+  --space-7: 1.75rem;      /* 28px */
+  --space-8: 2rem;         /* 32px */
+  --space-9: 2.25rem;      /* 36px */
+  --space-10: 2.5rem;      /* 40px */
+  --space-12: 3rem;        /* 48px */
+  --space-14: 3.5rem;      /* 56px */
+  --space-16: 4rem;        /* 64px */
+  --space-20: 5rem;        /* 80px */
+  --space-24: 6rem;        /* 96px */
+  --space-28: 7rem;        /* 112px */
+  --space-32: 8rem;        /* 128px */
+
+  /* ===========================
+     Border Radius
+     =========================== */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;    /* 2px */
+  --radius-base: 0.25rem;   /* 4px */
+  --radius-md: 0.375rem;    /* 6px */
+  --radius-lg: 0.5rem;      /* 8px */
+  --radius-xl: 0.75rem;     /* 12px */
+  --radius-2xl: 1rem;       /* 16px */
+  --radius-3xl: 1.5rem;     /* 24px */
+  --radius-full: 9999px;
+
+  /* ===========================
+     Shadows
+     =========================== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-none: none;
+
+  /* Lightning Glow Shadows */
+  --shadow-glow-feel: 0 0 20px rgba(65, 105, 225, 0.4);
+  --shadow-glow-study: 0 0 20px rgba(139, 79, 195, 0.4);
+  --shadow-glow-work: 0 0 20px rgba(255, 107, 53, 0.4);
+  --shadow-glow-mind: 0 0 20px rgba(255, 20, 147, 0.4);
+  --shadow-glow-code: 0 0 20px rgba(0, 255, 65, 0.4);
+
+  /* ===========================
+     Animation & Transitions
+     =========================== */
+  --transition-fastest: 100ms;
+  --transition-fast: 200ms;
+  --transition-base: 300ms;
+  --transition-slow: 400ms;
+  --transition-slower: 600ms;
+  --transition-slowest: 1000ms;
+
+  /* Easing Functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ===========================
+     Z-Index Scale
+     =========================== */
+  --z-0: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-60: 60;
+  --z-70: 70;
+  --z-80: 80;
+  --z-90: 90;
+  --z-100: 100;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-notification: 1080;
+
+  /* ===========================
+     Breakpoints
+     =========================== */
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+  --screen-3xl: 1920px;
+  --screen-4xl: 2560px;
+}
+
+/* ===========================
+   Utility Classes
+   =========================== */
+
+/* Glass Morphism */
+.glass {
+  background: rgba(255, 255, 255, var(--glass-opacity));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.glass-heavy {
+  background: rgba(255, 255, 255, var(--glass-opacity-heavy));
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+  border: 1px solid var(--glass-border-heavy);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Lightning Hover Effects */
+.lightning-hover {
+  transition: all var(--transition-base) var(--ease-out);
+}
+
+.lightning-hover:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+/* Product Theme Classes */
+.theme-feel {
+  --product-primary: var(--feel-primary);
+  --product-secondary: var(--feel-secondary);
+  --product-gradient: var(--feel-gradient);
+}
+
+.theme-study {
+  --product-primary: var(--study-primary);
+  --product-secondary: var(--study-secondary);
+  --product-gradient: var(--study-gradient);
+}
+
+.theme-work {
+  --product-primary: var(--work-primary);
+  --product-secondary: var(--work-secondary);
+  --product-gradient: var(--work-gradient);
+}
+
+.theme-mind {
+  --product-primary: var(--mind-primary);
+  --product-secondary: var(--mind-secondary);
+  --product-gradient: var(--mind-gradient);
+}
+
+.theme-code {
+  --product-primary: var(--code-primary);
+  --product-secondary: var(--code-secondary);
+  --product-gradient: var(--code-gradient);
+}
+
+/* Dark Mode Base */
+.dark-theme {
+  background-color: var(--sharpened-black);
+  color: var(--sharpened-white);
+}
+
+/* Animation Keyframes */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes lightning-strike {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px currentColor);
+  }
+  50% {
+    filter: drop-shadow(0 0 20px currentColor) drop-shadow(0 0 30px currentColor);
+  }
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+  :root {
+    --text-base: 0.875rem;
+    --text-lg: 1rem;
+    --text-xl: 1.125rem;
+    --text-2xl: 1.25rem;
+    --text-3xl: 1.5rem;
+    --text-4xl: 1.875rem;
+    --text-5xl: 2.25rem;
+    --text-6xl: 3rem;
+    --text-7xl: 3.75rem;
+    --text-8xl: 4.5rem;
+    --text-9xl: 6rem;
+  }
+}

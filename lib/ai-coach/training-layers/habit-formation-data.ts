@@ -269,7 +269,7 @@ export class HabitFormationTracker {
       if (!habits) return [];
 
       // Transform into training examples
-      const trainingData = habits.map(habit => ({
+      const trainingData = habits.map((habit: any) => ({
         // Input features
         features: {
           streak_length: habit.current_streak || 0,

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeelSharper - Summer Body Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sharpened-black: #000000;
+            --sharpened-dark: #111111;
+            --sharpened-gray: #666666;
+            --sharpened-white: #FFFFFF;
+            --feel-primary: #4169E1;
+            --feel-secondary: #00BFFF;
+            --summer-orange: #FF6B35;
+            --summer-yellow: #FFD700;
+            --summer-pink: #FF69B4;
+            --ocean-blue: #00CED1;
+        }
+
+        @page {
+            size: 1080px 1080px;
+            margin: 0;
+        }
+
+        body {
+            width: 1080px;
+            height: 1080px;
+            font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, 
+                var(--summer-orange) 0%, 
+                var(--summer-pink) 30%, 
+                var(--ocean-blue) 100%);
+            color: var(--sharpened-white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Beach Background */
+        .beach-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .sun {
+            position: absolute;
+            top: 100px;
+            right: 100px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, 
+                var(--summer-yellow) 0%, 
+                var(--summer-orange) 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 80px var(--summer-yellow);
+            animation: sun-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes sun-pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 80px var(--summer-yellow);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 120px var(--summer-yellow);
+            }
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2300CED1' fill-opacity='0.3' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            animation: wave-motion 8s ease-in-out infinite;
+        }
+
+        @keyframes wave-motion {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-50px); }
+        }
+
+        /* Main Container */
+        .summer-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 60px;
+        }
+
+        /* Header */
+        .summer-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .season-badge {
+            background: linear-gradient(135deg, var(--summer-yellow), var(--summer-orange));
+            color: var(--sharpened-black);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .summer-title {
+            font-size: 84px;
+            font-weight: 900;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -3px;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .summer-subtitle {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Challenge Card */
+        .challenge-card {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--sharpened-dark);
+            border-radius: 30px;
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Timeline */
+        .timeline-section {
+            margin-bottom: 30px;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timeline-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--summer-orange);
+        }
+
+        .timeline-duration {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--feel-primary));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .timeline-progress {
+            background: rgba(0, 206, 209, 0.1);
+            border-radius: 15px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--ocean-blue), var(--summer-pink));
+            height: 100%;
+            width: 35%;
+            border-radius: 15px;
+            position: relative;
+            animation: progress-grow 2s ease-out;
+        }
+
+        @keyframes progress-grow {
+            0% { width: 0%; }
+            100% { width: 35%; }
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--sharpened-dark);
+        }
+
+        /* Goals */
+        .goals-section {
+            margin-bottom: 30px;
+        }
+
+        .goals-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--summer-orange);
+            margin-bottom: 20px;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .goal-item {
+            background: linear-gradient(135deg, 
+                rgba(255, 107, 53, 0.1), 
+                rgba(0, 206, 209, 0.1));
+            border: 2px solid var(--summer-orange);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .goal-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .goal-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--sharpened-dark);
+        }
+
+        /* Prizes */
+        .prizes-section {
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.1), 
+                rgba(255, 105, 180, 0.1));
+            border: 2px solid var(--summer-yellow);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .prizes-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--summer-orange);
+            margin-bottom: 15px;
+        }
+
+        .prize-list {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 15px;
+        }
+
+        .prize-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prize-icon {
+            font-size: 48px;
+        }
+
+        .prize-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--sharpened-dark);
+        }
+
+        /* CTA */
+        .cta-button {
+            background: linear-gradient(135deg, var(--summer-orange), var(--summer-pink));
+            color: white;
+            padding: 25px 50px;
+            border-radius: 35px;
+            font-size: 24px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.3);
+            animation: cta-wave 2s ease-in-out infinite;
+        }
+
+        @keyframes cta-wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Floating Elements */
+        .beach-icon {
+            position: absolute;
+            font-size: 40px;
+            animation: beach-float 6s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes beach-float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+                opacity: 1;
+            }
+        }
+
+        .beach-icon:nth-child(3) { top: 25%; left: 10%; animation-delay: 0s; }
+        .beach-icon:nth-child(4) { top: 30%; right: 10%; animation-delay: 2s; }
+        .beach-icon:nth-child(5) { bottom: 35%; left: 15%; animation-delay: 4s; }
+
+        /* Editable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover {
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 8px;
+        }
+
+        @media print {
+            body {
+                width: 1080px;
+                height: 1080px;
+            }
+            [contenteditable="true"]:hover {
+                background: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Beach Background -->
+    <div class="beach-bg">
+        <div class="sun"></div>
+        <div class="wave"></div>
+        <div class="beach-icon">🏖️</div>
+        <div class="beach-icon">🌴</div>
+        <div class="beach-icon">🏄‍♂️</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="summer-container">
+        <!-- Header -->
+        <div class="summer-header">
+            <div class="season-badge" contenteditable="true">8 Week Challenge</div>
+            <h1 class="summer-title" contenteditable="true">Summer<br>Body</h1>
+            <p class="summer-subtitle" contenteditable="true">Transform before beach season!</p>
+        </div>
+
+        <!-- Challenge Card -->
+        <div class="challenge-card">
+            <!-- Timeline -->
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <div class="timeline-title" contenteditable="true">Challenge Progress</div>
+                    <div class="timeline-duration" contenteditable="true">Week 3 of 8</div>
+                </div>
+                <div class="timeline-progress">
+                    <div class="progress-fill"></div>
+                    <div class="progress-text" contenteditable="true">35% Complete</div>
+                </div>
+            </div>
+
+            <!-- Goals -->
+            <div class="goals-section">
+                <div class="goals-title" contenteditable="true">Your Summer Goals</div>
+                <div class="goals-grid">
+                    <div class="goal-item">
+                        <div class="goal-icon">🔥</div>
+                        <div class="goal-text" contenteditable="true">Burn 10lbs</div>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-icon">💪</div>
+                        <div class="goal-text" contenteditable="true">Build Muscle</div>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-icon">🏃</div>
+                        <div class="goal-text" contenteditable="true">5K Run</div>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-icon">🧘</div>
+                        <div class="goal-text" contenteditable="true">Daily Habit</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prizes -->
+            <div class="prizes-section">
+                <div class="prizes-title" contenteditable="true">Complete & Win!</div>
+                <div class="prize-list">
+                    <div class="prize-item">
+                        <div class="prize-icon">🏆</div>
+                        <div class="prize-label" contenteditable="true">Trophy</div>
+                    </div>
+                    <div class="prize-item">
+                        <div class="prize-icon">👕</div>
+                        <div class="prize-label" contenteditable="true">Merch</div>
+                    </div>
+                    <div class="prize-item">
+                        <div class="prize-icon">📱</div>
+                        <div class="prize-label" contenteditable="true">Pro Access</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-button" contenteditable="true">Join 5,000+ Challengers</div>
+        </div>
+    </div>
+</body>
+</html>

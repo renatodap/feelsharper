@@ -283,7 +283,7 @@ export function LeaderboardSystem() {
               {(['daily', 'weekly', 'monthly', 'all-time'] as const).map((range) => (
                 <Button
                   key={range}
-                  variant={timeRange === range ? 'default' : 'ghost'}
+                  variant={timeRange === range ? 'primary' : 'ghost'}
                   size="sm"
                   onClick={() => setTimeRange(range)}
                 >
@@ -295,7 +295,7 @@ export function LeaderboardSystem() {
               {(['overall', 'fitness', 'study'] as const).map((cat) => (
                 <Button
                   key={cat}
-                  variant={selectedCategory === cat ? 'default' : 'ghost'}
+                  variant={selectedCategory === cat ? 'primary' : 'ghost'}
                   size="sm"
                   onClick={() => setSelectedCategory(cat)}
                 >

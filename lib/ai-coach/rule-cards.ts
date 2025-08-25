@@ -582,14 +582,14 @@ export class RuleCardsEngine {
   }
 
   private isPostWorkoutContext(input: string, context: UserContext): boolean {
-    return input.includes('after') || input.includes('finished') || input.includes('done') ||
+    return Boolean(input.includes('after') || input.includes('finished') || input.includes('done') ||
            input.includes('recovery') || input.includes('sore') ||
-           (context.lastWorkout && (Date.now() - context.lastWorkout.timestamp.getTime()) < 2 * 60 * 60 * 1000);
+           (context.lastWorkout && context.lastWorkout.timestamp && (Date.now() - context.lastWorkout.timestamp.getTime()) < 2 * 60 * 60 * 1000));
   }
 
   private isSleepContext(input: string, context: UserContext): boolean {
-    return input.includes('sleep') || input.includes('tired') || input.includes('exhausted') ||
-           (context.lastSleep && context.lastSleep.hours < 7);
+    return Boolean(input.includes('sleep') || input.includes('tired') || input.includes('exhausted') ||
+           (context.lastSleep && context.lastSleep.hours !== undefined && context.lastSleep.hours < 7));
   }
 
   private isHydrationContext(input: string, context: UserContext): boolean {

@@ -195,11 +195,15 @@ export class ABTestingService {
         return null;
       }
 
+      const variant = Array.isArray(data.experiment_variants) 
+        ? data.experiment_variants[0] 
+        : data.experiment_variants;
+      
       return {
         experimentId: data.experiment_id,
         variantId: data.variant_id,
-        variantKey: data.experiment_variants.variant_key,
-        config: data.experiment_variants.config,
+        variantKey: variant?.variant_key || '',
+        config: variant?.config || {},
         assignedAt: new Date(data.assigned_at)
       };
     } catch (error) {

@@ -200,7 +200,6 @@ export function PricingExperiment({
               </ul>
 
               <FreePlanButton 
-                onClick={() => handlePlanSelect('free')}
                 className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 py-2 px-4 rounded-lg font-medium transition-colors"
               >
                 Get Started Free
@@ -237,7 +236,6 @@ export function PricingExperiment({
 
             <PricingButton 
               plan="premium"
-              onClick={() => handleCheckoutStart('monthly')}
               className="w-full bg-blue-600 text-white hover:bg-blue-700 py-3 px-6 rounded-lg font-medium transition-colors"
             >
               Start Pro Monthly
@@ -282,7 +280,6 @@ export function PricingExperiment({
 
               <PricingButton 
                 plan="annual"
-                onClick={() => handleCheckoutStart('annual')}
                 className="w-full bg-green-600 text-white hover:bg-green-700 py-3 px-6 rounded-lg font-medium transition-colors"
               >
                 Start Pro Annual
@@ -436,7 +433,6 @@ function DefaultPricingComponent({
                 <span className="text-gray-600 dark:text-gray-400 ml-1">/month</span>
               </div>
               <FreePlanButton 
-                onClick={() => onPlanSelect?.('free')}
                 className="w-full bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600 py-2 px-4 rounded-lg font-medium transition-colors"
               >
                 Get Started Free
@@ -454,7 +450,6 @@ function DefaultPricingComponent({
             </div>
             <PricingButton 
               plan="premium"
-              onClick={() => onPlanSelect?.('monthly')}
               className="w-full bg-blue-600 text-white hover:bg-blue-700 py-3 px-6 rounded-lg font-medium transition-colors"
             >
               Start Pro

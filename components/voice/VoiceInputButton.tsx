@@ -236,7 +236,7 @@ export function VoiceInputField({
         onError={onError}
         className="w-full h-24 rounded-lg border-2 border-dashed border-border hover:border-primary transition-colors"
         variant="ghost"
-        size="default"
+        size="lg"
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
         {isProcessing ? (
