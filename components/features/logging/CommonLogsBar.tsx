@@ -216,7 +216,9 @@ export const CommonLogsBar: React.FC<CommonLogsBarProps> = ({
 
   const loadQuickLogsFromStorage = () => {
     try {
-      const stored = localStorage.getItem(STORAGE.QUICK_LOGS);
+      // Use user-specific storage key
+      const storageKey = userId ? `${STORAGE.QUICK_LOGS}_${userId}` : STORAGE.QUICK_LOGS;
+      const stored = localStorage.getItem(storageKey);
       if (stored) {
         const parsed = JSON.parse(stored);
         // Convert date strings back to Date objects
@@ -233,7 +235,9 @@ export const CommonLogsBar: React.FC<CommonLogsBarProps> = ({
 
   const saveQuickLogsToStorage = (logs: QuickLog[]) => {
     try {
-      localStorage.setItem(STORAGE.QUICK_LOGS, JSON.stringify(logs));
+      // Use user-specific storage key
+      const storageKey = userId ? `${STORAGE.QUICK_LOGS}_${userId}` : STORAGE.QUICK_LOGS;
+      localStorage.setItem(storageKey, JSON.stringify(logs));
     } catch (error) {
       if (error instanceof Error && error.message.includes('QuotaExceeded')) {
         // Clear old data and retry

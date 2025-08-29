@@ -40,8 +40,9 @@ export default function QuickLogPage() {
     // Count frequency of similar logs
     const frequencyMap = new Map<string, QuickLog>()
     
-    // Get stored frequency data
-    const storedFrequency = localStorage.getItem('feelsharper_frequency_data')
+    // Get stored frequency data FOR THIS USER
+    const frequencyKey = user?.id ? `feelsharper_frequency_data_${user.id}` : 'feelsharper_frequency_data'
+    const storedFrequency = localStorage.getItem(frequencyKey)
     if (storedFrequency) {
       try {
         const data = JSON.parse(storedFrequency)
@@ -71,7 +72,7 @@ export default function QuickLogPage() {
         console.error('Error loading frequency data:', error)
       }
     }
-  }, [recentLogs])
+  }, [recentLogs, user?.id])
   
   // Helper to detect activity type from text
   const detectActivityType = (text: string): QuickLog['type'] => {
@@ -158,7 +159,10 @@ export default function QuickLogPage() {
       const response = await fetch('/api/parse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: logText })
+        body: JSON.stringify({ 
+          text: logText,
+          userId: user?.id  // Pass user ID for proper association
+        })
       })
 
       if (!response.ok) {
@@ -180,8 +184,9 @@ export default function QuickLogPage() {
       setRecentLogs(updatedLogs)
       localStorage.setItem('recentLogs', JSON.stringify(updatedLogs))
       
-      // Update frequency data for CommonLogsBar
-      const frequencyData = localStorage.getItem('feelsharper_frequency_data')
+      // Update frequency data for CommonLogsBar - USER SPECIFIC
+      const frequencyKey = user?.id ? `feelsharper_frequency_data_${user.id}` : 'feelsharper_frequency_data'
+      const frequencyData = localStorage.getItem(frequencyKey)
       let frequency = { activities: {}, lastUpdated: new Date().toISOString(), totalLogs: 0 }
       
       if (frequencyData) {
@@ -195,7 +200,7 @@ export default function QuickLogPage() {
       frequency.lastUpdated = new Date().toISOString()
       frequency.totalLogs++
       
-      localStorage.setItem('feelsharper_frequency_data', JSON.stringify(frequency))
+      localStorage.setItem(frequencyKey, JSON.stringify(frequency))
 
       // Clear input after successful submission
       setInput('')
