@@ -13,7 +13,7 @@ function SignUpForm() {
   const [err, setErr] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const params = useSearchParams();
-  const redirect = params.get("redirect") || "/today";
+  const redirect = params.get("redirect") || "/insights";
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -32,6 +32,12 @@ export default function AuthenticatedLayout({
   ];
 
   useEffect(() => {
+    // If user is logged in and on the landing page, redirect to insights
+    if (!loading && user && pathname === '/') {
+      router.push('/insights');
+      return;
+    }
+
     // Skip auth check for public routes
     if (publicRoutes.some(route => pathname?.startsWith(route))) {
       return;

@@ -11,7 +11,7 @@ interface GoogleAuthButtonProps {
 
 export default function GoogleAuthButton({ 
   mode = 'signin', 
-  redirectTo = '/today',
+  redirectTo = '/insights',
   className = ''
 }: GoogleAuthButtonProps) {
   const [loading, setLoading] = useState(false);

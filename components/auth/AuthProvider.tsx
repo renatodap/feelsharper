@@ -57,8 +57,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
 
         if (event === 'SIGNED_IN') {
-          console.log('✅ AuthProvider: User signed in, redirecting to /today');
-          router.push('/today');
+          console.log('✅ AuthProvider: User signed in, redirecting to /insights');
+          router.push('/insights');
         }
         
         if (event === 'SIGNED_OUT') {

@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const type = searchParams.get('type');
-  const next = searchParams.get('next') ?? '/today';
+  const next = searchParams.get('next') ?? '/insights';
 
   console.log('Auth callback received:', { code: !!code, next });
 

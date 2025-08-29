@@ -12,7 +12,7 @@ function SignInForm() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const params = useSearchParams();
-  const redirect = params.get("redirect") || "/today";
+  const redirect = params.get("redirect") || "/insights";
   const authError = params.get("error");
   const errorDetails = params.get("details");
 

@@ -27,7 +27,7 @@ export default function AuthGuard({
         router.push(redirectUrl);
       } else if (!requireAuth && user) {
         // If user is logged in but trying to access public-only pages (like login)
-        router.push('/today');
+        router.push('/insights');
       }
     }
   }, [user, loading, router, redirectTo, requireAuth]);
