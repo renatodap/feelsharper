@@ -1,17 +1,15 @@
 # Active Issues
 
-### Issue: Connect Parsers to API (Day 3-4)
-- **Started**: 2025-08-29 2:30 PM
-- **Estimated Completion**: 2025-08-29 3:00 PM
+### Issue: Create Basic UI Pages (Day 11-12)
+- **Started**: 2025-08-29 3:20 PM
+- **Estimated Completion**: 2025-08-29 3:50 PM
 - **Status**: In Progress
-- **Description**: Wire up existing EnhancedFoodParser and WorkoutParser to /api/parse endpoint
+- **Description**: Create three working pages - log, insights, dashboard
 - **Progress Notes**: 
-  - [x] Connect EnhancedFoodParser to detect food inputs
-  - [x] Connect WorkoutParser to detect workout inputs
-  - [x] Add simple router to detect input type
-  - [ ] Test with "eggs and toast" (food)
-  - [ ] Test with "ran 5k" (workout)
-  - [ ] Test with "weight 175" (weight)
+  - [ ] Create app/log/page.tsx with UnifiedNaturalInput
+  - [ ] Create app/insights/page.tsx to show insights
+  - [ ] Update app/dashboard/page.tsx with widgets
+  - [ ] Test all pages work
 
 ## How to Use This File
 When starting work on an issue:

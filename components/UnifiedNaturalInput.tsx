@@ -130,7 +130,7 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
     setAiResponse('');
 
     try {
-      const response = await fetch('/api/ai/parse', {
+      const response = await fetch('/api/parse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: inputText })
