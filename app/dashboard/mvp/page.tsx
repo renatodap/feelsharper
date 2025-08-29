@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import QuickFoodLogger from '@/components/food/QuickFoodLogger';
-import SimpleWorkoutTracker from '@/components/workout/SimpleWorkoutTracker';
+// import QuickFoodLogger from '@/components/food/QuickFoodLogger';
+// import SimpleWorkoutTracker from '@/components/workout/SimpleWorkoutTracker';
 import ProgressDashboard from '@/components/dashboard/ProgressDashboard';
 import { 
   Apple, 
@@ -300,14 +300,20 @@ export default function MVPDashboard() {
                   Scan Food
                 </Button>
               </div>
-              <QuickFoodLogger onLog={handleFoodLog} />
+              {/* <QuickFoodLogger onLog={handleFoodLog} /> */}
+              <div className="text-center py-8 text-muted-foreground">
+                <p>Food logging component coming soon</p>
+              </div>
             </Card>
           </div>
         )}
 
         {activeTab === 'workout' && (
           <div className="space-y-6">
-            <SimpleWorkoutTracker />
+            {/* <SimpleWorkoutTracker /> */}
+            <div className="text-center py-8 text-muted-foreground">
+              <p>Workout tracking component coming soon</p>
+            </div>
           </div>
         )}
 

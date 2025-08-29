@@ -5,10 +5,10 @@ import "./brand.css";
 import "./sharpened.css";
 import "./sharpened-system.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
-import { UpgradeBanner } from "@/components/premium/UpgradePrompt";
-import { PWAProvider } from "@/components/pwa/PWAProvider";
-import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
-import { FeedbackButton } from "@/components/feedback/FeedbackButton";
+// import { UpgradeBanner } from "@/components/premium/UpgradePrompt";
+// import { PWAProvider } from "@/components/pwa/PWAProvider";
+// import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
+// import { FeedbackButton } from "@/components/feedback/FeedbackButton";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 
 const inter = Inter({
@@ -124,12 +124,12 @@ export default function RootLayout({
       <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
         <ThemeProvider>
           <AuthProvider>
-            <PWAProvider>
-              <UpgradeBanner />
+            {/* <PWAProvider> */}
+              {/* <UpgradeBanner /> */}
               {children}
-              <OfflineIndicator />
-              <FeedbackButton />
-            </PWAProvider>
+              {/* <OfflineIndicator /> */}
+              {/* <FeedbackButton /> */}
+            {/* </PWAProvider> */}
           </AuthProvider>
         </ThemeProvider>
       </body>

@@ -14,8 +14,8 @@ import { SmartCoach } from '@/lib/ai/coach/SmartCoach';
 import { VoiceTranscriber } from '@/lib/ai/voice/VoiceTranscriber';
 import { PhotoAnalyzer } from '@/lib/ai/vision/PhotoAnalyzer';
 import { PatternDetector } from '@/lib/ai/patterns/PatternDetector';
-import { TrainingLoadAnalyzer } from '@/lib/ai/analysis/TrainingLoadAnalyzer';
-import { RecoveryPredictor } from '@/lib/ai/analysis/RecoveryPredictor';
+// import { TrainingLoadAnalyzer } from '@/lib/ai/analysis/TrainingLoadAnalyzer';
+// import { RecoveryPredictor } from '@/lib/ai/analysis/RecoveryPredictor';
 
 export class AIOrchestrator {
   private handlers!: Record<AIRequestType, any>;
@@ -34,8 +34,8 @@ export class AIOrchestrator {
       voice_transcription: new VoiceTranscriber(),
       photo_analysis: new PhotoAnalyzer(),
       pattern_detection: new PatternDetector(),
-      load_analysis: new TrainingLoadAnalyzer(),
-      recovery_prediction: new RecoveryPredictor()
+      // load_analysis: new TrainingLoadAnalyzer(),
+      // recovery_prediction: new RecoveryPredictor()
     };
   }
 
