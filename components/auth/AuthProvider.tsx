@@ -56,8 +56,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
 
-        if (event === 'SIGNED_IN') {
-          console.log('✅ AuthProvider: User signed in, redirecting to /insights');
+        // Only redirect on actual sign in (not on session restoration)
+        // SIGNED_IN fires on: login, signup, and session restoration
+        // We only want to redirect on actual login/signup actions
+        if (event === 'SIGNED_IN' && window.location.pathname.startsWith('/sign')) {
+          console.log('✅ AuthProvider: User just signed in from auth page, redirecting to /insights');
           router.push('/insights');
         }
         
