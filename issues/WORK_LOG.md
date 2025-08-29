@@ -40,5 +40,24 @@
   - Deploy to Vercel
   - Set up environment variables
   - Connect database
+
+### Session: MVP Week 1 Day 3-4 - Connect Parsers to API
+- **Time**: 2:30 PM - 2:45 PM (15 minutes)
+- **Work Done**:
+  - Connected EnhancedFoodParser to /api/parse endpoint
+  - Connected WorkoutParser to /api/parse endpoint
+  - Added simple keyword-based router to detect input type
+  - Router checks for food, workout, and weight keywords
+  - Falls back to original parser for complex inputs
+- **Implementation Details**:
+  - Food keywords: eggs, toast, breakfast, lunch, dinner, etc.
+  - Workout keywords: ran, run, walk, gym, cardio, etc.
+  - Weight keywords: weight, kg, lbs, pounds
+  - Parser selection based on keyword presence
+- **Files Modified**:
+  - app/api/parse/route.ts
+- **Next Actions**:
+  - Test with sample inputs
+  - Deploy and verify on production
   - Follow TDD process for all fixes
   - Update issue tracking throughout

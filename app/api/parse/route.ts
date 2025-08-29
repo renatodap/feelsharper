@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseNaturalLanguage } from '@/lib/ai/natural-language-parser';
 import { createClient } from '@/lib/supabase/server';
+import { EnhancedFoodParser } from '@/lib/ai/parsers/EnhancedFoodParser';
+import { WorkoutParser } from '@/lib/ai/parsers/WorkoutParser';
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,8 +28,108 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Parse the natural language input
-    const parsed = await parseNaturalLanguage(text, user.id);
+    // Simple router to detect input type
+    let parsed;
+    
+    // Check for food-related keywords
+    const foodKeywords = ['ate', 'eaten', 'breakfast', 'lunch', 'dinner', 'snack', 
+                          'eggs', 'toast', 'chicken', 'rice', 'salad', 'pizza', 
+                          'coffee', 'water', 'juice', 'calories', 'meal'];
+    
+    // Check for workout-related keywords
+    const workoutKeywords = ['ran', 'run', 'walked', 'walk', 'lifted', 'workout', 
+                            'exercise', 'gym', 'squat', 'bench', 'deadlift', 
+                            'cardio', 'bike', 'swim', 'yoga', 'sets', 'reps', 'km', 'miles'];
+    
+    // Check for weight keywords
+    const weightKeywords = ['weight', 'weigh', 'kg', 'lbs', 'pounds', 'kilos'];
+    
+    const lowerText = text.toLowerCase();
+    const hasFood = foodKeywords.some(keyword => lowerText.includes(keyword));
+    const hasWorkout = workoutKeywords.some(keyword => lowerText.includes(keyword));
+    const hasWeight = weightKeywords.some(keyword => lowerText.includes(keyword));
+    
+    // Route to appropriate parser
+    if (hasFood && !hasWorkout) {
+      // Use EnhancedFoodParser
+      const foodParser = new EnhancedFoodParser();
+      const foodResult = await foodParser.parseNaturalLanguage(text);
+      
+      parsed = {
+        type: 'nutrition',
+        confidence: foodResult.confidence,
+        structuredData: {
+          foods: foodResult.foods,
+          meal_type: foodResult.meal_type,
+          calories: foodResult.total_calories,
+          protein: foodResult.total_protein,
+          carbs: foodResult.total_carbs,
+          fat: foodResult.total_fat
+        },
+        subjectiveNotes: foodResult.suggestions?.join(', '),
+        timestamp: new Date()
+      };
+    } else if (hasWorkout && !hasFood) {
+      // Use WorkoutParser (simplified for MVP)
+      const workoutParser = new WorkoutParser();
+      // For MVP, create simple context
+      const context = {
+        user_id: user.id,
+        user_tier: 'free' as const,
+        patterns: [],
+        history: []
+      };
+      const config = {
+        model: 'gpt-3.5-turbo',
+        temperature: 0.2,
+        max_tokens: 1000
+      };
+      
+      try {
+        const workoutResult = await workoutParser.process(text, context, config);
+        parsed = {
+          type: workoutResult.data.type === 'cardio' ? 'cardio' : 'strength',
+          confidence: workoutResult.confidence,
+          structuredData: workoutResult.data,
+          timestamp: new Date()
+        };
+      } catch (workoutError) {
+        // Fallback to simple parsing
+        parsed = {
+          type: 'cardio',
+          confidence: 70,
+          structuredData: {
+            activity: text,
+            duration_minutes: 30
+          },
+          timestamp: new Date()
+        };
+      }
+    } else if (hasWeight) {
+      // Simple weight parsing
+      const weightMatch = text.match(/(\d+(?:\.\d+)?)\s*(kg|lbs?|pounds?|kilos?)?/i);
+      if (weightMatch) {
+        const value = parseFloat(weightMatch[1]);
+        const unit = weightMatch[2]?.toLowerCase().includes('lb') || 
+                    weightMatch[2]?.toLowerCase().includes('pound') ? 'lbs' : 'kg';
+        
+        parsed = {
+          type: 'weight',
+          confidence: 95,
+          structuredData: {
+            weight: value,
+            unit: unit
+          },
+          timestamp: new Date()
+        };
+      } else {
+        // Fallback to original parser
+        parsed = await parseNaturalLanguage(text, user.id);
+      }
+    } else {
+      // Fallback to original parser for complex or unclear inputs
+      parsed = await parseNaturalLanguage(text, user.id);
+    }
     
     // Store in database - using actual Supabase schema columns
     // Ensure sport/exercise names are preserved in the data
