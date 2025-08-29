@@ -25,6 +25,13 @@ interface ActivityLog {
   timestamp: string;
 }
 
+// Lightning Logo Component - Consistent across all pages
+const LightningLogo = ({ className = "w-8 h-8" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M13 2L3 14h9l-1 8 10-12h-9z"/>
+  </svg>
+);
+
 export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -192,9 +199,10 @@ export default function DashboardPage() {
       </nav>
 
       <main className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 py-8">
-        {/* Quick Input Section */}
+        {/* Quick Input Section with Sharp Angular Design */}
         <div className="mb-8">
-          <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-800 p-6">
+          <div className="relative bg-gray-900/50 backdrop-blur-xl border border-blue-500/20 p-6" 
+               style={{ clipPath: 'polygon(0 0, 100% 0, 98% 100%, 0% 100%)' }}>
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Zap className="text-blue-400" size={24} />
               Quick Log
@@ -292,9 +300,10 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Stats Grid */}
+        {/* Stats Grid with Sharp Angular Design */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gray-900/30 backdrop-blur rounded-xl p-6 border border-gray-800">
+          <div className="relative bg-gray-900/30 backdrop-blur p-6 border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300"
+               style={{ clipPath: 'polygon(0 0, 100% 0, 95% 100%, 0% 100%)' }}>
             <div className="flex items-center justify-between mb-4">
               <Activity className="text-blue-400" size={24} />
               <span className="text-2xl font-bold">{activities.length}</span>
@@ -302,7 +311,8 @@ export default function DashboardPage() {
             <p className="text-gray-400 text-sm">Activities Today</p>
           </div>
 
-          <div className="bg-gray-900/30 backdrop-blur rounded-xl p-6 border border-gray-800">
+          <div className="relative bg-gray-900/30 backdrop-blur p-6 border border-green-500/10 hover:border-green-500/30 transition-all duration-300"
+               style={{ clipPath: 'polygon(5% 0, 100% 0, 100% 100%, 0% 100%)' }}>
             <div className="flex items-center justify-between mb-4">
               <TrendingUp className="text-green-400" size={24} />
               <span className="text-2xl font-bold">+15%</span>
@@ -310,7 +320,8 @@ export default function DashboardPage() {
             <p className="text-gray-400 text-sm">Weekly Progress</p>
           </div>
 
-          <div className="bg-gray-900/30 backdrop-blur rounded-xl p-6 border border-gray-800">
+          <div className="relative bg-gray-900/30 backdrop-blur p-6 border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300"
+               style={{ clipPath: 'polygon(0 0, 100% 0, 95% 100%, 0% 100%)' }}>
             <div className="flex items-center justify-between mb-4">
               <Target className="text-orange-400" size={24} />
               <span className="text-2xl font-bold">3/5</span>
@@ -318,7 +329,8 @@ export default function DashboardPage() {
             <p className="text-gray-400 text-sm">Goals Completed</p>
           </div>
 
-          <div className="bg-gray-900/30 backdrop-blur rounded-xl p-6 border border-gray-800">
+          <div className="relative bg-gray-900/30 backdrop-blur p-6 border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300"
+               style={{ clipPath: 'polygon(5% 0, 100% 0, 100% 100%, 0% 100%)' }}>
             <div className="flex items-center justify-between mb-4">
               <Calendar className="text-purple-400" size={24} />
               <span className="text-2xl font-bold">7</span>
