@@ -1,0 +1,236 @@
+{
+  "timestamp": "2025-08-29T10:08:14.382Z",
+  "flows": [
+    {
+      "name": "Parse Endpoint",
+      "totalTests": 18,
+      "successful": 0,
+      "accuracy": "0.0",
+      "avgDuration": "210",
+      "details": [
+        {
+          "category": "food",
+          "input": "2 eggs and toast for breakfast",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 3491.5455
+        },
+        {
+          "category": "food",
+          "input": "chicken breast with rice and broccoli",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 22.645400000001246
+        },
+        {
+          "category": "food",
+          "input": "protein shake with banana",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 17.799199999999473
+        },
+        {
+          "category": "food",
+          "input": "large pizza with extra cheese",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 17.8757999999998
+        },
+        {
+          "category": "food",
+          "input": "salad with grilled salmon",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 22.863099999998667
+        },
+        {
+          "category": "workout",
+          "input": "ran 5k in 25 minutes",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 15.106499999999869
+        },
+        {
+          "category": "workout",
+          "input": "bench press 3 sets of 10 at 135 lbs",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 14.088400000000547
+        },
+        {
+          "category": "workout",
+          "input": "30 minute yoga session",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 18.94800000000032
+        },
+        {
+          "category": "workout",
+          "input": "played tennis for 2 hours",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 17.364599999998973
+        },
+        {
+          "category": "workout",
+          "input": "walked 10000 steps",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 14.502300000000105
+        },
+        {
+          "category": "weight",
+          "input": "weight 175 lbs",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 15.663500000000568
+        },
+        {
+          "category": "weight",
+          "input": "weigh 80 kg",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 17.9992000000002
+        },
+        {
+          "category": "weight",
+          "input": "my weight is 165 pounds",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 15.387399999999616
+        },
+        {
+          "category": "weight",
+          "input": "82.5 kilos this morning",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 16.017799999999625
+        },
+        {
+          "category": "weight",
+          "input": "weight: 170",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 14.953999999999724
+        },
+        {
+          "category": "complex",
+          "input": "eggs toast and coffee, then ran 5k",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 15.399799999999232
+        },
+        {
+          "category": "complex",
+          "input": "morning weight 175, had protein shake",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 17.035299999999552
+        },
+        {
+          "category": "complex",
+          "input": "gym workout: squats and deadlifts, post-workout meal: chicken and rice",
+          "success": false,
+          "error": "{\"error\":\"Authentication required\"}",
+          "duration": 14.82549999999901
+        }
+      ]
+    },
+    {
+      "name": "End-to-End Flow",
+      "tests": [
+        {
+          "test": "Parse → Save → Retrieve",
+          "success": false,
+          "error": "Parse failed: 401",
+          "duration": 15.492100000001301
+        }
+      ],
+      "successful": 0,
+      "avgDuration": "15"
+    }
+  ],
+  "accuracy": {},
+  "performance": {
+    "avgResponseTime": "14",
+    "maxResponseTime": "15",
+    "under5Seconds": true,
+    "tests": [
+      {
+        "input": "eggs and toast",
+        "duration": 13.61030000000028,
+        "success": false,
+        "error": 401
+      },
+      {
+        "input": "ran 5k",
+        "duration": 12.85109999999986,
+        "success": false,
+        "error": 401
+      },
+      {
+        "input": "weight 175 lbs",
+        "duration": 11.764800000000832,
+        "success": false,
+        "error": 401
+      },
+      {
+        "input": "chicken and rice",
+        "duration": 15.202100000000428,
+        "success": false,
+        "error": 401
+      },
+      {
+        "input": "30 minute workout",
+        "duration": 15.291699999999764,
+        "success": false,
+        "error": 401
+      }
+    ]
+  },
+  "errors": [],
+  "edgeCases": [
+    {
+      "input": "",
+      "expected": "error",
+      "description": "Empty input",
+      "success": true,
+      "status": 401
+    },
+    {
+      "input": "   ",
+      "expected": "error",
+      "description": "Whitespace only",
+      "success": true,
+      "status": 401
+    },
+    {
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expected": "parse",
+      "description": "Very long input",
+      "success": false,
+      "status": 401
+    },
+    {
+      "input": "123 456 789",
+      "expected": "parse",
+      "description": "Numbers only",
+      "success": false,
+      "status": 401
+    },
+    {
+      "input": "!@#$%^&*()",
+      "expected": "parse",
+      "description": "Special characters",
+      "success": false,
+      "status": 401
+    },
+    {
+      "input": "ate pizza 🍕",
+      "expected": "parse",
+      "description": "Emoji input",
+      "success": false,
+      "status": 401
+    }
+  ]
+}
