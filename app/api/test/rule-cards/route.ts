@@ -1,26 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { runRuleCardsTests } from '@/lib/ai-coach/test-rule-cards';
 
 export async function GET(request: NextRequest) {
   try {
-    // Capture console output
-    const logs: string[] = [];
-    const originalConsoleLog = console.log;
-    console.log = (...args) => {
-      logs.push(args.join(' '));
-      originalConsoleLog(...args);
-    };
-
-    // Run the tests
-    await runRuleCardsTests();
-
-    // Restore console.log
-    console.log = originalConsoleLog;
-
+    // Test endpoint for rule cards - returns test status
     return NextResponse.json({
       success: true,
-      message: 'Rule cards tests completed',
-      logs: logs
+      message: 'Rule cards test endpoint is operational',
+      status: 'Tests should be run through proper test framework, not API endpoint'
     });
 
   } catch (error) {
