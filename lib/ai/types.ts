@@ -51,6 +51,7 @@ export interface UserProfile {
   training_style?: string;
   dietary_preferences?: string[];
   subscription_tier: UserTier;
+  avg_daily_calories?: number;
 }
 
 export interface Workout {
@@ -60,6 +61,8 @@ export interface Workout {
   duration_minutes?: number;
   notes?: string;
   ai_parsed?: boolean;
+  intensity_score?: number;
+  total_volume?: number;
 }
 
 export interface Exercise {

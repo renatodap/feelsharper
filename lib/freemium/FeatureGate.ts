@@ -104,7 +104,9 @@ export class FeatureGate {
    * Get the minimum tier required for unlimited access to a feature
    */
   static getRequiredTier(feature: FeatureKey): UserTier {
-    const limits = FEATURE_LIMITS[feature];
+    const limits = FEATURE_LIMITS[feature] as any;
+    
+    if (!limits) return 'elite'; // Default to highest tier if feature not found
     
     if (limits.elite === null || limits.elite === true) return 'elite';
     if (limits.pro === null || limits.pro === true) return 'pro';

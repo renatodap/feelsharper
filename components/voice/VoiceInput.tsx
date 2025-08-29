@@ -49,6 +49,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = React.memo(({
         recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = 'en-US';
+        // @ts-ignore - maxAlternatives may not exist in all browsers
         recognition.maxAlternatives = 3;
         
         recognition.onstart = () => {

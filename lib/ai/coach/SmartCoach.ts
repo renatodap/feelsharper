@@ -395,8 +395,8 @@ IMPORTANT:
     if (context.goals.length > 0) confidence += 0.1;
     
     // Adjust based on response specificity
-    if (response.references.length > 0) confidence += 0.1;
-    if (response.action_items.length > 0) confidence += 0.1;
+    if (response.references && response.references.length > 0) confidence += 0.1;
+    if (response.action_items && response.action_items.length > 0) confidence += 0.1;
     
     return Math.min(1, confidence);
   }

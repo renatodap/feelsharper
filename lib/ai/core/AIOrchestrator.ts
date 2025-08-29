@@ -18,7 +18,7 @@ import { TrainingLoadAnalyzer } from '@/lib/ai/analysis/TrainingLoadAnalyzer';
 import { RecoveryPredictor } from '@/lib/ai/analysis/RecoveryPredictor';
 
 export class AIOrchestrator {
-  private handlers: Record<AIRequestType, any>;
+  private handlers!: Record<AIRequestType, any>;
   private getSupabase;
 
   constructor() {

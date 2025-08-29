@@ -129,7 +129,7 @@ export class EnhancedFoodParser {
       const mockAnalysis = await this.mockPhotoAnalysis(imageBase64);
       
       // Process detected foods
-      const detectedFoods = mockAnalysis.foods.map(food => ({
+      const detectedFoods = mockAnalysis.foods.map((food: any) => ({
         name: food.name,
         category: this.categorizeFood(food.name),
         visible_portion: food.portion,

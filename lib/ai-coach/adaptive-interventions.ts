@@ -439,12 +439,20 @@ export class AdaptiveBehavioralInterventionEngine {
       templateId: template.id,
       type: template.type,
       message: selectedMessage,
+      content: {
+        title: template.type === 'celebration' ? 'Great Job!' : 
+               template.type === 'reminder' ? 'Time to Move' :
+               template.type === 'suggestion' ? 'Pro Tip' : 'Stay Strong',
+        body: selectedMessage,
+        actionText: selectedAction
+      },
       actionPrompt: selectedAction,
       intensity: motivationalStyle.feedbackStyle === 'gentle' ? 'low' : 
                 motivationalStyle.feedbackStyle === 'direct' ? 'high' : 'medium',
       personalizedFor: userType,
       contextMatch: 0.8, // Default context match score
       effectivenessScore: 0.7, // Default effectiveness score
+      effectiveness: 0.7, // Alias for effectivenessScore
       cooldownMinutes: 720, // 12 hours default
       maxDailyUses: 1,
       currentUses: 0

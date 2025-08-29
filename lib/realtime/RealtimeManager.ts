@@ -337,7 +337,7 @@ export class RealtimeManager {
     if (!channel) return;
 
     const state = channel.presenceState();
-    const presence: UserPresence[] = Object.values(state)
+    const presence: UserPresence[] = (Object.values(state) as unknown[])
       .flat()
       .filter((p: any) => p && p.userId) as UserPresence[];
     

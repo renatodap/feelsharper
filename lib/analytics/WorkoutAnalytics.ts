@@ -317,7 +317,7 @@ export class WorkoutAnalytics {
 
     // Group exercises by muscle group
     exercises.forEach((exercise: any) => {
-      exercise.muscleGroups.forEach(muscle => {
+      exercise.muscleGroups.forEach((muscle: string) => {
         if (!muscleGroupMap.has(muscle)) {
           muscleGroupMap.set(muscle, []);
         }
@@ -663,7 +663,7 @@ export class WorkoutAnalytics {
     const exercises = workout.exercises || [];
     const compoundExercises = ['squat', 'deadlift', 'bench press', 'row', 'pull up', 'overhead press'];
     
-    const compoundCount = exercises.filter(ex => 
+    const compoundCount = exercises.filter((ex: any) => 
       compoundExercises.some(compound => ex.name.toLowerCase().includes(compound))
     ).length;
     

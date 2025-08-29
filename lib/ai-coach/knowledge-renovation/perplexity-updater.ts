@@ -189,7 +189,7 @@ Focus on peer-reviewed research and authoritative sources. Highlight any controv
   private async integrateNewKnowledge(research: any): Promise<void> {
     // Store in database for AI coach to reference
     const { createClient } = await import('@/lib/supabase/server');
-    const supabase = createClient();
+    const supabase = await createClient();
 
     await supabase.from('knowledge_updates').insert({
       category: research.query.category,
@@ -302,7 +302,7 @@ export const knowledgeUpdater = new PerplexityKnowledgeUpdater();
 export async function getLatestKnowledge(topic: string): Promise<any> {
   // Check if we have recent knowledge in database
   const { createClient } = await import('@/lib/supabase/server');
-  const supabase = createClient();
+  const supabase = await createClient();
   
   const { data: recentKnowledge } = await supabase
     .from('knowledge_updates')

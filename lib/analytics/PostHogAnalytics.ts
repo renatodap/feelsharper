@@ -391,7 +391,7 @@ export class PostHogAnalytics {
     if (this.userId) {
       const experiments = abTesting.getActiveExperiments(this.userId);
       experiments.forEach(({ experiment, variant }) => {
-        enriched[`experiment_${experiment.id}`] = variant.name;
+        (enriched as any)[`experiment_${experiment.id}`] = variant.name;
       });
     }
 

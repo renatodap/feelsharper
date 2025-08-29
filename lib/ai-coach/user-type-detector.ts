@@ -386,7 +386,7 @@ export class UserTypeDetector {
 
     Object.entries(this.vocabularyMap).forEach(([type, keywords]) => {
       const matches = vocabulary.filter(word => 
-        keywords.some(keyword => word.includes(keyword.toLowerCase()))
+        keywords.some((keyword: string) => word.includes(keyword.toLowerCase()))
       ).length
       
       scores[type as UserPersonaType] = Math.min(matches * 5, 100) // 5 points per match, max 100
