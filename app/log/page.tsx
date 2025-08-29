@@ -4,21 +4,17 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Send, Mic, MicOff, RefreshCw, Utensils, Weight, Activity, Moon, Heart, Ruler } from 'lucide-react'
 import { useAuth } from '@/components/auth/AuthProvider'
-import { CommonLogsBar } from '@/components/features/logging'
-import type { QuickLog } from '@/components/features/logging'
+import { ParsePreview } from '@/components/features/log/ParsePreview'
+import { QuickActions } from '@/components/features/log/QuickActions'
+import { LogHistory } from '@/components/features/log/LogHistory'
 
 interface ParsedResult {
-  intent: string
-  entities: any
+  type: string
+  fields: Record<string, any>
   confidence: number
   message?: string
-}
-
-interface RecentLog {
-  id: string
-  text: string
-  timestamp: string
-  type: string
+  raw_text?: string
+  timestamp?: string
 }
 
 export default function QuickLogPage() {
@@ -28,83 +24,13 @@ export default function QuickLogPage() {
   const [isListening, setIsListening] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [parsedResult, setParsedResult] = useState<ParsedResult | null>(null)
-  const [recentLogs, setRecentLogs] = useState<RecentLog[]>([])
+  const [showPreview, setShowPreview] = useState(false)
   const [error, setError] = useState('')
+  const [refreshKey, setRefreshKey] = useState(0)
   const recognitionRef = useRef<any>(null)
   
-  // Generate quick logs from recent activity
-  const [quickLogs, setQuickLogs] = useState<QuickLog[]>([])
-  
-  // Convert recent logs to quick logs format
-  useEffect(() => {
-    // Count frequency of similar logs
-    const frequencyMap = new Map<string, QuickLog>()
-    
-    // Get stored frequency data FOR THIS USER
-    const frequencyKey = user?.id ? `feelsharper_frequency_data_${user.id}` : 'feelsharper_frequency_data'
-    const storedFrequency = localStorage.getItem(frequencyKey)
-    if (storedFrequency) {
-      try {
-        const data = JSON.parse(storedFrequency)
-        // Convert to QuickLog format
-        const logs: QuickLog[] = Object.entries(data.activities || {})
-          .filter(([_, freq]) => (freq as number) >= 3)
-          .map(([activity, freq], index) => ({
-            id: `ql-${index}`,
-            activity,
-            type: detectActivityType(activity),
-            frequency: freq as number,
-            lastLogged: null,
-            isPinned: false,
-            isHidden: false,
-            icon: getActivityIcon(activity),
-            data: {
-              raw_text: activity,
-              parsed_data: {},
-              confidence: 90,
-            },
-          }))
-          .sort((a, b) => b.frequency - a.frequency)
-          .slice(0, 10)
-        
-        setQuickLogs(logs)
-      } catch (error) {
-        console.error('Error loading frequency data:', error)
-      }
-    }
-  }, [recentLogs, user?.id])
-  
-  // Helper to detect activity type from text
-  const detectActivityType = (text: string): QuickLog['type'] => {
-    const lower = text.toLowerCase()
-    if (lower.includes('food') || lower.includes('ate') || lower.includes('coffee') || lower.includes('lunch') || lower.includes('breakfast') || lower.includes('dinner')) return 'food'
-    if (lower.includes('run') || lower.includes('workout') || lower.includes('exercise') || lower.includes('gym')) return 'exercise'
-    if (lower.includes('weight') || lower.includes('lbs') || lower.includes('kg')) return 'weight'
-    if (lower.includes('sleep') || lower.includes('slept')) return 'sleep'
-    if (lower.includes('mood') || lower.includes('feeling')) return 'mood'
-    return 'other'
-  }
-  
-  const getActivityIcon = (text: string): string => {
-    const type = detectActivityType(text)
-    const iconMap = {
-      food: 'coffee',
-      exercise: 'running',
-      weight: 'scale',
-      sleep: 'moon',
-      mood: 'heart',
-      other: 'dots',
-    }
-    return iconMap[type]
-  }
 
   useEffect(() => {
-    // Load recent logs from localStorage
-    const logs = localStorage.getItem('recentLogs')
-    if (logs) {
-      setRecentLogs(JSON.parse(logs).slice(0, 5))
-    }
-
     // Initialize speech recognition
     if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
       const recognition = new (window as any).webkitSpeechRecognition()
@@ -148,7 +74,7 @@ export default function QuickLogPage() {
     }
   }
 
-  const handleSubmit = async (text?: string) => {
+  const handleSubmit = async (text?: string, skipPreview?: boolean) => {
     const logText = text || input
     if (!logText.trim()) return
 
@@ -170,21 +96,41 @@ export default function QuickLogPage() {
       }
 
       const result = await response.json()
-      setParsedResult(result)
+      
+      // Show parse preview for confirmation
+      setParsedResult({
+        ...result,
+        raw_text: logText
+      })
+      setShowPreview(true)
+    } catch (err) {
+      console.error('Error parsing input:', err)
+      setError('Failed to parse activity. Please try again.')
+    } finally {
+      setIsProcessing(false)
+    }
+  }
 
-      // Save to recent logs
-      const newLog: RecentLog = {
-        id: Date.now().toString(),
-        text: logText,
-        timestamp: new Date().toISOString(),
-        type: result.intent || 'unknown'
+  const handleConfirmLog = async (data: ParsedResult) => {
+    try {
+      // Save the log to the database
+      const response = await fetch('/api/logs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: data.type,
+          raw_text: data.raw_text,
+          data: data.fields,
+          confidence: data.confidence / 100,
+          timestamp: data.timestamp || new Date().toISOString()
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save log')
       }
 
-      const updatedLogs = [newLog, ...recentLogs].slice(0, 5)
-      setRecentLogs(updatedLogs)
-      localStorage.setItem('recentLogs', JSON.stringify(updatedLogs))
-      
-      // Update frequency data for CommonLogsBar - USER SPECIFIC
+      // Update frequency data for quick actions
       const frequencyKey = user?.id ? `feelsharper_frequency_data_${user.id}` : 'feelsharper_frequency_data'
       const frequencyData = localStorage.getItem(frequencyKey)
       let frequency = { activities: {}, lastUpdated: new Date().toISOString(), totalLogs: 0 }
@@ -196,28 +142,54 @@ export default function QuickLogPage() {
       }
       
       // Increment frequency for this activity
-      frequency.activities[logText] = (frequency.activities[logText] || 0) + 1
+      const activityText = data.raw_text || ''
+      frequency.activities[activityText] = (frequency.activities[activityText] || 0) + 1
       frequency.lastUpdated = new Date().toISOString()
       frequency.totalLogs++
       
       localStorage.setItem(frequencyKey, JSON.stringify(frequency))
 
-      // Clear input after successful submission
+      // Clear input and close preview
       setInput('')
-
-      // Show success message
+      setShowPreview(false)
+      setParsedResult(null)
+      
+      // Refresh the history and quick actions
+      setRefreshKey(prev => prev + 1)
+      
+      // Show success message briefly
+      setParsedResult({
+        type: data.type,
+        fields: {},
+        confidence: 100,
+        message: 'Logged successfully!'
+      })
+      
       setTimeout(() => {
-        setParsedResult({
-          ...result,
-          message: 'Logged successfully!'
-        })
-      }, 1000)
+        setParsedResult(null)
+      }, 2000)
     } catch (err) {
-      console.error('Error parsing input:', err)
-      setError('Failed to log activity. Please try again.')
-    } finally {
-      setIsProcessing(false)
+      console.error('Error saving log:', err)
+      setError('Failed to save activity. Please try again.')
     }
+  }
+
+  const handleQuickLog = async (action: any) => {
+    // Pre-fill and show preview with the quick action
+    setInput(action.text)
+    await handleSubmit(action.text)
+  }
+
+  const handleEditLog = (log: any) => {
+    // Pre-fill the input with the log's text for editing
+    setInput(log.raw_text)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleReportBadParse = async (log: any) => {
+    // Could send feedback to improve the parser
+    console.log('Reporting bad parse for:', log)
+    // In a real implementation, this would send feedback to your backend
   }
 
   const manualLogOptions = [
@@ -240,20 +212,12 @@ export default function QuickLogPage() {
           </p>
         </div>
 
-        {/* Common Logs Bar */}
-        {quickLogs.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-sm font-medium text-gray-400 mb-3">Your Common Logs</h2>
-            <CommonLogsBar
-              quickLogs={quickLogs}
-              onQuickLog={async (log) => {
-                // Handle quick log
-                await handleSubmit(log.data.raw_text)
-              }}
-              userId={user?.id}
-            />
-          </div>
-        )}
+        {/* Quick Actions */}
+        <QuickActions
+          key={refreshKey}
+          userId={user?.id}
+          onQuickLog={handleQuickLog}
+        />
 
         {/* Chat Input Box */}
         <div className="bg-[#1A1A1B] rounded-xl border border-white/10 p-4 mb-6">
@@ -304,20 +268,11 @@ export default function QuickLogPage() {
             </p>
           )}
 
-          {parsedResult && (
-            <div className="mt-4 p-3 bg-white/5 rounded-lg">
+          {parsedResult && parsedResult.message && (
+            <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-400">
-                  {parsedResult.message || `Detected: ${parsedResult.intent}`}
-                </span>
-                <span className={`text-xs px-2 py-1 rounded-full ${
-                  parsedResult.confidence > 80 
-                    ? 'bg-green-500/20 text-green-400' 
-                    : parsedResult.confidence > 60 
-                    ? 'bg-yellow-500/20 text-yellow-400'
-                    : 'bg-red-500/20 text-red-400'
-                }`}>
-                  {Math.round(parsedResult.confidence)}% confident
+                <span className="text-sm text-green-400">
+                  {parsedResult.message}
                 </span>
               </div>
             </div>
@@ -348,33 +303,14 @@ export default function QuickLogPage() {
           </div>
         </div>
 
-        {/* Recent Logs */}
-        {recentLogs.length > 0 && (
-          <div className="bg-[#1A1A1B] rounded-xl border border-white/10 p-6">
-            <h2 className="text-lg font-semibold mb-4">Recent Activities</h2>
-            <div className="space-y-3">
-              {recentLogs.map((log) => (
-                <div
-                  key={log.id}
-                  className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
-                >
-                  <div className="flex-1">
-                    <p className="text-sm">{log.text}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {new Date(log.timestamp).toLocaleString()}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleSubmit(log.text)}
-                    className="px-3 py-1 text-xs bg-[#4169E1]/20 hover:bg-[#4169E1]/30 text-[#4169E1] rounded-lg transition-colors"
-                  >
-                    Re-log
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Log History */}
+        <LogHistory
+          key={refreshKey}
+          userId={user?.id}
+          limit={30}
+          onEdit={handleEditLog}
+          onReportBadParse={handleReportBadParse}
+        />
 
         {/* Tips */}
         <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
@@ -387,6 +323,21 @@ export default function QuickLogPage() {
           </ul>
         </div>
       </div>
+
+      {/* Parse Preview Modal */}
+      {showPreview && parsedResult && (
+        <ParsePreview
+          data={parsedResult}
+          onConfirm={handleConfirmLog}
+          onCancel={() => {
+            setShowPreview(false)
+            setParsedResult(null)
+          }}
+          onTypeChange={(newType) => {
+            setParsedResult(prev => prev ? { ...prev, type: newType } : null)
+          }}
+        />
+      )}
     </div>
   )
 }

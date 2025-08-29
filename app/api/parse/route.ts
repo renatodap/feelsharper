@@ -19,47 +19,215 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Parse request body
-    const { text, source = 'chat' } = await request.json();
+    // Parse request body - support both old and new format
+    const body = await request.json();
+    const { 
+      text, 
+      raw, 
+      type: typeOverride, 
+      occurred_at, 
+      source = 'chat' 
+    } = body;
     
-    if (!text) {
+    // Support both 'text' and 'raw' field names
+    const inputText = raw || text;
+    
+    if (!inputText) {
       return NextResponse.json(
         { error: 'Text input is required' },
         { status: 400 }
       );
     }
     
-    // Simple router to detect input type
-    let parsed;
+    // Validate occurred_at if provided
+    let timestamp = new Date();
+    if (occurred_at) {
+      const providedDate = new Date(occurred_at);
+      // Reject future dates
+      if (providedDate > new Date()) {
+        console.warn('Future date rejected, using current time');
+      } else {
+        timestamp = providedDate;
+      }
+    }
     
-    // Check for food-related keywords
-    const foodKeywords = ['ate', 'eaten', 'breakfast', 'lunch', 'dinner', 'snack', 
-                          'eggs', 'toast', 'chicken', 'rice', 'salad', 'pizza', 
-                          'coffee', 'water', 'juice', 'calories', 'meal'];
+    // Check if multiple activities (comma-separated)
+    const hasMultiple = inputText.includes(',') && inputText.split(',').length > 1;
     
-    // Check for workout-related keywords
-    const workoutKeywords = ['ran', 'run', 'walked', 'walk', 'lifted', 'workout', 
-                            'exercise', 'gym', 'squat', 'bench', 'deadlift', 
-                            'cardio', 'bike', 'swim', 'yoga', 'sets', 'reps', 'km', 'miles'];
+    if (hasMultiple) {
+      // Parse multiple activities
+      const activities = inputText.split(',').map(segment => segment.trim());
+      const parsedActivities = [];
+      
+      for (const activity of activities) {
+        const parsed = await parseActivity(activity, typeOverride, user, timestamp);
+        if (parsed) {
+          parsedActivities.push(parsed);
+        }
+      }
+      
+      return NextResponse.json({
+        success: true,
+        activities: parsedActivities,
+        message: `Logged ${parsedActivities.length} activities`
+      });
+    }
     
-    // Check for weight keywords
-    const weightKeywords = ['weight', 'weigh', 'kg', 'lbs', 'pounds', 'kilos'];
+    // Single activity parsing
+    const parsed = await parseActivity(inputText, typeOverride, user, timestamp);
     
-    const lowerText = text.toLowerCase();
-    const hasFood = foodKeywords.some(keyword => lowerText.includes(keyword));
-    const hasWorkout = workoutKeywords.some(keyword => lowerText.includes(keyword));
-    const hasWeight = weightKeywords.some(keyword => lowerText.includes(keyword));
+    if (!parsed) {
+      return NextResponse.json(
+        { error: 'Failed to parse input' },
+        { status: 500 }
+      );
+    }
     
-    // Route to appropriate parser
-    if (hasFood && !hasWorkout) {
-      // Use EnhancedFoodParser
+    // Store in database
+    const { data: activityLog, error: dbError } = await supabase
+      .from('activity_logs')
+      .insert({
+        user_id: user.id,
+        type: parsed.type,
+        raw_text: inputText,
+        confidence: parsed.confidence / 100,
+        data: parsed.fields,
+        metadata: {
+          source,
+          type_override: typeOverride,
+          occurred_at: occurred_at
+        },
+        timestamp: timestamp
+      })
+      .select()
+      .single();
+    
+    if (dbError) {
+      console.error('Database error:', dbError);
+      return NextResponse.json(
+        { error: 'Failed to save activity' },
+        { status: 500 }
+      );
+    }
+    
+    // Update user's common logs
+    await updateCommonLogs(user.id, inputText, supabase);
+    
+    return NextResponse.json({
+      success: true,
+      type: parsed.type,
+      fields: parsed.fields,
+      confidence: parsed.confidence,
+      timestamp: timestamp.toISOString(),
+      message: parsed.message,
+      activity: activityLog
+    });
+    
+  } catch (error) {
+    console.error('Parse API error:', error);
+    return NextResponse.json(
+      { error: 'Failed to parse input' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * Parse a single activity with optional type override
+ */
+async function parseActivity(
+  text: string, 
+  typeOverride: string | undefined,
+  user: any,
+  timestamp: Date
+) {
+  // Check for keywords to detect type
+  const foodKeywords = ['ate', 'eaten', 'breakfast', 'lunch', 'dinner', 'snack', 
+                        'eggs', 'toast', 'chicken', 'rice', 'salad', 'pizza', 
+                        'coffee', 'water', 'juice', 'calories', 'meal'];
+  
+  const workoutKeywords = ['ran', 'run', 'walked', 'walk', 'lifted', 'workout', 
+                          'exercise', 'gym', 'squat', 'bench', 'deadlift', 
+                          'cardio', 'bike', 'swim', 'yoga', 'sets', 'reps', 'km', 'miles'];
+  
+  const weightKeywords = ['weight', 'weigh', 'kg', 'lbs', 'pounds', 'kilos'];
+  
+  const lowerText = text.toLowerCase();
+  const hasFood = foodKeywords.some(keyword => lowerText.includes(keyword));
+  const hasWorkout = workoutKeywords.some(keyword => lowerText.includes(keyword));
+  const hasWeight = weightKeywords.some(keyword => lowerText.includes(keyword));
+  
+  // Apply type override if valid
+  let detectedType = 'unknown';
+  if (typeOverride) {
+    // Validate override makes sense for input
+    const validOverride = validateTypeOverride(text, typeOverride);
+    if (validOverride) {
+      detectedType = typeOverride;
+    }
+  }
+  
+  // Auto-detect type if no valid override
+  if (detectedType === 'unknown') {
+    if (hasWeight && !hasWorkout) {
+      detectedType = 'weight';
+    } else if (hasFood && !hasWorkout) {
+      detectedType = 'nutrition';
+    } else if (hasWorkout && !hasFood) {
+      const strengthKeywords = ['bench', 'squat', 'deadlift', 'press', 'sets', 'reps', 'lift'];
+      const isStrength = strengthKeywords.some(k => lowerText.includes(k));
+      detectedType = isStrength ? 'strength' : 'cardio';
+    } else {
+      detectedType = 'mood'; // Default for ambiguous
+    }
+  }
+  
+  // Parse based on detected type
+  let parsed: any = null;
+  
+  if (detectedType === 'weight') {
+    // Simple weight parsing
+    const weightMatch = text.match(/(\d+(?:\.\d+)?)\s*(kg|lbs?|pounds?|kilos?)?/i);
+    if (weightMatch) {
+      const value = parseFloat(weightMatch[1]);
+      const unit = weightMatch[2]?.toLowerCase().includes('kg') || 
+                  weightMatch[2]?.toLowerCase().includes('kilo') ? 'kg' : 'lbs';
+      
+      parsed = {
+        type: 'weight',
+        confidence: 95,
+        fields: {
+          weight: value,
+          unit: unit
+        },
+        message: `Weight logged: ${value} ${unit}`
+      };
+    } else if (typeOverride === 'weight') {
+      // Try to parse as just a number
+      const numberMatch = text.match(/(\d+(?:\.\d+)?)/);
+      if (numberMatch) {
+        const value = parseFloat(numberMatch[1]);
+        parsed = {
+          type: 'weight',
+          confidence: 80,
+          fields: {
+            weight: value,
+            unit: 'lbs' // Default unit
+          },
+          message: `Weight logged: ${value} lbs`
+        };
+      }
+    }
+  } else if (detectedType === 'nutrition') {
+    // Use EnhancedFoodParser
+    try {
       const foodParser = new EnhancedFoodParser();
       const foodResult = await foodParser.parseNaturalLanguage(text);
       
       parsed = {
         type: 'nutrition',
         confidence: foodResult.confidence,
-        structuredData: {
+        fields: {
           foods: foodResult.foods,
           meal_type: foodResult.meal_type,
           calories: foodResult.total_calories,
@@ -67,13 +235,24 @@ export async function POST(request: NextRequest) {
           carbs: foodResult.total_carbs,
           fat: foodResult.total_fat
         },
-        subjectiveNotes: foodResult.suggestions?.join(', '),
-        timestamp: new Date()
+        message: `Food logged: ${foodResult.foods.length} item(s)`
       };
-    } else if (hasWorkout && !hasFood) {
-      // Use WorkoutParser (simplified for MVP)
+    } catch (error) {
+      // Fallback parsing
+      parsed = {
+        type: 'nutrition',
+        confidence: 70,
+        fields: {
+          foods: [{ name: text, quantity: 1, unit: 'serving' }],
+          meal: text
+        },
+        message: `Food logged: ${text}`
+      };
+    }
+  } else if (detectedType === 'cardio' || detectedType === 'strength') {
+    // Use WorkoutParser for exercise
+    try {
       const workoutParser = new WorkoutParser();
-      // For MVP, create minimal valid context
       const context: AIContext = {
         userId: user.id,
         profile: {
@@ -94,105 +273,79 @@ export async function POST(request: NextRequest) {
         max_tokens: 1000
       };
       
-      try {
-        const workoutResult = await workoutParser.process(text, context, config);
-        parsed = {
-          type: 'cardio', // Default to cardio for MVP
-          confidence: workoutResult.confidence,
-          structuredData: workoutResult.data,
-          timestamp: new Date()
-        };
-      } catch (workoutError) {
-        // Fallback to simple parsing
-        parsed = {
-          type: 'cardio',
-          confidence: 70,
-          structuredData: {
-            activity: text,
-            duration_minutes: 30
-          },
-          timestamp: new Date()
-        };
-      }
-    } else if (hasWeight) {
-      // Simple weight parsing
-      const weightMatch = text.match(/(\d+(?:\.\d+)?)\s*(kg|lbs?|pounds?|kilos?)?/i);
-      if (weightMatch) {
-        const value = parseFloat(weightMatch[1]);
-        const unit = weightMatch[2]?.toLowerCase().includes('lb') || 
-                    weightMatch[2]?.toLowerCase().includes('pound') ? 'lbs' : 'kg';
-        
-        parsed = {
-          type: 'weight',
-          confidence: 95,
-          structuredData: {
-            weight: value,
-            unit: unit
-          },
-          timestamp: new Date()
-        };
-      } else {
-        // Fallback to original parser
-        parsed = await parseNaturalLanguage(text, user.id);
-      }
-    } else {
-      // Fallback to original parser for complex or unclear inputs
-      parsed = await parseNaturalLanguage(text, user.id);
-    }
-    
-    // Store in database - using actual Supabase schema columns
-    // Ensure sport/exercise names are preserved in the data
-    const dataToStore = {
-      ...parsed.structuredData,
-      // Preserve sport_name or exercise_name if present (cast to any for flexibility)
-      sport_name: (parsed.structuredData as any)?.sport_name,
-      exercise_name: (parsed.structuredData as any)?.exercise_name
-    };
-
-    const { data: activityLog, error: dbError } = await supabase
-      .from('activity_logs')
-      .insert({
-        user_id: user.id,
-        type: parsed.type,  // Use correct type field
-        raw_text: text,     // Use correct raw_text field
-        confidence: parsed.confidence / 100,  // Convert to 0-1 range as per schema
-        data: dataToStore,  // Use correct data field with sport/exercise preserved
-        metadata: {
-          source,
-          subjective_notes: parsed.subjectiveNotes,
-          sport_name: (parsed.structuredData as any)?.sport_name,  // Also store in metadata for easy access
-          exercise_name: (parsed.structuredData as any)?.exercise_name
+      const workoutResult = await workoutParser.process(text, context, config);
+      parsed = {
+        type: detectedType,
+        confidence: workoutResult.confidence,
+        fields: workoutResult.data,
+        message: `${detectedType === 'strength' ? 'Strength training' : 'Cardio'} logged`
+      };
+    } catch (workoutError) {
+      // Fallback to simple parsing
+      parsed = {
+        type: detectedType,
+        confidence: 70,
+        fields: {
+          activity: text,
+          exercise: text,
+          duration_minutes: 30
         },
-        timestamp: parsed.timestamp || new Date()  // Use correct timestamp field
-      })
-      .select()
-      .single();
-    
-    if (dbError) {
-      console.error('Database error:', dbError);
-      return NextResponse.json(
-        { error: 'Failed to save activity' },
-        { status: 500 }
-      );
+        message: `Exercise logged: ${text}`
+      };
     }
-    
-    // Update user's common logs if this is a frequent pattern
-    await updateCommonLogs(user.id, text, supabase);
-    
-    return NextResponse.json({
-      success: true,
-      activity: activityLog,
-      parsed,
-      message: generateConfirmationMessage(parsed)
-    });
-    
-  } catch (error) {
-    console.error('Parse API error:', error);
-    return NextResponse.json(
-      { error: 'Failed to parse input' },
-      { status: 500 }
-    );
+  } else if (detectedType === 'mood') {
+    // Simple mood parsing
+    parsed = {
+      type: 'mood',
+      confidence: 60,
+      fields: {
+        mood: text,
+        notes: text
+      },
+      message: 'Mood logged'
+    };
+  } else {
+    // Unknown type
+    parsed = {
+      type: 'unknown',
+      confidence: 30,
+      fields: {
+        raw: text
+      },
+      message: 'Activity logged (unclear type)'
+    };
   }
+  
+  return parsed;
+}
+
+/**
+ * Validate if type override makes sense for the input
+ */
+function validateTypeOverride(text: string, typeOverride: string): boolean {
+  const lowerText = text.toLowerCase();
+  
+  // Don't allow overriding obvious food as weight
+  if (typeOverride === 'weight') {
+    const foodIndicators = ['ate', 'breakfast', 'lunch', 'dinner', 'pizza', 'salad'];
+    if (foodIndicators.some(word => lowerText.includes(word))) {
+      return false;
+    }
+    // Allow if it's just numbers or contains weight keywords
+    if (/^\d+(\.\d+)?$/.test(text.trim()) || lowerText.includes('weight')) {
+      return true;
+    }
+  }
+  
+  // Don't allow overriding obvious weight as food
+  if (typeOverride === 'nutrition') {
+    if (/^weight\s+\d+/.test(lowerText) || /^\d+\s*(kg|lbs?)$/.test(lowerText)) {
+      return false;
+    }
+  }
+  
+  // Generally allow other overrides
+  return true;
 }
 
 /**

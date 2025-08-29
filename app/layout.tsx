@@ -11,6 +11,7 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 // import { FeedbackButton } from "@/components/feedback/FeedbackButton";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
+import { AnalyticsProvider } from "./providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -123,13 +124,15 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
       </head>
       <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
-        <ThemeProvider>
-          <AuthProvider>
-            <AuthenticatedLayout>
-              {children}
-            </AuthenticatedLayout>
-          </AuthProvider>
-        </ThemeProvider>
+        <AnalyticsProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <AuthenticatedLayout>
+                {children}
+              </AuthenticatedLayout>
+            </AuthProvider>
+          </ThemeProvider>
+        </AnalyticsProvider>
       </body>
     </html>
   );

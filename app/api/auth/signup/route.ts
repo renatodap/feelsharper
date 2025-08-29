@@ -3,13 +3,23 @@ import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, invite } = await request.json();
     
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password required' },
         { status: 400 }
       );
+    }
+    
+    // Check invite code if required
+    if (process.env.REQUIRE_INVITE_CODE === '1') {
+      if (!invite || invite !== process.env.INVITE_CODE) {
+        return NextResponse.json(
+          { error: 'Valid invite code required for beta access' },
+          { status: 403 }
+        );
+      }
     }
     
     const supabase = await createClient();

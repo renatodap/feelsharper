@@ -5,13 +5,17 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import InsightGenerator from '@/lib/ai-coach/insight-generator'
+import { getUserOr401 } from '@/lib/auth/getUserOr401'
 
 export async function GET(req: NextRequest) {
+  const auth = await getUserOr401(req);
+  if (!auth.user) return auth.res;
+  
   try {
     console.log('🧠 Generating daily insights with motivational design...')
     
-    // Get user ID from request (in real app, from auth)
-    const userId = req.nextUrl.searchParams.get('userId') || 'demo-user'
+    // Use authenticated user ID
+    const userId = auth.user.id
     
     const insightGenerator = new InsightGenerator(userId)
     
@@ -95,9 +99,13 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const auth = await getUserOr401(req);
+  if (!auth.user) return auth.res;
+  
   try {
     const body = await req.json()
-    const { userId, action, data } = body
+    const { action, data } = body // Remove userId from body
+    const userId = auth.user.id // Use authenticated user ID
 
     console.log(`🎯 Processing insight action: ${action}`)
 

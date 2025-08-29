@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import DataPrivacy from '@/components/settings/DataPrivacy';
 import { 
   Settings,
   User,
@@ -11,7 +12,9 @@ import {
   Moon,
   Volume2,
   Save,
-  ChevronRight
+  ChevronRight,
+  Database,
+  Download
 } from 'lucide-react';
 
 const LightningLogo = ({ className = "w-6 h-6" }: { className?: string }) => (
@@ -291,23 +294,13 @@ export default function SettingsPage() {
         </button>
       </div>
 
-      {/* Danger Zone */}
+      {/* Data & Privacy Section */}
       <div className="mt-12 pt-8 border-t border-sharpened-charcoal">
-        <h2 className="text-xl font-title font-bold text-red-400 mb-4">Danger Zone</h2>
-        <div className="space-y-3">
-          <button className="text-sharpened-light-gray hover:text-white font-body flex items-center gap-2 transition-colors">
-            Export All Data
-            <ChevronRight className="w-4 h-4" />
-          </button>
-          <button className="text-sharpened-light-gray hover:text-white font-body flex items-center gap-2 transition-colors">
-            Clear Workout History
-            <ChevronRight className="w-4 h-4" />
-          </button>
-          <button className="text-red-400 hover:text-red-300 font-body flex items-center gap-2 transition-colors">
-            Delete Account
-            <ChevronRight className="w-4 h-4" />
-          </button>
+        <div className="flex items-center gap-3 mb-4">
+          <Database className="w-6 h-6 text-feel-primary" />
+          <h2 className="text-2xl font-title font-bold text-white">Data & Privacy</h2>
         </div>
+        <DataPrivacy />
       </div>
     </div>
   );

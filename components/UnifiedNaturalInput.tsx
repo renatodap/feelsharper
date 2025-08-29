@@ -13,11 +13,13 @@ import {
   Check,
   X,
   AlertCircle,
-  Sparkles
+  Sparkles,
+  Calendar,
+  ChevronDown
 } from 'lucide-react';
 
 interface ParsedActivity {
-  type: 'food' | 'weight' | 'exercise' | 'mood' | 'unknown';
+  type: 'food' | 'weight' | 'exercise' | 'cardio' | 'strength' | 'nutrition' | 'mood' | 'unknown';
   data: any;
   confidence: number;
   rawText: string;
@@ -36,6 +38,12 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
   const [aiResponse, setAiResponse] = useState<string>('');
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  
+  // Parse preview states
+  const [showTypeOverride, setShowTypeOverride] = useState(false);
+  const [typeOverride, setTypeOverride] = useState<string>('');
+  const [showBackdate, setShowBackdate] = useState(false);
+  const [backdateValue, setBackdateValue] = useState('');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -120,7 +128,7 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
     }
   };
 
-  const handleSubmit = async (text?: string) => {
+  const handleSubmit = async (text?: string, typeOverride?: string, occurredAt?: string) => {
     const inputText = text || input;
     if (!inputText.trim()) return;
 
@@ -133,34 +141,50 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
       const response = await fetch('/api/parse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: inputText })
+        body: JSON.stringify({ 
+          raw: inputText,
+          type: typeOverride,
+          occurred_at: occurredAt
+        })
       });
 
       const data = await response.json();
       
       if (data.success) {
         // Handle multiple activities
-        if (data.multipleActivities && data.allActivities) {
+        if (data.activities && Array.isArray(data.activities)) {
           let successCount = 0;
-          for (const activity of data.allActivities) {
-            if (activity.confidence > 0.8) {
-              await autoLog(activity);
+          for (const activity of data.activities) {
+            if (activity.confidence > 80) {
+              await autoLog({
+                type: activity.type as any,
+                data: activity.fields,
+                confidence: activity.confidence,
+                rawText: inputText
+              });
               successCount++;
             }
           }
           if (successCount > 0) {
-            setAiResponse(`✓ Logged ${successCount} activities: ${data.allActivities.map((a: any) => a.type).join(', ')}`);
+            setAiResponse(`✓ Logged ${successCount} activities: ${data.activities.map((a: any) => a.type).join(', ')}`);
           }
           setParsedResult(null);
         } else {
-          // Single activity
-          setParsedResult(data.parsed);
-          setAiResponse(data.coach?.message || '');
+          // Single activity - new response format
+          const parsedActivity: ParsedActivity = {
+            type: data.type as any,
+            data: data.fields,
+            confidence: data.confidence,
+            rawText: inputText
+          };
+          
+          setParsedResult(parsedActivity);
+          setAiResponse(data.message || '');
 
-          // Auto-log if confidence is high (>80%)
-          if (data.parsed.confidence > 0.8) {
-            await autoLog(data.parsed);
-          } else if (data.parsed.confidence > 0.5) {
+          // Auto-log if confidence is high (>80)
+          if (data.confidence > 80) {
+            await autoLog(parsedActivity);
+          } else if (data.confidence > 50) {
             // Need confirmation for medium confidence
             setNeedsConfirmation(true);
           } else {
@@ -325,9 +349,13 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
-                  handleSubmit();
+                  handleSubmit(
+                    undefined,
+                    typeOverride || undefined,
+                    backdateValue ? new Date(backdateValue).toISOString() : undefined
+                  );
                 }
-              }}
+              }
               placeholder="Tell me anything: 'weight 175' or 'ran 5k' or 'ate chicken salad' or 'feeling great today'"
               className="flex-1 bg-bg text-text-primary px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               rows={2}
@@ -370,7 +398,11 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
               
               {/* Submit Button */}
               <Button
-                onClick={() => handleSubmit()}
+                onClick={() => handleSubmit(
+                  undefined, 
+                  typeOverride || undefined,
+                  backdateValue ? new Date(backdateValue).toISOString() : undefined
+                )}
                 disabled={!input.trim() || isProcessing}
                 size="sm"
                 className="w-10 h-10 p-0"
@@ -389,6 +421,74 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
             <span>Press Enter to send • Shift+Enter for new line</span>
             <span>{isRecording ? 'Recording...' : 'Click mic to speak'}</span>
           </div>
+
+          {/* Parse Preview - Advanced Options */}
+          {input.trim() && !isProcessing && (
+            <div className="mt-2 p-2 bg-surface-dark rounded-lg border border-border">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-medium text-text-secondary">Advanced Options</span>
+                <div className="flex gap-2">
+                  {/* Type Override */}
+                  <button
+                    onClick={() => setShowTypeOverride(!showTypeOverride)}
+                    className="text-xs px-2 py-1 rounded bg-bg hover:bg-surface transition-colors flex items-center gap-1"
+                  >
+                    Override Type
+                    <ChevronDown className={`w-3 h-3 transition-transform ${showTypeOverride ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {/* Backdate */}
+                  <button
+                    onClick={() => setShowBackdate(!showBackdate)}
+                    className="text-xs px-2 py-1 rounded bg-bg hover:bg-surface transition-colors flex items-center gap-1"
+                  >
+                    <Calendar className="w-3 h-3" />
+                    Backdate
+                  </button>
+                </div>
+              </div>
+              
+              {/* Type Override Dropdown */}
+              {showTypeOverride && (
+                <div className="mb-2">
+                  <select
+                    value={typeOverride}
+                    onChange={(e) => setTypeOverride(e.target.value)}
+                    className="w-full text-xs px-2 py-1 bg-bg border border-border rounded focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="">Auto-detect</option>
+                    <option value="weight">Weight</option>
+                    <option value="nutrition">Food/Nutrition</option>
+                    <option value="cardio">Cardio Exercise</option>
+                    <option value="strength">Strength Training</option>
+                    <option value="mood">Mood/Feeling</option>
+                  </select>
+                </div>
+              )}
+              
+              {/* Backdate Input */}
+              {showBackdate && (
+                <div className="mb-2">
+                  <input
+                    type="datetime-local"
+                    value={backdateValue}
+                    onChange={(e) => setBackdateValue(e.target.value)}
+                    max={new Date().toISOString().slice(0, 16)}
+                    className="w-full text-xs px-2 py-1 bg-bg border border-border rounded focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+              )}
+              
+              {/* Preview of what will be sent */}
+              {(typeOverride || backdateValue) && (
+                <div className="text-xs text-text-secondary">
+                  <span className="font-medium">Will parse as:</span>{' '}
+                  {typeOverride || 'auto-detect'} 
+                  {backdateValue && ` • ${new Date(backdateValue).toLocaleString()}`}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </Card>
     </div>

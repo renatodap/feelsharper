@@ -1,25 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase/server';
+import { getUserOr401 } from '@/lib/auth/getUserOr401';
 
 export async function POST(request: NextRequest) {
+  const auth = await getUserOr401(request);
+  if (!auth.user) return auth.res;
+  
   try {
-    const supabase = await createServerClient();
-    
-    // Check authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    
-    // Allow demo mode without auth for testing
     const body = await request.json();
-    const { type, data, confidence, rawText, demo = false } = body;
+    const { type, data, confidence, rawText } = body;
 
-    if (!demo && (!user || authError)) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Authentication required' 
-      }, { status: 401 });
-    }
-
-    const userId = user?.id || 'demo-user';
+    const userId = auth.user.id;
 
     // Validate input
     if (!type || !data) {
@@ -41,7 +31,7 @@ export async function POST(request: NextRequest) {
     };
 
     // Save to activity_logs table
-    const { data: savedActivity, error: saveError } = await supabase
+    const { data: savedActivity, error: saveError } = await auth.supabase
       .from('activity_logs')
       .insert([activityLog])
       .select()

@@ -9,9 +9,11 @@ function SignUpForm() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [requiresInvite, setRequiresInvite] = useState(process.env.NEXT_PUBLIC_REQUIRE_INVITE_CODE === "1");
   const params = useSearchParams();
   const redirect = params.get("redirect") || "/insights";
 
@@ -35,28 +37,26 @@ function SignUpForm() {
     }
     
     try {
-      // Dynamic import to avoid build issues
-      const { createSupabaseBrowser } = await import("@/lib/supabase/client");
-      const supabase = createSupabaseBrowser();
-      const { data, error } = await supabase.auth.signUp({ 
-        email, 
-        password: pass,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirect)}`
-        }
+      // Call our API route which handles invite codes
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email, 
+          password: pass,
+          invite: inviteCode 
+        })
       });
       
-      if (error) {
-        setErr(error.message);
-      } else if (data.user) {
-        // Check if email confirmation is required
-        if (data.user.identities?.length === 0) {
-          setSuccess(true);
-          setErr(null);
-        } else {
-          // Auto-sign in if email confirmation is not required
-          window.location.href = redirect;
-        }
+      const data = await response.json();
+      
+      if (!response.ok) {
+        setErr(data.error || 'Sign up failed');
+      } else if (data.requiresEmailConfirmation) {
+        setSuccess(true);
+        setErr(null);
+      } else if (data.redirectTo) {
+        window.location.href = data.redirectTo;
       }
     } catch (error) {
       setErr("Sign up temporarily unavailable");
@@ -144,6 +144,23 @@ function SignUpForm() {
             minLength={6}
             required
           />
+          
+          {/* Invite code field - only show if required */}
+          {requiresInvite && (
+            <div className="space-y-2">
+              <input 
+                className="w-full rounded-md border border-border bg-surface p-2 text-text-primary" 
+                placeholder="Invite code (required for beta)" 
+                type="text" 
+                value={inviteCode} 
+                onChange={(e)=>setInviteCode(e.target.value)}
+                required
+              />
+              <p className="text-xs text-text-muted">
+                • Beta access requires an invite code
+              </p>
+            </div>
+          )}
           
           {/* Password requirements */}
           <div className="text-xs text-text-muted space-y-1">
