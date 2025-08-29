@@ -10,6 +10,10 @@ import { VolumeWidget } from '@/components/dashboard/widgets/VolumeWidget';
 import { SleepWidget } from '@/components/dashboard/widgets/SleepWidget';
 import DashboardClient from './dashboard-client';
 
+// Force dynamic rendering since this page uses authentication
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Loading skeleton for widgets
 function WidgetSkeleton() {
   return (
