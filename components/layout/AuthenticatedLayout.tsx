@@ -32,18 +32,12 @@ export default function AuthenticatedLayout({
   ];
 
   useEffect(() => {
-    // If user is logged in and on the landing page, redirect to insights
-    if (!loading && user && pathname === '/') {
-      router.push('/insights');
+    // Skip auth check for public routes (including landing page)
+    if (publicRoutes.some(route => pathname === route || pathname?.startsWith(route))) {
       return;
     }
 
-    // Skip auth check for public routes
-    if (publicRoutes.some(route => pathname?.startsWith(route))) {
-      return;
-    }
-
-    // Redirect to signin if not authenticated
+    // Redirect to signin if not authenticated on protected routes
     if (!loading && !user) {
       router.push('/signin');
     }
@@ -61,8 +55,8 @@ export default function AuthenticatedLayout({
     );
   }
 
-  // For public routes, render children without navigation
-  if (publicRoutes.some(route => pathname?.startsWith(route))) {
+  // For public routes (including landing page), render children without navigation
+  if (publicRoutes.some(route => pathname === route || pathname?.startsWith(route))) {
     return <>{children}</>;
   }
 
