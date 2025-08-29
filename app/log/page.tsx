@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Send, Mic, MicOff, RefreshCw, Utensils, Weight, Activity, Moon, Heart, Ruler } from 'lucide-react'
 import { useAuth } from '@/components/auth/AuthProvider'
+import { CommonLogsBar } from '@/components/features/logging'
+import type { QuickLog } from '@/components/features/logging'
 
 interface ParsedResult {
   intent: string
@@ -29,6 +31,71 @@ export default function QuickLogPage() {
   const [recentLogs, setRecentLogs] = useState<RecentLog[]>([])
   const [error, setError] = useState('')
   const recognitionRef = useRef<any>(null)
+  
+  // Generate quick logs from recent activity
+  const [quickLogs, setQuickLogs] = useState<QuickLog[]>([])
+  
+  // Convert recent logs to quick logs format
+  useEffect(() => {
+    // Count frequency of similar logs
+    const frequencyMap = new Map<string, QuickLog>()
+    
+    // Get stored frequency data
+    const storedFrequency = localStorage.getItem('feelsharper_frequency_data')
+    if (storedFrequency) {
+      try {
+        const data = JSON.parse(storedFrequency)
+        // Convert to QuickLog format
+        const logs: QuickLog[] = Object.entries(data.activities || {})
+          .filter(([_, freq]) => (freq as number) >= 3)
+          .map(([activity, freq], index) => ({
+            id: `ql-${index}`,
+            activity,
+            type: detectActivityType(activity),
+            frequency: freq as number,
+            lastLogged: null,
+            isPinned: false,
+            isHidden: false,
+            icon: getActivityIcon(activity),
+            data: {
+              raw_text: activity,
+              parsed_data: {},
+              confidence: 90,
+            },
+          }))
+          .sort((a, b) => b.frequency - a.frequency)
+          .slice(0, 10)
+        
+        setQuickLogs(logs)
+      } catch (error) {
+        console.error('Error loading frequency data:', error)
+      }
+    }
+  }, [recentLogs])
+  
+  // Helper to detect activity type from text
+  const detectActivityType = (text: string): QuickLog['type'] => {
+    const lower = text.toLowerCase()
+    if (lower.includes('food') || lower.includes('ate') || lower.includes('coffee') || lower.includes('lunch') || lower.includes('breakfast') || lower.includes('dinner')) return 'food'
+    if (lower.includes('run') || lower.includes('workout') || lower.includes('exercise') || lower.includes('gym')) return 'exercise'
+    if (lower.includes('weight') || lower.includes('lbs') || lower.includes('kg')) return 'weight'
+    if (lower.includes('sleep') || lower.includes('slept')) return 'sleep'
+    if (lower.includes('mood') || lower.includes('feeling')) return 'mood'
+    return 'other'
+  }
+  
+  const getActivityIcon = (text: string): string => {
+    const type = detectActivityType(text)
+    const iconMap = {
+      food: 'coffee',
+      exercise: 'running',
+      weight: 'scale',
+      sleep: 'moon',
+      mood: 'heart',
+      other: 'dots',
+    }
+    return iconMap[type]
+  }
 
   useEffect(() => {
     // Load recent logs from localStorage
@@ -112,6 +179,23 @@ export default function QuickLogPage() {
       const updatedLogs = [newLog, ...recentLogs].slice(0, 5)
       setRecentLogs(updatedLogs)
       localStorage.setItem('recentLogs', JSON.stringify(updatedLogs))
+      
+      // Update frequency data for CommonLogsBar
+      const frequencyData = localStorage.getItem('feelsharper_frequency_data')
+      let frequency = { activities: {}, lastUpdated: new Date().toISOString(), totalLogs: 0 }
+      
+      if (frequencyData) {
+        try {
+          frequency = JSON.parse(frequencyData)
+        } catch (e) {}
+      }
+      
+      // Increment frequency for this activity
+      frequency.activities[logText] = (frequency.activities[logText] || 0) + 1
+      frequency.lastUpdated = new Date().toISOString()
+      frequency.totalLogs++
+      
+      localStorage.setItem('feelsharper_frequency_data', JSON.stringify(frequency))
 
       // Clear input after successful submission
       setInput('')
@@ -150,6 +234,21 @@ export default function QuickLogPage() {
             Tell me what you did - I'll handle the rest
           </p>
         </div>
+
+        {/* Common Logs Bar */}
+        {quickLogs.length > 0 && (
+          <div className="mb-6">
+            <h2 className="text-sm font-medium text-gray-400 mb-3">Your Common Logs</h2>
+            <CommonLogsBar
+              quickLogs={quickLogs}
+              onQuickLog={async (log) => {
+                // Handle quick log
+                await handleSubmit(log.data.raw_text)
+              }}
+              userId={user?.id}
+            />
+          </div>
+        )}
 
         {/* Chat Input Box */}
         <div className="bg-[#1A1A1B] rounded-xl border border-white/10 p-4 mb-6">
