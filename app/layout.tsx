@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 // import { OfflineIndicator } from "@/components/offline/OfflineIndicator";
 // import { FeedbackButton } from "@/components/feedback/FeedbackButton";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -124,12 +125,9 @@ export default function RootLayout({
       <body className="font-sans antialiased min-h-screen bg-bg text-text-primary">
         <ThemeProvider>
           <AuthProvider>
-            {/* <PWAProvider> */}
-              {/* <UpgradeBanner /> */}
+            <AuthenticatedLayout>
               {children}
-              {/* <OfflineIndicator /> */}
-              {/* <FeedbackButton /> */}
-            {/* </PWAProvider> */}
+            </AuthenticatedLayout>
           </AuthProvider>
         </ThemeProvider>
       </body>
