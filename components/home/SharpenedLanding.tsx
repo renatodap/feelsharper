@@ -3,13 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Mic, Zap, TrendingUp, ArrowRight, Activity, Brain, Target, ChevronRight } from 'lucide-react';
-
-// Lightning Logo Component - Sharpened Brand
-const LightningLogo = ({ className = "w-12 h-12" }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 100 100" fill="currentColor">
-    <path d="M 65 5 L 45 40 L 55 40 L 35 95 L 55 60 L 45 60 Z" />
-  </svg>
-);
+import { LightningLogo } from '@/components/ui/Logo';
 
 // Real AI Demo Examples - Actual FeelSharper capabilities
 const aiExamples = [
@@ -61,26 +55,26 @@ const SharpenedLanding = () => {
           className="bg-gradient-to-r from-blue-500/40 via-blue-400/60 to-blue-500/40 h-1"
           style={{ clipPath: 'polygon(0 0, 30% 0, 35% 100%, 65% 100%, 70% 0, 100% 0, 100% 100%, 0 100%)' }}
         />
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-4">
             <div className="relative">
-              <LightningLogo className="w-10 h-10 text-blue-400 relative z-10" />
-              <div className="absolute -inset-2 bg-blue-400/30 blur-xl animate-pulse" />
+              <LightningLogo className="w-8 sm:w-10 h-8 sm:h-10 text-blue-400 relative z-10" />
+              <div className="absolute -inset-2 bg-blue-400/30 blur-xl animate-pulse hidden sm:block" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-black tracking-wider text-blue-400">SHARPENED</span>
-              <div className="w-0.5 h-6 bg-blue-400/60" />
-              <span className="text-lg font-bold tracking-wide text-white">FEELSHARPER</span>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <span className="text-lg sm:text-2xl font-black tracking-wider text-blue-400">SHARPENED</span>
+              <div className="w-0.5 h-4 sm:h-6 bg-blue-400/60 hidden sm:block" />
+              <span className="text-sm sm:text-lg font-bold tracking-wide text-white hidden sm:inline">FEELSHARPER</span>
             </div>
           </div>
           <Link 
             href="/signin"
-            className="relative px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 font-black text-lg transition-all overflow-hidden group"
-            style={{ clipPath: 'polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px))' }}
+            className="relative px-4 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 font-black text-sm sm:text-lg transition-all overflow-hidden group rounded-lg sm:rounded-none"
+            style={{ clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))' }}
           >
-            <span className="relative z-10 flex items-center gap-2">
-              <LightningLogo className="w-4 h-4" />
-              START FREE
+            <span className="relative z-10 flex items-center gap-1 sm:gap-2">
+              <LightningLogo className="w-3 sm:w-4 h-3 sm:h-4" />
+              <span className="whitespace-nowrap">START FREE</span>
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           </Link>
@@ -117,46 +111,46 @@ const SharpenedLanding = () => {
           <div className="absolute bottom-1/3 left-1/4 w-24 h-24 bg-blue-500/15 rounded-full blur-2xl animate-pulse" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-0 grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           {/* Left: Content */}
           <div>
             {/* MASSIVE SHARPENED BRANDING */}
-            <div className="flex items-center gap-6 mb-8">
+            <div className="flex items-center gap-3 sm:gap-6 mb-6 sm:mb-8">
               <div className="relative">
-                <LightningLogo className="w-24 h-24 text-blue-400 relative z-10" />
-                <div className="absolute inset-0 bg-blue-400/40 blur-2xl scale-150 animate-pulse" />
+                <LightningLogo className="w-16 sm:w-24 h-16 sm:h-24 text-blue-400 relative z-10" />
+                <div className="absolute inset-0 bg-blue-400/40 blur-2xl scale-150 animate-pulse hidden sm:block" />
               </div>
               <div>
-                <h1 className="text-4xl font-black text-blue-400 tracking-wider">FEELSHARPER</h1>
-                <div className="flex items-center gap-2 mt-1">
-                  <LightningLogo className="w-5 h-5 text-blue-400/80 animate-pulse" />
-                  <div className="w-8 h-0.5 bg-gradient-to-r from-blue-400 to-transparent" />
-                  <p className="text-lg font-bold text-gray-300 tracking-widest">SHARPENED</p>
-                  <div className="w-8 h-0.5 bg-gradient-to-l from-blue-400 to-transparent" />
-                  <LightningLogo className="w-5 h-5 text-blue-400/80 animate-pulse transform scale-x-[-1]" />
+                <h1 className="text-2xl sm:text-4xl font-black text-blue-400 tracking-wider">FEELSHARPER</h1>
+                <div className="flex items-center gap-1 sm:gap-2 mt-1">
+                  <LightningLogo className="w-4 sm:w-5 h-4 sm:h-5 text-blue-400/80 animate-pulse hidden sm:block" />
+                  <div className="w-6 sm:w-8 h-0.5 bg-gradient-to-r from-blue-400 to-transparent hidden sm:block" />
+                  <p className="text-sm sm:text-lg font-bold text-gray-300 tracking-widest">SHARPENED</p>
+                  <div className="w-6 sm:w-8 h-0.5 bg-gradient-to-l from-blue-400 to-transparent hidden sm:block" />
+                  <LightningLogo className="w-4 sm:w-5 h-4 sm:h-5 text-blue-400/80 animate-pulse transform scale-x-[-1] hidden sm:block" />
                 </div>
               </div>
             </div>
             
-            <h2 className="text-5xl lg:text-7xl font-black leading-tight mb-6">
+            <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black leading-tight mb-4 sm:mb-6">
               Just <span className="text-blue-400">Talk.</span><br />
               <span className="relative">
                 AI Does Everything
-                <div className="absolute -right-8 -top-2">
-                  <LightningLogo className="w-6 h-6 text-blue-400/40 animate-pulse" />
+                <div className="absolute -right-4 sm:-right-8 -top-1 sm:-top-2">
+                  <LightningLogo className="w-4 sm:w-6 h-4 sm:h-6 text-blue-400/40 animate-pulse" />
                 </div>
               </span>
             </h2>
             
-            <p className="text-xl text-gray-300 mb-8 max-w-lg">
+            <p className="text-base sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-lg">
               The first fitness tracker that speaks your language. 
               No forms, no menus, no friction.
             </p>
 
-            <div className="flex gap-4 mb-12">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
               <Link 
                 href="/signin"
-                className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-bold transition-all flex items-center gap-2"
+                className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-bold transition-all flex items-center justify-center gap-2 rounded-lg sm:rounded-none"
                 style={{ clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))' }}
               >
                 ENTER APP
@@ -195,10 +189,9 @@ const SharpenedLanding = () => {
           </div>
 
           {/* Right: Live Demo */}
-          <div className="relative">
+          <div className="relative mt-8 lg:mt-0">
             <div 
-              className="bg-gray-900/50 backdrop-blur-xl border border-blue-500/30 p-8 shadow-2xl"
-              style={{ clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))' }}
+              className="bg-gray-900/50 backdrop-blur-xl border border-blue-500/30 p-4 sm:p-8 shadow-2xl rounded-lg lg:rounded-none lg:clip-path-sharp"
             >
               {/* Processing indicator */}
               <div className="flex items-center gap-3 mb-6">

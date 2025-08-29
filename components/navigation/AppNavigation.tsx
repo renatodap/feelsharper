@@ -22,14 +22,8 @@ import {
 import { useAuth } from '@/components/auth/AuthProvider';
 import { createClient } from '@/lib/supabase/client';
 import SettingsSlideOver from '@/components/settings/SettingsSlideOver';
+import { LightningLogo } from '@/components/ui/Logo';
 import type { UserPreferences } from '@/lib/types/mvp';
-
-// Lightning Logo Component
-const LightningLogo = ({ className = "w-6 h-6" }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M13 2L3 14h9l-1 8 10-12h-9z"/>
-  </svg>
-);
 
 // Navigation items for MVP
 const navigation = [

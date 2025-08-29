@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Sharp clip-path for desktop only */
+@layer utilities {
+  @media (min-width: 1024px) {
+    .clip-path-sharp {
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    }
+  }
+}
+
 /* Animation for blob effects */
 @keyframes blob {
   0% {
