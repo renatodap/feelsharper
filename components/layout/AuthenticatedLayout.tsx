@@ -26,14 +26,21 @@ export default function AuthenticatedLayout({
     '/signup',
     '/sign-in',
     '/sign-up',
-    '/auth',
     '/reset-password',
     '/verify-email'
   ];
+  
+  // Auth routes that shouldn't have navigation
+  const authRoutes = ['/auth'];
 
   useEffect(() => {
     // Skip auth check for public routes (including landing page)
-    if (publicRoutes.some(route => pathname === route || pathname?.startsWith(route))) {
+    if (publicRoutes.some(route => pathname === route)) {
+      return;
+    }
+    
+    // Skip auth check for auth routes
+    if (authRoutes.some(route => pathname?.startsWith(route))) {
       return;
     }
 
@@ -55,16 +62,21 @@ export default function AuthenticatedLayout({
     );
   }
 
-  // For public routes (including landing page), render children without navigation
-  if (publicRoutes.some(route => pathname === route || pathname?.startsWith(route))) {
+  // For exact public routes (landing, signin, signup), render without navigation
+  if (publicRoutes.some(route => pathname === route)) {
+    return <>{children}</>;
+  }
+  
+  // For auth callback routes, render without navigation
+  if (authRoutes.some(route => pathname?.startsWith(route))) {
     return <>{children}</>;
   }
 
-  // For authenticated routes, wrap with AppNavigation
+  // For all other routes (dashboard, insights, log, etc), wrap with AppNavigation if authenticated
   if (user) {
     return <AppNavigation>{children}</AppNavigation>;
   }
 
-  // Fallback - shouldn't reach here but just in case
+  // If not authenticated and not on a public route, don't render (redirect will happen)
   return null;
 }
