@@ -33,7 +33,12 @@
     "db:migrate": "npx supabase db push",
     "db:reset": "npx supabase db reset",
     "db:types": "npx supabase gen types typescript --local > lib/types/database.ts",
-    "verify": "npm run typecheck && npm run lint && npm test && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm test && npm run build",
+    "backend:install": "cd backend && python -m venv venv && venv\\Scripts\\pip install -r requirements.txt",
+    "backend:dev": "cd backend && venv\\Scripts\\python main.py",
+    "backend:test": "cd backend && venv\\Scripts\\pytest tests/",
+    "backend:coverage": "cd backend && venv\\Scripts\\pytest --cov=. tests/",
+    "fullstack:dev": "concurrently \"npm run dev\" \"npm run backend:dev\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.60.0",
@@ -85,6 +90,7 @@
     "@types/node": "^20.19.10",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.1",
+    "concurrently": "^9.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "jest": "^30.0.5",
