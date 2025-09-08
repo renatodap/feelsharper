@@ -151,7 +151,7 @@ const CRITICAL_QUESTIONS = [
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
@@ -212,7 +212,7 @@ export async function GET(request: NextRequest) {
 
     const response: InsightsResponse = {
       insights: insights.slice(0, 3), // Max 3 insights
-      criticalQuestion
+      criticalQuestion: criticalQuestion || undefined
     };
 
     return NextResponse.json(response);

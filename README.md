@@ -31,17 +31,51 @@
   - **Implementation**: Development status & guides
   - **Research**: User personas & market analysis
 
+## 🏗️ Architecture
+
+### Dual-Service Architecture
+- **Frontend**: Next.js 15 with TypeScript (Port 3000)
+- **Backend**: Python FastAPI with NLP services (Port 8000)
+
+```
+feelsharper-deploy/
+├── app/                    # Next.js frontend
+│   ├── api/               # API routes (proxy to Python)
+│   └── (pages)            # UI pages
+├── python-backend/         # Python FastAPI backend
+│   ├── services/          # NLP, insights, rules
+│   └── main.py           # FastAPI server
+└── components/            # React components
+```
+
+The frontend calls the Python backend for:
+- Natural language parsing
+- AI insight generation
+- Rule-based coaching logic
+
 ## 🚀 Quick Start
 
 ```bash
 # Install dependencies
 npm install
 
+# Set up Python backend
+cd python-backend
+pip install -r requirements.txt
+cd ..
+
 # Set up environment
 cp .env.example .env.local
 # Add your API keys to .env.local
 
-# Run development server
+# Run both servers (Windows)
+./start-dev.bat
+
+# Or run servers separately:
+# Terminal 1 - Python backend
+cd python-backend && python main.py
+
+# Terminal 2 - Next.js frontend  
 npm run dev
 
 # Check types (must pass before deploy)

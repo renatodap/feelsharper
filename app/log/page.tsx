@@ -4,9 +4,11 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Send, Mic, MicOff, RefreshCw, Utensils, Weight, Activity, Moon, Heart, Ruler } from 'lucide-react'
 import { useAuth } from '@/components/auth/AuthProvider'
-import { ParsePreview } from '@/components/features/log/ParsePreview'
-import { QuickActions } from '@/components/features/log/QuickActions'
-import { LogHistory } from '@/components/features/log/LogHistory'
+// TODO: Create these components or use existing ones
+// import { ParsePreview } from '@/components/features/log/ParsePreview'
+// import { QuickActions } from '@/components/features/log/QuickActions'
+// import { LogHistory } from '@/components/features/log/LogHistory'
+import { UnifiedNaturalInput } from '@/components/UnifiedNaturalInput'
 
 interface ParsedResult {
   type: string
@@ -212,12 +214,10 @@ export default function QuickLogPage() {
           </p>
         </div>
 
-        {/* Quick Actions */}
-        <QuickActions
-          key={refreshKey}
-          userId={user?.id}
-          onQuickLog={handleQuickLog}
-        />
+        {/* Quick Actions - TODO: Implement component */}
+        <div key={refreshKey} className="p-4 bg-gray-50 rounded">
+          <p className="text-sm text-gray-600">Quick Actions coming soon...</p>
+        </div>
 
         {/* Chat Input Box */}
         <div className="bg-[#1A1A1B] rounded-xl border border-white/10 p-4 mb-6">
@@ -303,14 +303,10 @@ export default function QuickLogPage() {
           </div>
         </div>
 
-        {/* Log History */}
-        <LogHistory
-          key={refreshKey}
-          userId={user?.id}
-          limit={30}
-          onEdit={handleEditLog}
-          onReportBadParse={handleReportBadParse}
-        />
+        {/* Log History - TODO: Implement component */}
+        <div key={refreshKey} className="p-4 bg-gray-50 rounded">
+          <p className="text-sm text-gray-600">Log History coming soon...</p>
+        </div>
 
         {/* Tips */}
         <div className="mt-8 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
@@ -324,19 +320,35 @@ export default function QuickLogPage() {
         </div>
       </div>
 
-      {/* Parse Preview Modal */}
+      {/* Parse Preview Modal - Simple inline replacement */}
       {showPreview && parsedResult && (
-        <ParsePreview
-          data={parsedResult}
-          onConfirm={handleConfirmLog}
-          onCancel={() => {
-            setShowPreview(false)
-            setParsedResult(null)
-          }}
-          onTypeChange={(newType) => {
-            setParsedResult(prev => prev ? { ...prev, type: newType } : null)
-          }}
-        />
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Confirm Log Entry</h3>
+            <div className="mb-4">
+              <p><strong>Type:</strong> {parsedResult.type}</p>
+              <p><strong>Confidence:</strong> {Math.round(parsedResult.confidence * 100)}%</p>
+              {parsedResult.message && <p><strong>Message:</strong> {parsedResult.message}</p>}
+            </div>
+            <div className="flex gap-2">
+              <button 
+                onClick={handleConfirmLog}
+                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+              >
+                Confirm
+              </button>
+              <button 
+                onClick={() => {
+                  setShowPreview(false)
+                  setParsedResult(null)
+                }}
+                className="flex-1 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

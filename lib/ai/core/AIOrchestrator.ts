@@ -9,7 +9,7 @@ import {
   COST_PER_1K_TOKENS
 } from '@/lib/ai/types';
 import { WorkoutParser } from '@/lib/ai/parsers/WorkoutParser';
-import { FoodParser } from '@/lib/ai/parsers/FoodParser';
+import { EnhancedFoodParser as FoodParser } from '@/lib/ai/parsers/EnhancedFoodParser';
 import { SmartCoach } from '@/lib/ai/coach/SmartCoach';
 import { VoiceTranscriber } from '@/lib/ai/voice/VoiceTranscriber';
 import { PhotoAnalyzer } from '@/lib/ai/vision/PhotoAnalyzer';

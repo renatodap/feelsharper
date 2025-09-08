@@ -355,7 +355,7 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
                     backdateValue ? new Date(backdateValue).toISOString() : undefined
                   );
                 }
-              }
+              }}
               placeholder="Tell me anything: 'weight 175' or 'ran 5k' or 'ate chicken salad' or 'feeling great today'"
               className="flex-1 bg-bg text-text-primary px-4 py-3 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               rows={2}

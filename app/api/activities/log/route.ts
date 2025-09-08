@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
       timestamp: new Date().toISOString()
     };
 
-    // Save to activity_logs table
-    const { data: savedActivity, error: saveError } = await auth.supabase
+    // Save to activity_logs table  
+    const { data: savedActivity, error: saveError } = await auth.supabase!
       .from('activity_logs')
       .insert([activityLog])
       .select()
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
           recorded_at: new Date().toISOString()
         };
         
-        const { data: weightData, error: weightError } = await supabase
+        const { data: weightData, error: weightError } = await auth.supabase!
           .from('body_weight')
           .insert([weightEntry])
           .select()
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
               logged_at: new Date().toISOString()
             };
             
-            const { error: foodError } = await supabase
+            const { error: foodError } = await auth.supabase!
               .from('food_logs')
               .insert([foodEntry]);
               
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
           logged_at: new Date().toISOString()
         };
         
-        const { data: exerciseData, error: exerciseError } = await supabase
+        const { data: exerciseData, error: exerciseError } = await auth.supabase!
           .from('workouts')
           .insert([exerciseEntry])
           .select()
@@ -125,12 +125,12 @@ export async function POST(request: NextRequest) {
 
     // Calculate daily stats for response
     let dailyStats = null;
-    if (!demo) {
+    {
       try {
         const today = new Date().toISOString().split('T')[0];
         
         // Get today's activities
-        const { data: todayActivities } = await supabase
+        const { data: todayActivities } = await auth.supabase!
           .from('activity_logs')
           .select('*')
           .eq('user_id', userId)
@@ -168,19 +168,14 @@ export async function POST(request: NextRequest) {
 
 // Get user's recent activities
 export async function GET(request: NextRequest) {
+  const auth = await getUserOr401(request);
+  if (!auth.user) return auth.res;
+  
   try {
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const user = auth.user;
     
-    if (!user) {
-      return NextResponse.json({ 
-        success: false, 
-        error: 'Authentication required' 
-      }, { status: 401 });
-    }
-
     // Get last 20 activities
-    const { data: activities, error } = await supabase
+    const { data: activities, error } = await auth.supabase!
       .from('activity_logs')
       .select('*')
       .eq('user_id', user.id)
