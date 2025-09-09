@@ -51,12 +51,27 @@ export interface SleepData {
 }
 
 export interface SocialData {
-  id: string
+  id:string
   userId: string
   platform: string
   activity: string
   data: any
   timestamp: string
+}
+
+// Parsed health log from natural language input.
+// This is the target structure for the OpenAI parsing function.
+export interface ParsedHealthLog {
+  type: 'exercise' | 'nutrition' | 'wellness' | 'measurement' | 'mood' | 'general'
+  activity?: string
+  distance?: number
+  distance_unit?: string
+  duration?: number
+  duration_unit?: string
+  mood?: string
+  // The index signature allows for additional, dynamic fields
+  // that the AI might extract based on the input text.
+  [key: string]: any
 }
 
 export interface AchievementData {

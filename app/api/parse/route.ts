@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { parseActivityPython, checkPythonBackendHealth } from '@/lib/api/python-client';
-// Import TypeScript fallback parsers
-import { EnhancedFoodParser } from '@/lib/ai/parsers/EnhancedFoodParser';
-import { WorkoutParser } from '@/lib/ai/parsers/WorkoutParser';
+import { parseHealthLog } from '@/lib/utils/logParser';
 
 export async function POST(request: NextRequest) {
   try {
@@ -122,65 +120,39 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * TypeScript fallback parsing
+ * TypeScript fallback parsing using the new OpenAI-based parser.
  */
 async function parseWithTypescript(text: string, typeOverride?: string) {
-  // Simple type detection based on keywords
-  const lowerText = text.toLowerCase();
-  let detectedType = typeOverride;
-  
-  if (!detectedType) {
-    if (lowerText.includes('weight') || lowerText.includes('lbs') || lowerText.includes('kg')) {
-      detectedType = 'weight';
-    } else if (lowerText.includes('ran') || lowerText.includes('run') || lowerText.includes('workout') || lowerText.includes('exercise')) {
-      detectedType = 'workout';
-    } else if (lowerText.includes('ate') || lowerText.includes('eat') || lowerText.includes('breakfast') || lowerText.includes('lunch') || lowerText.includes('dinner')) {
-      detectedType = 'nutrition';
-    } else {
-      detectedType = 'general';
-    }
-  }
-  
-  let fields = {};
-  let confidence = 0.6; // Base confidence for TypeScript parsing
-  
-  // Use specific parsers if available
   try {
-    if (detectedType === 'nutrition') {
-      const foodParser = new EnhancedFoodParser();
-      const result = await foodParser.parseFoodText(text);
-      fields = result;
-      confidence = 0.8;
-    } else if (detectedType === 'workout') {
-      const workoutParser = new WorkoutParser();
-      const result = await workoutParser.parseWorkoutText(text);
-      fields = result;
-      confidence = 0.8;
-    } else {
-      // Basic parsing for other types
-      fields = {
-        raw_text: text,
-        parsed: false,
-        type: detectedType
-      };
-    }
+    // The new parser is powerful enough to not need the typeOverride.
+    // We can pass it in the future if we want to add context.
+    const parsedLog = await parseHealthLog(text);
+
+    // The new parser returns a confidence score if available, otherwise we can set a default.
+    const confidence = parsedLog.confidence || 0.85;
+
+    return {
+      type: parsedLog.type,
+      confidence: confidence,
+      fields: parsedLog, // The entire parsed log is stored in the 'fields'
+      timestamp: new Date().toISOString(),
+      message: `Parsed as ${parsedLog.type} with ${Math.round(confidence * 100)}% confidence`
+    };
   } catch (parserError) {
     console.error('TypeScript parser error:', parserError);
-    fields = {
-      raw_text: text,
-      parsed: false,
-      error: 'Parsing failed'
+    // Fallback to a generic error response
+    return {
+      type: 'general',
+      confidence: 0.3,
+      fields: {
+        raw_text: text,
+        parsed: false,
+        error: 'Parsing failed'
+      },
+      timestamp: new Date().toISOString(),
+      message: 'Failed to parse with TypeScript fallback'
     };
-    confidence = 0.3;
   }
-  
-  return {
-    type: detectedType,
-    confidence: confidence,
-    fields: fields,
-    timestamp: new Date().toISOString(),
-    message: `Parsed as ${detectedType} with ${Math.round(confidence * 100)}% confidence`
-  };
 }
 
 /**

@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import { ParsedHealthLog } from '../types';
 
 // Initialize OpenAI client with configuration
 const openai = new OpenAI({
@@ -142,6 +143,104 @@ Extract subjective feelings and mood separately from objective data.`;
       },
       original_text: text,
       subjective_notes: text
+    };
+  }
+}
+
+/**
+ * Parses a natural language health log into a structured ParsedHealthLog object.
+ * This function is specifically tailored for health and wellness related inputs.
+ *
+ * @param text The natural language text to parse.
+ * @returns A promise that resolves to a ParsedHealthLog object.
+ */
+export async function parseHealthLogWithOpenAI(text: string): Promise<ParsedHealthLog> {
+  const cacheKey = `healthlog:${text}`;
+  const cached = cache.get(cacheKey);
+  if (cached && Date.now() < cached.expires) {
+    return cached.data;
+  }
+
+  const systemPrompt = `You are an expert health and wellness data parser. Your task is to parse the user's natural language input into a structured JSON object.
+
+The output JSON object must conform to the following TypeScript interface:
+\`\`\`typescript
+interface ParsedHealthLog {
+  type: 'exercise' | 'nutrition' | 'wellness' | 'measurement' | 'mood' | 'general';
+  activity?: string;
+  distance?: number;
+  distance_unit?: string;
+  duration?: number;
+  duration_unit?: string;
+  mood?: string;
+  [key: string]: any;
+}
+\`\`\`
+
+Here are some examples to guide you:
+- Input: "Ran 5k in 25 minutes, feeling great"
+- Output: { "type": "exercise", "activity": "running", "distance": 5, "distance_unit": "km", "duration": 25, "duration_unit": "minutes", "mood": "positive" }
+
+- Input: "ate a chicken salad for lunch"
+- Output: { "type": "nutrition", "activity": "ate", "food": "chicken salad", "meal": "lunch" }
+
+- Input: "weighed myself this morning, 80kg"
+- Output: { "type": "measurement", "activity": "weigh-in", "weight": 80, "weight_unit": "kg" }
+
+- Input: "slept for 8 hours, feel rested"
+- Output: { "type": "wellness", "activity": "sleep", "duration": 8, "duration_unit": "hours", "mood": "rested" }
+
+- Input: "feeling stressed today"
+- Output: { "type": "mood", "mood": "stressed" }
+
+Key Guidelines:
+1.  **Mandatory 'type' field**: The 'type' property must always be present.
+2.  **Contextual Extraction**: For 'exercise', extract details like 'activity', 'distance', 'duration'. For 'nutrition', identify food items and meal types. For 'measurement', capture the metric and its value/unit. For 'wellness', note activities such as sleep or meditation.
+3.  **Mood Detection**: Extract 'mood' whenever mentioned, regardless of the 'type'.
+4.  **Ambiguity Handling**: If the input is unclear or doesn't fit a specific category, set 'type' to 'general' and include the original text in a 'notes' field.
+5.  **Field Presence**: Only include fields for which data is present in the input. If a detail like 'duration' is not mentioned, the 'duration' field should not be in the output.
+6.  **Unit Standardization**: Standardize units where possible (e.g., convert 'k' or 'kms' to 'km').
+
+Now, parse the following user input.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: text }
+      ],
+      max_tokens: 500,
+      temperature: 0,
+      response_format: { type: "json_object" },
+    });
+
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error('No response content from OpenAI');
+    }
+
+    const parsed = JSON.parse(content) as Omit<ParsedHealthLog, 'raw_text'>;
+    const result: ParsedHealthLog = {
+        ...parsed,
+        raw_text: text
+    };
+
+    // Cache the result
+    cache.set(cacheKey, {
+      data: result,
+      expires: Date.now() + CACHE_TTL
+    });
+
+    return result;
+  } catch (error) {
+    console.error('OpenAI health log parsing error:', error);
+
+    // Fallback response for failed parsing
+    return {
+      raw_text: text,
+      type: 'general',
+      notes: text
     };
   }
 }
