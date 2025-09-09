@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { 
@@ -28,9 +28,18 @@ interface ParsedActivity {
 interface UnifiedInputProps {
   onActivityLogged?: (activity: ParsedActivity) => void;
   className?: string;
+  quickAction?: {
+    text: string;
+    timestamp: number;
+  };
 }
 
-export default function UnifiedNaturalInput({ onActivityLogged, className = '' }: UnifiedInputProps) {
+export interface UnifiedNaturalInputRef {
+  focusInput: () => void;
+}
+
+const UnifiedNaturalInput = forwardRef<UnifiedNaturalInputRef, UnifiedInputProps>(
+  ({ onActivityLogged, className = '', quickAction }, ref) => {
   const [input, setInput] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -47,6 +56,19 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    focusInput: () => {
+      textAreaRef.current?.focus();
+    }
+  }));
+
+  useEffect(() => {
+    if (quickAction) {
+      setInput(quickAction.text);
+    }
+  }, [quickAction]);
 
   // Initialize Web Speech API
   useEffect(() => {
@@ -344,6 +366,7 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
           {/* Main Input Area */}
           <div className="flex gap-2">
             <textarea
+              ref={textAreaRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -493,4 +516,8 @@ export default function UnifiedNaturalInput({ onActivityLogged, className = '' }
       </Card>
     </div>
   );
-}
+});
+
+UnifiedNaturalInput.displayName = 'UnifiedNaturalInput';
+
+export default UnifiedNaturalInput;
